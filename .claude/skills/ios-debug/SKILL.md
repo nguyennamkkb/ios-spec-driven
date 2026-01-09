@@ -1,27 +1,34 @@
 ---
-name: xcode-debug
-description: Debug và fix lỗi iOS/Swift. Dùng khi có compile error, runtime error, crash, memory leak, performance issue, SwiftUI preview không chạy, build failed.
+name: ios-debug
+description: Debug and fix iOS/Swift errors. Use when encountering compile errors, runtime errors, crashes, memory leaks, performance issues, SwiftUI preview not working, build failures.
 allowed-tools: Read, Edit, Grep, Glob
 ---
 
-# Xcode Debug Guide
+# iOS Debug Guide
 
-## Mục đích
-Hướng dẫn debug và fix các lỗi thường gặp khi develop iOS app.
+## Table of Contents
+- [1. Compile Errors](#1-compile-errors) ............. L15-L120
+- [2. SwiftUI Errors](#2-swiftui-errors) ............. L122-L200
+- [3. Runtime Errors](#3-runtime-errors) ............. L202-L280
+- [4. Build Errors](#4-build-errors) ................. L282-L330
+- [5. Performance Issues](#5-performance-issues) ..... L332-L400
+- [6. Debug Workflow](#6-debug-workflow) ............. L402-L450
+- [7. Debug Tools](#7-debug-tools) ................... L452-L500
+- [8. Checklist](#8-checklist) ....................... L502-L550
 
 ---
 
-## Common Compile Errors
+## 1. Compile Errors
 
-### 1. Syntax Errors
+### 1.1 Syntax Errors
 
 #### Missing Brace/Bracket
 ```
 Error: Expected '}' at end of closure
 ```
 **Fix:**
-- Đếm số lượng `{` và `}`
-- Dùng Xcode auto-indent để detect
+- Count `{` and `}` pairs
+- Use Xcode auto-indent to detect
 - Check nested closures
 
 #### Missing Comma
@@ -32,15 +39,7 @@ Error: Expected ',' separator
 - Check array/dictionary literals
 - Check function parameters
 
-#### Semicolon (từ thói quen ngôn ngữ khác)
-```
-Error: Consecutive statements on a line must be separated by ';'
-```
-**Fix:**
-- Swift KHÔNG cần semicolon
-- Xóa semicolon
-
-### 2. Type Errors
+### 1.2 Type Errors
 
 #### Type Mismatch
 ```
@@ -61,20 +60,15 @@ Error: Value of optional type 'String?' must be unwrapped
 ```
 **Fix:**
 ```swift
-// Bad
-let name: String? = getName()
-print(name.uppercased())
-
-// Good - Optional binding
+// Option 1: Optional binding
 if let name = getName() {
     print(name.uppercased())
 }
 
-// Good - Nil coalescing
+// Option 2: Nil coalescing
 let name = getName() ?? "Unknown"
-print(name.uppercased())
 
-// Good - Optional chaining
+// Option 3: Optional chaining
 print(getName()?.uppercased() ?? "")
 ```
 
@@ -92,54 +86,31 @@ let items: [String] = []
 let items = [String]()
 ```
 
-### 3. Access Control
+### 1.3 Access Control
 
-#### Private/Internal Access
 ```
 Error: 'init' is inaccessible due to 'private' protection level
 ```
 **Fix:**
-```swift
-// Bad
-private init() { }
+- Change `private` to `internal` or `public`
+- Or access from within the same file
 
-// Good
-public init() { }
-internal init() { }
-```
+### 1.4 Protocol Conformance
 
-### 4. Protocol Conformance
-
-#### Missing Protocol Method
 ```
 Error: Type 'MyClass' does not conform to protocol 'Codable'
 ```
 **Fix:**
-```swift
-// Add required methods/properties
-struct User: Codable {
-    let id: String
-    let name: String
-    
-    // Codable auto-synthesized nếu tất cả properties là Codable
-}
-```
-
-#### Protocol Witness
-```
-Error: Candidate has non-matching type
-```
-**Fix:**
-- Check method signature khớp với protocol
-- Check parameter types và return type
+- Implement required methods/properties
+- Ensure all properties are Codable for auto-synthesis
 
 ---
 
-## SwiftUI Specific Errors
+## 2. SwiftUI Errors
 
-### 1. View Body Type
+### 2.1 View Body Type
 
-#### Type Mismatch in Body
+#### Multiple Views Without Container
 ```
 Error: Function declares an opaque return type, but has no return statements
 ```
@@ -160,168 +131,113 @@ var body: some View {
 }
 ```
 
-#### Too Many Views
+#### Too Many Views (ViewBuilder Limit)
 ```
 Error: Extra argument in call
 ```
 **Fix:**
 ```swift
-// Bad - SwiftUI ViewBuilder limit 10 views
-VStack {
-    Text("1")
-    Text("2")
-    // ... 11 views
-}
-
-// Good - Group hoặc extract
+// Use Group to organize
 VStack {
     Group {
         Text("1")
         Text("2")
-        // ...
+        // ... up to 10
     }
     Group {
-        Text("6")
+        Text("11")
         // ...
     }
 }
 ```
 
-### 2. State Management
+### 2.2 State Management
 
 #### @State Outside View
 ```
 Error: @State can only be applied to properties of structs
 ```
-**Fix:**
-```swift
-// Bad
-class MyClass {
-    @State var count = 0  // ❌
-}
-
-// Good
-struct MyView: View {
-    @State private var count = 0  // ✅
-}
-```
+**Fix:** Use `@State` only in View structs, use `@Published` in ObservableObject classes
 
 #### @Published Outside ObservableObject
 ```
 Error: @Published can only be applied to classes
 ```
-**Fix:**
-```swift
-// Bad
-struct MyStruct {
-    @Published var name = ""  // ❌
-}
+**Fix:** Use `@Published` only in classes conforming to ObservableObject
 
-// Good
-class MyViewModel: ObservableObject {
-    @Published var name = ""  // ✅
-}
-```
+### 2.3 Preview Errors
 
-### 3. Preview Errors
-
-#### Preview Crash
 ```
 Error: Cannot preview in this file
 ```
 **Fix:**
-```swift
-// Ensure Preview provider
-struct MyView_Previews: PreviewProvider {
-    static var previews: some View {
-        MyView()
-    }
-}
-
-// Provide mock data nếu cần
-struct MyView_Previews: PreviewProvider {
-    static var previews: some View {
-        MyView(viewModel: MockViewModel())
-    }
-}
-```
+- Ensure PreviewProvider exists
+- Provide mock data if needed
+- Check for runtime errors in view
 
 ---
 
-## Runtime Errors
+## 3. Runtime Errors
 
-### 1. Force Unwrap Crash
+### 3.1 Force Unwrap Crash
 
 ```
 Fatal error: Unexpectedly found nil while unwrapping an Optional value
 ```
-
 **Fix:**
 ```swift
 // Bad
-let name = user.name!  // Crash nếu nil
+let name = user.name!
 
 // Good
-guard let name = user.name else {
-    return
-}
-
-// Good
+guard let name = user.name else { return }
+// or
 let name = user.name ?? "Unknown"
 ```
 
-### 2. Array Index Out of Bounds
+### 3.2 Array Index Out of Bounds
 
 ```
 Fatal error: Index out of range
 ```
-
 **Fix:**
 ```swift
 // Bad
-let item = items[5]  // Crash nếu items.count < 6
-
-// Good
-guard items.indices.contains(5) else {
-    return
-}
 let item = items[5]
 
 // Good
-if let item = items[safe: 5] {
-    // Use item
-}
+guard items.indices.contains(5) else { return }
+let item = items[5]
 
-// Extension helper
+// Or use safe subscript extension
 extension Array {
     subscript(safe index: Int) -> Element? {
-        return indices.contains(index) ? self[index] : nil
+        indices.contains(index) ? self[index] : nil
     }
 }
 ```
 
-### 3. Main Thread Violation
+### 3.3 Main Thread Violation
 
 ```
 Warning: Publishing changes from background threads is not allowed
 ```
-
 **Fix:**
 ```swift
 // Bad
 DispatchQueue.global().async {
-    self.items = newItems  // ❌ UI update on background
+    self.items = newItems // UI update on background
 }
 
 // Good
 DispatchQueue.global().async {
     let newItems = fetchItems()
     DispatchQueue.main.async {
-        self.items = newItems  // ✅ UI update on main
+        self.items = newItems
     }
 }
 
-// Good - Swift Concurrency
+// Or with async/await
 Task {
     let newItems = await fetchItems()
     await MainActor.run {
@@ -330,79 +246,55 @@ Task {
 }
 ```
 
-### 4. Memory Leaks (Retain Cycles)
-
-```
-Warning: Instance will be immediately deallocated
-```
+### 3.4 Memory Leaks (Retain Cycles)
 
 **Fix:**
 ```swift
 // Bad - Strong reference cycle
-class ViewModel {
-    var onComplete: (() -> Void)?
-    
-    func setup() {
-        onComplete = {
-            self.doSomething()  // ❌ Strong self
-        }
-    }
+onComplete = {
+    self.doSomething() // Strong self
 }
 
 // Good - Weak self
-class ViewModel {
-    var onComplete: (() -> Void)?
-    
-    func setup() {
-        onComplete = { [weak self] in
-            self?.doSomething()  // ✅ Weak self
-        }
-    }
+onComplete = { [weak self] in
+    self?.doSomething()
 }
 ```
 
 ---
 
-## Build Errors
+## 4. Build Errors
 
-### 1. Missing File
-
+### 4.1 Missing File
 ```
 Error: No such file or directory
 ```
-
 **Fix:**
-- Check file exists trong project
+- Check file exists in project
 - Check file added to target
 - Clean build folder
 
-### 2. Duplicate Symbols
-
+### 4.2 Duplicate Symbols
 ```
 Error: Duplicate symbol '_OBJC_CLASS_$_MyClass'
 ```
-
 **Fix:**
 - Check file added to target multiple times
 - Remove duplicate
 
-### 3. Framework Not Found
-
+### 4.3 Framework Not Found
 ```
 Error: Framework not found 'SomeFramework'
 ```
-
 **Fix:**
 - Check SPM dependencies resolved
 - Check CocoaPods installed
 - Clean + rebuild
 
-### 4. Code Signing
-
+### 4.4 Code Signing
 ```
 Error: Code signing failed
 ```
-
 **Fix:**
 - Check provisioning profile
 - Check bundle identifier
@@ -410,79 +302,48 @@ Error: Code signing failed
 
 ---
 
-## Performance Issues
+## 5. Performance Issues
 
-### 1. Slow View Rendering
+### 5.1 Slow View Rendering
 
-**Symptoms:**
-- UI lag
-- Slow scrolling
+**Symptoms:** UI lag, slow scrolling
 
 **Debug:**
 ```swift
-// Add to View
 .onAppear {
     print("⏱️ View appeared: \(Date())")
 }
-
-// Measure time
-let start = Date()
-// ... code
-print("⏱️ Took: \(Date().timeIntervalSince(start))s")
 ```
 
 **Fix:**
-- Lazy loading cho lists
+- Use lazy loading for lists
 - Reduce view complexity
 - Cache computed values
+- Use `@StateObject` instead of `@ObservedObject` for owned objects
 
-### 2. Memory Warning
+### 5.2 Memory Warning
 
-**Symptoms:**
-- App crash on low memory
-- Slow performance
-
-**Debug:**
-```swift
-// Monitor memory
-NotificationCenter.default.addObserver(
-    forName: UIApplication.didReceiveMemoryWarningNotification,
-    object: nil,
-    queue: .main
-) { _ in
-    print("⚠️ Memory warning!")
-}
-```
+**Symptoms:** App crash on low memory
 
 **Fix:**
 - Release unused objects
 - Reduce image sizes
 - Implement pagination
+- Use weak references appropriately
 
-### 3. Network Timeout
+### 5.3 Network Timeout
 
-**Symptoms:**
-- Requests fail
-- Long loading
-
-**Debug:**
-```swift
-// Add timeout logging
-URLSession.shared.dataTask(with: request) { data, response, error in
-    if let error = error as NSError?, error.code == NSURLErrorTimedOut {
-        print("⚠️ Request timeout")
-    }
-}
-```
+**Symptoms:** Requests fail, long loading
 
 **Fix:**
 - Increase timeout
 - Optimize API
 - Add retry logic
+- Show appropriate loading states
 
 ---
 
-## Debug Workflow
+## 6. Debug Workflow
 
 ### Step 1: Read Error Message
 - File path
@@ -490,20 +351,19 @@ URLSession.shared.dataTask(with: request) { data, response, error in
 - Error description
 
 ### Step 2: Locate Issue
-```bash
-# Search for error pattern
-grep -r "problematic code" .
-```
+- Go to file and line
+- Read surrounding code
+- Check recent changes
 
 ### Step 3: Understand Context
-- Read surrounding code
-- Check related files
-- Review recent changes
+- What is the code trying to do?
+- What are the inputs?
+- What are the expected outputs?
 
 ### Step 4: Apply Fix
-- Fix theo patterns trên
-- Test fix
-- Build lại
+- Fix based on patterns above
+- Test the fix
+- Rebuild
 
 ### Step 5: Verify
 - Build success
@@ -512,21 +372,21 @@ grep -r "problematic code" .
 
 ---
 
-## Debug Tools
+## 7. Debug Tools
 
-### 1. Print Debugging
+### 7.1 Print Debugging
 ```swift
 print("🔍 Debug: \(variable)")
 print("🔍 Type: \(type(of: variable))")
 dump(complexObject)
 ```
 
-### 2. Breakpoints
-- Set breakpoint tại line có issue
+### 7.2 Breakpoints
+- Set breakpoint at issue line
 - Inspect variables
 - Step through code
 
-### 3. LLDB Commands
+### 7.3 LLDB Commands
 ```
 po variable          // Print object
 p variable           // Print value
@@ -534,37 +394,37 @@ bt                   // Backtrace
 frame variable       // All variables in frame
 ```
 
-### 4. View Hierarchy
+### 7.4 View Hierarchy
 - Xcode → Debug → View Debugging
 - Inspect view layout
 - Check constraints
 
 ---
 
-## Checklist
+## 8. Checklist
 
-### Khi gặp compile error:
-- [ ] Đọc error message đầy đủ
-- [ ] Locate file và line number
+### When Encountering Compile Error
+- [ ] Read full error message
+- [ ] Locate file and line number
 - [ ] Check syntax (braces, commas)
 - [ ] Check types
 - [ ] Check imports
 
-### Khi gặp runtime error:
+### When Encountering Runtime Error
 - [ ] Check crash log
 - [ ] Identify crash line
 - [ ] Check force unwraps
 - [ ] Check array access
 - [ ] Check thread safety
 
-### Khi gặp performance issue:
-- [ ] Profile với Instruments
+### When Encountering Performance Issue
+- [ ] Profile with Instruments
 - [ ] Check memory usage
 - [ ] Check CPU usage
 - [ ] Optimize hot paths
 - [ ] Add caching
 
-### Trước khi commit:
+### Before Commit
 - [ ] No compile errors
 - [ ] No runtime crashes
 - [ ] No memory leaks

@@ -1,31 +1,31 @@
 ---
 name: refine-spec
-description: Cập nhật và refine specs đã có. Dùng khi cần thêm requirements, sửa design, update tasks, sync specs với code hiện tại.
+description: Update and refine existing specs. Use when adding requirements, modifying design, updating tasks, syncing specs with current code.
 tools: Read, Write, Edit, Grep, Glob
 model: sonnet
 skills: dev-spec-driven
 ---
 
-# Spec Refiner Agent
+# Refine Spec Agent
 
-## Mục tiêu
-Cập nhật specs khi:
-- Thêm requirements mới
-- Sửa design
-- Sync tasks với code đã implement
-- PBT fail cần update spec
+## Objective
+Update specs when:
+- Adding new requirements
+- Modifying design
+- Syncing tasks with implemented code
+- PBT failure needs spec update
 
 ## Commands
 
 ### 1. Add requirement
 ```
-"Add requirement: [mô tả]" 
+"Add requirement: [description]" 
 ```
 → Update requirements.md + design.md + tasks.md
 
 ### 2. Update design
 ```
-"Update design: [thay đổi]"
+"Update design: [changes]"
 ```
 → Update design.md + tasks.md
 
@@ -39,37 +39,37 @@ Cập nhật specs khi:
 ```
 "PBT failed: [property name] - [failure reason]"
 ```
-→ Analyze và suggest fix (spec/code/test)
+→ Analyze and suggest fix (spec/code/test)
 
 ---
 
-## Quy trình
+## Process
 
 ### Add Requirement
 
-1. Đọc requirements.md hiện tại
-2. Thêm User Story mới với ID tiếp theo
-3. Thêm Acceptance Criteria với EARS
+1. Read current requirements.md
+2. Add new User Story with next ID
+3. Add Acceptance Criteria with EARS
 4. Update design.md:
-   - Thêm components nếu cần
-   - Thêm Correctness Properties
+   - Add components if needed
+   - Add Correctness Properties
 5. Update tasks.md:
-   - Thêm implementation tasks
-   - Thêm PBT tasks
+   - Add implementation tasks
+   - Add PBT tasks
    - Update Traceability Matrix
 
 ### Update Design
 
-1. Đọc design.md hiện tại
+1. Read current design.md
 2. Apply changes
-3. Check impact lên tasks.md
-4. Update tasks nếu cần
-5. Giữ nguyên completed tasks
+3. Check impact on tasks.md
+4. Update tasks if needed
+5. Keep completed tasks unchanged
 
 ### Sync Tasks
 
-1. Scan codebase cho files trong spec
-2. Check mỗi task:
+1. Scan codebase for files in spec
+2. Check each task:
    - File exists? 
    - Implementation complete?
 3. Update task status
@@ -78,13 +78,14 @@ Cập nhật specs khi:
 
 ### Handle PBT Failure
 
-1. Đọc property definition
+1. Read property definition
 2. Analyze failure:
-   - Spec sai? → Suggest update AC
-   - Code sai? → Suggest fix code
-   - Test sai? → Suggest fix test
-3. KHÔNG tự động fix
-4. Present options cho user
+   - Spec wrong? → Suggest update AC
+   - Code wrong? → Suggest fix code
+   - Test wrong? → Suggest fix test
+3. DO NOT auto-fix
+4. Present options to user
+
 
 ---
 
@@ -150,10 +151,10 @@ Choose action:
 
 ---
 
-## Quy tắc
+## Rules
 
-- KHÔNG xóa completed tasks
-- KHÔNG thay đổi task IDs đã có
-- Thêm tasks mới với ID tiếp theo
-- Giữ traceability khi update
-- PBT failure → KHÔNG tự fix, present options
+- DO NOT delete completed tasks
+- DO NOT change existing task IDs
+- Add new tasks with next ID
+- Maintain traceability when updating
+- PBT failure → DO NOT auto-fix, present options
