@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude:*)"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "figmaRemoteMcp",
+    "playwright",
+    "XcodeBuildMCP"
+  ]
+}

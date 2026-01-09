@@ -1,23 +1,20 @@
-# ios-spec-driven-claude
-config mcp: 
-
-"figmaRemoteMcp": {
+{
+  "mcpServers": {
+    "figmaRemoteMcp": {
       "url": "https://mcp.figma.com/mcp",
       "type": "http",
       "autoApprove": [
         "get_design_context"
       ],
       "disabled": true
-    }
-
+    },
     "playwright": {
       "command": "npx",
       "args": [
         "@playwright/mcp@latest"
       ],
       "disabled": false
-    }
-
+    },
     "XcodeBuildMCP": {
       "command": "npx",
       "args": [
@@ -37,3 +34,5 @@ config mcp:
       "disabledTools": [],
       "disabled": false
     }
+  }
+}
