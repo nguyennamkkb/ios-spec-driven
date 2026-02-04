@@ -1,7 +1,8 @@
 ---
 name: dev-spec-driven
-description: Spec-driven development workflow for iOS. Use when creating new features, writing requirements, design documents, implementation plans, EARS notation, user stories, acceptance criteria, property-based testing.
-allowed-tools: Read, Write, Grep, Glob
+description: |
+  Spec-driven development workflow for iOS. Use when creating new features, writing requirements, design documents, implementation plans, EARS notation, user stories, acceptance criteria, property-based testing, spec workflow, traceability.
+allowed-tools: Read, Write, Edit, Grep, Glob
 ---
 
 # Spec-Driven Development
@@ -48,6 +49,204 @@ Each feature requires 3 files in `.claude/specs/[feature-name]/`:
 2. **Traceability**: US → AC → Property → Task all have IDs and references
 3. **Checkpoints**: User confirmation after each step
 4. **No code in spec**: Specs describe only, no sample code
+
+
+## How to Use This Skill
+
+### Quick Start
+
+**For new features:**
+```
+You: "Create spec for user authentication feature"
+```
+
+Claude will:
+1. Invoke `write-spec` agent → Create `requirements.md`
+2. Ask for your confirmation
+3. Invoke `write-design` agent → Create `design.md`
+4. Ask for your confirmation
+5. Invoke `write-tasks` agent → Create `tasks.md`
+6. Ask for your confirmation
+7. Invoke `execute-tasks` agent → Start implementation
+
+### Manual Control
+
+**Create only requirements:**
+```
+You: "Write requirements for shopping cart"
+```
+→ Creates only `requirements.md`, stops for confirmation
+
+**Create only design:**
+```
+You: "Write design for shopping cart"
+```
+→ Requires existing `requirements.md`, creates `design.md`
+
+**Create only tasks:**
+```
+You: "Write tasks for shopping cart"
+```
+→ Requires existing `design.md`, creates `tasks.md`
+
+**Implement specific task:**
+```
+You: "Implement task 3.1.2.1"
+```
+→ Executes single task from `tasks.md`
+
+**Implement next task:**
+```
+You: "Implement next task"
+```
+→ Finds first uncompleted task and implements it
+
+### Batch Mode
+
+**Create all specs at once:**
+```
+You: "Create full spec (requirements + design + tasks) for user profile feature"
+```
+
+Claude will create all 3 files but ask for confirmation between each step.
+
+### Agent Invocation
+
+Agents are invoked automatically based on your request:
+
+| Your Request | Agent Invoked | Output |
+|--------------|---------------|--------|
+| "Create spec for X" | write-spec | requirements.md |
+| "Write design for X" | write-design | design.md |
+| "Write tasks for X" | write-tasks | tasks.md |
+| "Implement task Y" | execute-tasks | Code |
+| "Modify requirements" | refine-spec | Updated specs |
+
+You don't need to explicitly call agents - just describe what you want.
+
+### Workflow Confirmation
+
+After each file is created, Claude will ask:
+
+```
+✅ Created: requirements.md
+
+❓ What would you like to do?
+1. ✅ Continue to create design.md
+2. ✏️ Request modifications
+3. ⏸️ Stop here, continue later
+```
+
+**Important**: Claude will NOT automatically continue without your confirmation.
+
+### File Locations
+
+All spec files are created in:
+```
+.claude/specs/[feature-name]/
+├── requirements.md
+├── design.md
+└── tasks.md
+```
+
+Example:
+```
+.claude/specs/user-authentication/
+├── requirements.md
+├── design.md
+└── tasks.md
+```
+
+### Modifying Existing Specs
+
+**To update requirements:**
+```
+You: "Add new requirement: users can reset password"
+```
+→ Invokes `refine-spec` agent to update `requirements.md`
+
+**To update design:**
+```
+You: "Change List Screen to use grid layout instead"
+```
+→ Updates `design.md` and affected tasks in `tasks.md`
+
+### Implementation Flow
+
+When implementing tasks:
+
+1. **Phase by Phase**: Complete all tasks in Phase 2 (Shared) before Phase 3 (Features)
+2. **Feature by Feature**: Complete Feature 3.1 before Feature 3.2
+3. **Checkpoint Gates**: Build must pass before moving to next phase
+4. **User Confirmation**: Required after each phase completion
+
+Example:
+```
+You: "Start implementing shopping cart"
+
+Claude:
+- Implements task 2.1.1 (Create models)
+- Implements task 2.1.2 (Create service)
+- Builds with mcp-xcode
+- ✅ Checkpoint 2 complete
+- Asks: "Continue to Feature 3.1?"
+```
+
+### Tips
+
+**For small features (<4 hours):**
+```
+You: "Quick implementation of settings toggle - skip full spec"
+```
+→ Claude invokes `quick-implement` agent (no spec files, direct implementation)
+
+**For complex features:**
+```
+You: "Create detailed spec for payment system with Stripe integration"
+```
+→ Claude will create comprehensive specs with all details
+
+**Explicit lightweight mode:**
+```
+You: "Use quick-implement for dark mode toggle"
+```
+→ Forces lightweight mode even if feature seems complex
+
+**When stuck:**
+```
+You: "Show me what specs exist"
+You: "What's the status of shopping cart implementation?"
+You: "What task should I do next?"
+```
+
+### Common Commands
+
+| Command | Result |
+|---------|--------|
+| "Create spec for X" | Full workflow (requirements → design → tasks) |
+| "Write requirements for X" | Only requirements.md |
+| "Implement next task" | Execute next uncompleted task |
+| "Implement task 3.1.2.1" | Execute specific task |
+| "Show task status" | Display progress |
+| "Update requirement: ..." | Modify existing spec |
+| "Build and test" | Run mcp-xcode build + tests |
+
+---
+
+## Example (End-to-End)
+
+This repo includes a complete example feature spec you can copy and adapt:
+
+- `.claude/specs/example-todo-list/requirements.md`
+- `.claude/specs/example-todo-list/design.md`
+- `.claude/specs/example-todo-list/tasks.md`
+
+Use it as a reference for:
+- What “good” EARS acceptance criteria look like
+- How design sections map to tasks and checkpoints
+- How traceability (US/AC/Property/Task) stays consistent
+
+
 
 ---
 
@@ -252,7 +451,13 @@ Each section has a Checkpoint:
 Checkpoint = Gate to next section:
 - ⬜ = Not started
 - 🔄 = In progress
-- ✅ = Done (Build pass + tests pass + checklist done)
+- ✅ = Done (Build pass + errors fixed + committed + user confirmed)
+
+**What "Done" means**:
+1. ✅ Build passes (via mcp-xcode)
+2. ✅ All errors fixed (using ios-debug if needed)
+3. ✅ Changes committed to git
+4. ✅ User confirms to continue
 
 ### 5.5 Task Format
 
@@ -310,6 +515,7 @@ US-001 (User Story)
 | write-tasks | design.md | tasks.md | dev-spec-driven |
 | execute-tasks | tasks.md | Code | dev-spec-driven, ios-architecture, ios-components |
 | refine-spec | Feedback | Updated specs | dev-spec-driven |
+| quick-implement | Simple idea | Code (no specs) | dev-spec-driven, ios-architecture, ios-components |
 
 ### 7.2 When to Use Which Agent
 
@@ -321,8 +527,207 @@ US-001 (User Story)
 | Implement task | execute-tasks |
 | Add/modify requirements | refine-spec |
 | Sync tasks with code | refine-spec |
+| Quick implementation (<4 hours) | quick-implement |
 
 ### 7.3 Rules
 - Each agent creates 1 file
 - After each file → User confirm
 - DO NOT skip agents in chain
+
+---
+
+## 8. Advanced Features
+
+### 8.1 Traceability Validation
+
+**Automatic validation of references across spec files.**
+
+#### Usage
+
+```bash
+# Validate traceability for a feature
+python .claude/scripts/validate_traceability.py user-authentication
+```
+
+#### What It Checks
+
+- ✅ All AC references in tasks.md exist in requirements.md
+- ✅ All Design references in tasks.md exist in design.md
+- ✅ All Property AC references exist
+- ⚠️ Orphaned ACs (not referenced by any task)
+- ⚠️ Missing references in tasks
+
+#### Example Output
+
+```
+============================================================
+Traceability Validation: user-authentication
+============================================================
+
+❌ VALIDATION FAILED
+
+🔴 Broken References (1):
+  - Task 3.1.2.1 references AC-005.3 (NOT FOUND)
+
+🟠 Orphaned Items (1):
+  - AC-003.2 not referenced by any task or property
+
+============================================================
+```
+
+#### When to Run
+
+- After creating tasks.md
+- After modifying any spec file
+- Before starting implementation
+- As part of CI/CD pipeline
+
+#### Integration
+
+Add to execute-tasks agent:
+```markdown
+### Before Implementation
+
+1. Validate traceability
+2. Fix any broken references
+3. Proceed with implementation
+```
+
+---
+
+### 8.2 Property-Based Testing
+
+**Framework: SwiftCheck**
+
+#### Installation
+
+```swift
+// Package.swift
+dependencies: [
+    .package(url: "https://github.com/typelift/SwiftCheck", from: "0.12.0")
+]
+```
+
+#### Property Types
+
+| Type | Description | Example |
+|------|-------------|---------|
+| Round-trip | Encode then decode = original | JSON serialization |
+| Invariant | Always true after operation | State always valid |
+| Idempotent | Multiple = single execution | Delete twice = once |
+| Commutative | Order doesn't matter | Add A then B = Add B then A |
+
+#### Template Example
+
+```swift
+import SwiftCheck
+
+func testUserRoundTrip() {
+    property("User round-trip") <- forAll { (user: User) in
+        let encoded = try! JSONEncoder().encode(user)
+        let decoded = try! JSONDecoder().decode(User.self, from: encoded)
+        return user == decoded
+    }
+}
+```
+
+#### In Workflow
+
+1. **design.md**: Define properties in Section 5
+2. **tasks.md**: Create [PBT] tasks (optional)
+3. **execute-tasks**: Implement using SwiftCheck templates
+4. **Run**: 100+ random inputs per property
+
+#### Full Guide
+
+See `Shared/PBT_GUIDE.md` for:
+- Complete templates for each property type
+- Custom generators
+- Best practices
+- Troubleshooting
+
+---
+
+### 8.3 Parallel Task Execution
+
+**Execute independent tasks simultaneously to reduce time.**
+
+#### When to Use
+
+✅ **Safe for parallel**:
+- Tasks in different features (3.1.x and 3.2.x)
+- No shared files
+- No data dependencies
+
+❌ **Must stay sequential**:
+- Tasks in same feature (3.1.1 before 3.1.2)
+- Shared files
+- Data dependencies
+
+#### Usage
+
+```bash
+# Sequential (default)
+execute-tasks 3.1.1.1
+
+# Parallel
+execute-tasks --parallel 3.1.1.1,3.2.1.1,3.3.1.1
+```
+
+#### Example: Time Savings
+
+```
+Sequential:
+- 3.1.1.1 ViewModel (1h)
+- 3.2.1.1 ViewModel (1h)
+- 3.3.1.1 ViewModel (1h)
+Total: 3h
+
+Parallel:
+- 3.1.1.1, 3.2.1.1, 3.3.1.1 (max 1h)
+Total: 1h
+
+Savings: 67% faster!
+```
+
+#### Conflict Detection
+
+Before parallel execution:
+1. Check file conflicts
+2. Check data dependencies
+3. Check resource conflicts
+4. If conflicts → Force sequential
+
+#### In tasks.md
+
+```markdown
+## Parallel Execution Plan
+
+### Group 2: ViewModels (Parallel)
+- 3.1.1.1 List ViewModel
+- 3.2.1.1 Detail ViewModel
+- 3.3.1.1 Form ViewModel
+
+**Checkpoint 3.x.1**: ⬜ ALL ViewModels complete
+```
+
+#### Full Guide
+
+See `Shared/PARALLEL_EXECUTION_GUIDE.md` for:
+- Dependency graphs
+- Conflict detection rules
+- Error handling
+- Best practices
+
+---
+
+### 8.4 Summary of Advanced Features
+
+| Feature | Purpose | Status | Guide |
+|---------|---------|--------|-------|
+| Traceability Validation | Auto-check references | ✅ Ready | `.claude/scripts/validate_traceability.py` |
+| Property-Based Testing | SwiftCheck integration | ✅ Ready | `Shared/PBT_GUIDE.md` |
+| Parallel Execution | Faster implementation | 🧪 Experimental | `Shared/PARALLEL_EXECUTION_GUIDE.md` |
+
+---
+

@@ -2,7 +2,6 @@
 name: write-design
 description: Write technical design for features. Use when designing architecture, wireframes, file/folder structure, data flow, state management.
 tools: Read, Write, Grep, Glob
-model: sonnet
 skills: dev-spec-driven, ios-architecture
 ---
 
@@ -16,6 +15,42 @@ Create `design.md` from `requirements.md` with focus on:
 
 ## Output
 File `design.md` in `.claude/specs/[feature-name]/`
+
+---
+
+
+## Prerequisites Validation
+
+Before creating design.md, MUST validate:
+
+### Step 1: Check requirements.md exists
+```bash
+# Check file exists
+if [ ! -f ".claude/specs/[feature-name]/requirements.md" ]; then
+    echo "❌ ERROR: requirements.md not found"
+    echo "Please create requirements.md first using write-spec agent"
+    exit 1
+fi
+```
+
+### Step 2: Validate requirements.md content
+- Must have at least 1 User Story (US-XXX)
+- Must have Acceptance Criteria (AC-XXX.Y)
+- Must use EARS notation
+
+### Step 3: If validation fails
+```
+❌ Cannot create design.md
+
+Reason: requirements.md not found or invalid
+
+Please:
+1. Create requirements.md first: "Write requirements for [feature]"
+2. Or check file location: .claude/specs/[feature-name]/requirements.md
+```
+
+### Step 4: If validation passes
+→ Continue to create design.md
 
 ---
 
@@ -429,3 +464,75 @@ Features/
 ### Table of Contents
 - Update line numbers after completion
 - Format: `[Section](#anchor) ... LXXX-LYYY`
+
+---
+
+## Step 3: ASK USER CONFIRMATION (REQUIRED)
+
+After creating `design.md`, MUST display:
+
+```
+✅ Created: .claude/specs/[feature-name]/design.md
+
+📋 Summary:
+- Features: X screens/components
+- Shared: Y models, Z services
+- Properties: W correctness properties
+
+🔍 Please review the design.md file
+
+❓ What would you like to do?
+1. ✅ Continue to create tasks.md
+2. ✏️ Request modifications to design
+3. ⏸️ Stop here, continue later
+```
+
+**CRITICAL RULES:**
+- DO NOT automatically continue without user confirmation
+- DO NOT invoke write-tasks agent automatically
+- WAIT for explicit user response
+- If user selects "Continue" → Call write-tasks agent
+- If user selects "Modify" → Apply changes → Ask again
+- If user selects "Stop" → End here
+
+---
+
+
+---
+
+## Property-Based Testing
+
+### In Section 5: Correctness Properties
+
+For each property, specify:
+
+```markdown
+| # | Property | Type | Validates | Statement |
+|---|----------|------|-----------|-----------|
+| P1 | User round-trip | Round-trip | AC-001.1 | Encode then decode = original |
+| P2 | State invariant | Invariant | AC-002.1 | State always valid |
+| P3 | Form validation | Invariant | AC-003.1 | Invalid input → cannot submit |
+| P4 | Delete idempotent | Idempotent | AC-004.1 | Delete twice = delete once |
+```
+
+**Property Types**:
+- **Round-trip**: Encode/decode, serialize/deserialize
+- **Invariant**: Always true after any operation
+- **Idempotent**: Multiple executions = single execution
+- **Commutative**: Order doesn't matter
+
+**Framework**: SwiftCheck (see `Shared/PBT_GUIDE.md`)
+
+### PBT Task Generation
+
+For each property, tasks.md will include:
+
+```markdown
+- [ ] **X.Y.Z** [PBT] Property PX: [name]
+  - Property: [statement]
+  - File: `Tests/PropertyTests/[Name]PropertyTests.swift`
+  - Framework: SwiftCheck
+  - Validates: AC-XXX.Y
+  - Optional: Yes
+```
+

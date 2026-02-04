@@ -2,7 +2,6 @@
 name: write-tasks
 description: Create implementation plan from design. Use when creating tasks.md, breaking down work by feature, planning implementation.
 tools: Read, Write, Grep, Glob
-model: sonnet
 skills: dev-spec-driven
 ---
 
@@ -16,6 +15,49 @@ Read `requirements.md` and `design.md`, create `tasks.md` with:
 
 ## Output
 File `tasks.md` in `.claude/specs/[feature-name]/`
+
+---
+
+
+## Prerequisites Validation
+
+Before creating tasks.md, MUST validate:
+
+### Step 1: Check requirements.md exists
+```bash
+if [ ! -f ".claude/specs/[feature-name]/requirements.md" ]; then
+    echo "❌ ERROR: requirements.md not found"
+    exit 1
+fi
+```
+
+### Step 2: Check design.md exists
+```bash
+if [ ! -f ".claude/specs/[feature-name]/design.md" ]; then
+    echo "❌ ERROR: design.md not found"
+    echo "Please create design.md first using write-design agent"
+    exit 1
+fi
+```
+
+### Step 3: Validate design.md content
+- Must have Section 2 (Shared)
+- Must have Section 3 (Features) with at least 1 feature
+- Must have Section 5 (Correctness Properties)
+
+### Step 4: If validation fails
+```
+❌ Cannot create tasks.md
+
+Reason: [requirements.md | design.md] not found or invalid
+
+Please:
+1. Create missing file first
+2. Or check file location: .claude/specs/[feature-name]/
+```
+
+### Step 5: If validation passes
+→ Continue to create tasks.md
 
 ---
 
@@ -391,3 +433,76 @@ Implement in order:
 - Task ID: `X.Y.Z.W`
 - MUST have: File, Design reference, Refs (AC-xxx)
 - PBT task: add Property, Optional: Yes
+
+---
+
+## Step 3: ASK USER CONFIRMATION (REQUIRED)
+
+After creating `tasks.md`, MUST display:
+
+```
+✅ Created: .claude/specs/[feature-name]/tasks.md
+
+📋 Summary:
+- Total Tasks: X
+- Shared Tasks: Y
+- Feature Tasks: Z
+- Integration Tasks: W
+- Estimated Effort: N days
+
+🔍 Please review the tasks.md file
+
+❓ What would you like to do?
+1. ✅ Start implementation (invoke execute-tasks)
+2. ✏️ Request modifications to tasks
+3. ⏸️ Stop here, continue later
+```
+
+**CRITICAL RULES:**
+- DO NOT automatically start implementation without user confirmation
+- DO NOT invoke execute-tasks agent automatically
+- WAIT for explicit user response
+- If user selects "Start" → Call execute-tasks agent
+- If user selects "Modify" → Apply changes → Ask again
+- If user selects "Stop" → End here
+
+---
+
+
+---
+
+## Parallel Execution Support
+
+### Add to tasks.md
+
+After creating task sections, ADD:
+
+```markdown
+## Parallel Execution Plan
+
+### Group 1: Shared (Sequential)
+[List shared tasks]
+
+### Group 2: ViewModels (Parallel)
+[List ViewModel tasks from all features]
+
+### Group 3: Views (Parallel)
+[List View tasks from all features]
+
+### Group 4: Integration (Sequential)
+[List integration tasks]
+```
+
+### Add Dependency Matrix
+
+```markdown
+## Task Dependencies
+
+| Task | Depends On | Can Parallel With |
+|------|------------|-------------------|
+| 3.1.1.1 | 2.1.1 | 3.2.1.1, 3.3.1.1 |
+| 3.2.1.1 | 2.1.1 | 3.1.1.1, 3.3.1.1 |
+```
+
+See `Shared/PARALLEL_EXECUTION_GUIDE.md` for details.
+

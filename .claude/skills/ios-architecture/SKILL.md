@@ -1,6 +1,7 @@
 ---
 name: ios-architecture
-description: SwiftUI project structure. Use when creating new projects, new features, new screens, file placement, file naming, folder organization, code refactoring, ViewModel separation, standard directory structure, MVVM, Clean Architecture.
+description: |
+  SwiftUI project structure. Use when creating new projects, new features, new screens, file placement, file naming, folder organization, code refactoring, ViewModel separation, standard directory structure, MVVM, Clean Architecture.
 allowed-tools: Read, Grep, Glob, Bash
 ---
 

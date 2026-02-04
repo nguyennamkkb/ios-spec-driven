@@ -2,7 +2,6 @@
 name: write-spec
 description: Write requirements for new features. Use when creating specs, writing user stories, EARS notation, acceptance criteria.
 tools: Read, Write, Grep, Glob, WebSearch, WebFetch
-model: sonnet
 skills: dev-spec-driven
 ---
 

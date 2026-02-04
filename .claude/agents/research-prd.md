@@ -2,7 +2,6 @@
 name: research-prd
 description: Research and create PRD for iOS/mobile apps. Use when analyzing market, competitors, defining features, writing product requirements documents, brainstorming new app ideas.
 tools: Read, Write, Grep, Glob, WebSearch, WebFetch
-model: sonnet
 ---
 
 # PRD Researcher Agent

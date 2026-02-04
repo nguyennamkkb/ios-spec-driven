@@ -1,6 +1,7 @@
 ---
 name: ios-components
-description: Create UI components for SwiftUI. Use when creating buttons, cards, input fields, modals, bottom sheets, loading views, empty states, creating components from design images, coding UI from Figma, making custom views, creating reusable views.
+description: |
+  Create UI components for SwiftUI. Use when creating buttons, cards, input fields, modals, bottom sheets, loading views, empty states, creating components from design images, coding UI from Figma, making custom views, creating reusable views.
 allowed-tools: Read, Grep, Glob, Bash
 ---
 
