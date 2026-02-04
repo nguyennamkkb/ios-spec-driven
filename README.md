@@ -45,16 +45,40 @@ A comprehensive Claude Code toolkit for iOS spec-driven development with advance
 
 ## 🚀 Quick Start
 
-### 1. Copy to Your Project
+### Installation
+
+#### Option 1: UVX (Recommended)
+
+Install directly from GitHub using UVX:
 
 ```bash
-# Copy toolkit to your iOS project
-cp -r .claude /path/to/your-project/
-cp -r Shared /path/to/your-project/
-cp .mcp.json /path/to/your-project/
+# Install to current directory
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude ios-spec-driven install
+
+# Install to specific directory
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude ios-spec-driven install /path/to/your-project
+
+# Check status
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude ios-spec-driven status
+
+# Show info
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude ios-spec-driven info
 ```
 
-### 2. Basic Usage
+**Requirements**: [UV](https://docs.astral.sh/uv/getting-started/installation/) (Python package manager)
+
+#### Option 2: Manual Installation
+
+```bash
+# Clone repository
+git clone https://github.com/nguyennamkkb/ios-spec-driven-claude.git
+
+# Copy toolkit to your iOS project
+cp -r ios-spec-driven-claude/.claude /path/to/your-project/
+cp ios-spec-driven-claude/.mcp.json /path/to/your-project/
+```
+
+### Basic Usage
 
 ```
 # Full spec workflow
@@ -70,7 +94,7 @@ cp .mcp.json /path/to/your-project/
 "Quick implementation of dark mode toggle"
 ```
 
-### 3. Workflow Output
+### Workflow Output
 
 Each feature creates 3 spec files:
 ```
@@ -79,6 +103,31 @@ Each feature creates 3 spec files:
 ├── design.md        (Architecture + Wireframes + Properties)
 └── tasks.md         (Implementation Plan + Traceability)
 ```
+
+### CLI Commands
+
+The installer provides several commands:
+
+```bash
+# Install toolkit
+ios-spec-driven install [TARGET_DIR]
+
+# Check installation status
+ios-spec-driven status [TARGET_DIR]
+
+# Uninstall toolkit
+ios-spec-driven uninstall [TARGET_DIR]
+
+# Show toolkit information
+ios-spec-driven info
+
+# Show help
+ios-spec-driven --help
+```
+
+**Options**:
+- `--force`: Force overwrite without confirmation
+- `--no-backup`: Skip backup of existing files
 
 ---
 
