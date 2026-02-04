@@ -29,9 +29,10 @@ def main():
 
 @main.command()
 @click.argument('target_dir', type=click.Path(), default='.')
+@click.option('--ide', type=click.Choice(['claude', 'opencode']), help='Target IDE (claude or opencode)')
 @click.option('--no-backup', is_flag=True, help='Skip backup of existing files')
 @click.option('--force', is_flag=True, help='Force overwrite without confirmation')
-def install(target_dir, no_backup, force):
+def install(target_dir, ide, no_backup, force):
     """Install the toolkit to TARGET_DIR (default: current directory)
     
     This will install:
@@ -39,10 +40,12 @@ def install(target_dir, no_backup, force):
     - Agents (7 workflow agents)
     - Scripts (validation tools)
     - Guides (component format, PBT, parallel execution)
-    - MCP config (Xcode + Figma integration)
+    - Config (IDE-specific configuration)
     
     Examples:
         ios-spec-driven install
+        ios-spec-driven install --ide claude
+        ios-spec-driven install --ide opencode
         ios-spec-driven install ~/MyiOSApp
         ios-spec-driven install --no-backup
     """
@@ -53,8 +56,18 @@ def install(target_dir, no_backup, force):
         border_style="blue"
     ))
     
+    # Interactive IDE selection if not provided
+    if not ide:
+        console.print("\n[bold cyan]? Select target IDE:[/bold cyan]")
+        console.print("  [1] Claude Code (Kiro)")
+        console.print("  [2] OpenCode")
+        
+        choice = click.prompt("\nEnter your choice", type=click.IntRange(1, 2), default=1)
+        ide = "claude" if choice == 1 else "opencode"
+        console.print(f"\n[green]✓[/green] Selected: {ide.title()}\n")
+    
     target_path = Path(target_dir).resolve()
-    installer = Installer(target_path, backup=not no_backup)
+    installer = Installer(target_path, ide=ide, backup=not no_backup)
     
     try:
         # Check if already installed
@@ -118,8 +131,9 @@ def install(target_dir, no_backup, force):
 
 @main.command()
 @click.argument('target_dir', type=click.Path(), default='.')
+@click.option('--ide', type=click.Choice(['claude', 'opencode']), default='claude', help='Target IDE')
 @click.option('--force', is_flag=True, help='Force uninstall without confirmation')
-def uninstall(target_dir, force):
+def uninstall(target_dir, ide, force):
     """Uninstall the toolkit from TARGET_DIR
     
     This will remove:
@@ -135,7 +149,7 @@ def uninstall(target_dir, force):
     console.print("[bold red]🗑️  iOS Spec-Driven Toolkit Uninstaller[/bold red]\n")
     
     target_path = Path(target_dir).resolve()
-    installer = Installer(target_path)
+    installer = Installer(target_path, ide=ide)
     
     if not installer.is_installed():
         console.print(f"[yellow]Toolkit is not installed in:[/yellow] {target_path}")
@@ -160,7 +174,8 @@ def uninstall(target_dir, force):
 
 @main.command()
 @click.argument('target_dir', type=click.Path(), default='.')
-def status(target_dir):
+@click.option('--ide', type=click.Choice(['claude', 'opencode']), default='claude', help='Target IDE')
+def status(target_dir, ide):
     """Check installation status in TARGET_DIR
     
     Shows which components are installed and their status.
@@ -171,9 +186,10 @@ def status(target_dir):
     """
     
     target_path = Path(target_dir).resolve()
-    installer = Installer(target_path)
+    installer = Installer(target_path, ide=ide)
     
-    console.print(f"\n[cyan]Checking installation in:[/cyan] {target_path}\n")
+    console.print(f"\n[cyan]Checking installation in:[/cyan] {target_path}")
+    console.print(f"[dim]IDE: {ide.title()}[/dim]\n")
     
     if installer.is_installed():
         console.print("[green]✓[/green] Toolkit is installed\n")
@@ -201,8 +217,10 @@ def status(target_dir):
         console.print(table)
         
         # Version info
+        config_dir = '.claude' if ide == 'claude' else '.opencode'
         console.print(f"\n[dim]Version: 2.1.0[/dim]")
-        console.print(f"[dim]Location: {target_path / '.claude'}[/dim]\n")
+        console.print(f"[dim]IDE: {ide.title()}[/dim]")
+        console.print(f"[dim]Location: {target_path / config_dir}[/dim]\n")
         
     else:
         console.print("[yellow]✗[/yellow] Toolkit is not installed\n")

@@ -55,5 +55,7 @@ include = [
 
 # Ensure all files in templates are included
 [tool.hatch.build.force-include]
+"src/ios_spec_driven_installer/templates/content" = "ios_spec_driven_installer/templates/content"
+"src/ios_spec_driven_installer/templates/formats" = "ios_spec_driven_installer/templates/formats"
 "src/ios_spec_driven_installer/templates/.claude" = "ios_spec_driven_installer/templates/.claude"
 "src/ios_spec_driven_installer/templates/.mcp.json" = "ios_spec_driven_installer/templates/.mcp.json"
