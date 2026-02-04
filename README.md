@@ -52,7 +52,7 @@ Claude will guide you through:
 3. **Tasks** → Implementation plan
 4. **Code** → SwiftUI implementation + tests
 
-**Result**: Complete feature with full documentation in ~30 minutes.
+**Result**: Complete feature with full documentation in ~10 minutes.
 
 ### CLI Commands
 
@@ -140,7 +140,7 @@ ios-spec-driven info              # Show info
 └── tasks.md         # Implementation plan + traceability
 ```
 
-**Time**: ~30-60 minutes
+**Time**: ~10-15 minutes
 
 #### Quick Implementation
 
@@ -149,7 +149,7 @@ ios-spec-driven info              # Show info
 ```
 
 **Output**: Code directly, no specs  
-**Time**: ~5-10 minutes
+**Time**: ~2-5 minutes
 
 #### Individual Steps
 
