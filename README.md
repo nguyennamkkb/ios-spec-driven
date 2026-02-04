@@ -294,6 +294,31 @@ All agents understand and respond appropriately!
 
 ---
 
+## 🔄 CI/CD
+
+This project uses GitHub Actions for automated testing and releasing:
+
+- **Test Workflow**: Runs on every push to `dev`/`plugin` branches
+  - Tests on Ubuntu and macOS
+  - Tests with Python 3.8 and 3.12
+  - Validates installation and CLI commands
+
+- **Merge to Main**: Manual workflow to merge and release
+  - Merges branch to `main`
+  - Bumps version (patch/minor/major)
+  - Creates git tag
+  - Triggers release workflow
+
+- **Release Workflow**: Automatic release creation
+  - Builds Python package
+  - Generates changelog
+  - Creates GitHub Release
+  - Uploads distribution files
+
+See [CICD_GUIDE.md](CICD_GUIDE.md) for detailed instructions.
+
+---
+
 ## 🔧 Configuration
 
 ### MCP Servers
