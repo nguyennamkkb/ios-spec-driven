@@ -34,7 +34,7 @@ A comprehensive Claude Code toolkit for iOS spec-driven development with advance
 - **Scripts** (`.claude/scripts/`):
   - `validate_traceability.py`: Auto-validate references
 
-- **Guides** (`Shared/`):
+- **Guides** (`.claude/shared/`):
   - `COMPONENT_FORMAT.md`: Component standards
   - `PBT_GUIDE.md`: Property-based testing with SwiftCheck
   - `PARALLEL_EXECUTION_GUIDE.md`: Parallel task execution
@@ -45,16 +45,42 @@ A comprehensive Claude Code toolkit for iOS spec-driven development with advance
 
 ## 🚀 Quick Start
 
-### 1. Copy to Your Project
+### Installation
+
+#### Option 1: UVX (Recommended)
+
+Install directly from GitHub using UVX:
 
 ```bash
-# Copy toolkit to your iOS project
-cp -r .claude /path/to/your-project/
-cp -r Shared /path/to/your-project/
-cp .mcp.json /path/to/your-project/
+# Install to current directory
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install
+
+# Install to specific directory
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install /path/to/your-project
+
+# Check status
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven status
+
+# Show info
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven info
 ```
 
-### 2. Basic Usage
+**Requirements**: [UV](https://docs.astral.sh/uv/getting-started/installation/) (Python package manager)
+
+**Note**: Use `@dev` branch for latest version, or `@main` for stable release.
+
+#### Option 2: Manual Installation
+
+```bash
+# Clone repository
+git clone https://github.com/nguyennamkkb/ios-spec-driven-claude.git
+
+# Copy toolkit to your iOS project
+cp -r ios-spec-driven-claude/.claude /path/to/your-project/
+cp ios-spec-driven-claude/.mcp.json /path/to/your-project/
+```
+
+### Basic Usage
 
 ```
 # Full spec workflow
@@ -70,7 +96,7 @@ cp .mcp.json /path/to/your-project/
 "Quick implementation of dark mode toggle"
 ```
 
-### 3. Workflow Output
+### Workflow Output
 
 Each feature creates 3 spec files:
 ```
@@ -79,6 +105,31 @@ Each feature creates 3 spec files:
 ├── design.md        (Architecture + Wireframes + Properties)
 └── tasks.md         (Implementation Plan + Traceability)
 ```
+
+### CLI Commands
+
+The installer provides several commands:
+
+```bash
+# Install toolkit
+ios-spec-driven install [TARGET_DIR]
+
+# Check installation status
+ios-spec-driven status [TARGET_DIR]
+
+# Uninstall toolkit
+ios-spec-driven uninstall [TARGET_DIR]
+
+# Show toolkit information
+ios-spec-driven info
+
+# Show help
+ios-spec-driven --help
+```
+
+**Options**:
+- `--force`: Force overwrite without confirmation
+- `--no-backup`: Skip backup of existing files
 
 ---
 
@@ -109,7 +160,7 @@ Templates for 4 property types:
 - Idempotent (multiple = single)
 - Commutative (order doesn't matter)
 
-See `Shared/PBT_GUIDE.md` for complete guide.
+See `.claude/shared/PBT_GUIDE.md` for complete guide.
 
 ### 3. Parallel Execution (Experimental)
 
@@ -123,7 +174,7 @@ execute-tasks 3.1.1.1
 execute-tasks --parallel 3.1.1.1,3.2.1.1,3.3.1.1
 ```
 
-See `Shared/PARALLEL_EXECUTION_GUIDE.md` for details.
+See `.claude/shared/PARALLEL_EXECUTION_GUIDE.md` for details.
 
 ---
 
@@ -206,9 +257,9 @@ Each agent has frontmatter with:
 
 ### Guides
 
-- `Shared/COMPONENT_FORMAT.md`: SwiftUI component standards
-- `Shared/PBT_GUIDE.md`: Property-based testing guide
-- `Shared/PARALLEL_EXECUTION_GUIDE.md`: Parallel execution guide
+- `.claude/shared/COMPONENT_FORMAT.md`: SwiftUI component standards
+- `.claude/shared/PBT_GUIDE.md`: Property-based testing guide
+- `.claude/shared/PARALLEL_EXECUTION_GUIDE.md`: Parallel execution guide
 
 ---
 
@@ -240,6 +291,31 @@ All agents understand and respond appropriately!
 "Sync tasks cho todo-list"
 "Quick implementation của dark mode toggle"
 ```
+
+---
+
+## 🔄 CI/CD
+
+This project uses GitHub Actions for automated testing and releasing:
+
+- **Test Workflow**: Runs on every push to `dev`/`plugin` branches
+  - Tests on Ubuntu and macOS
+  - Tests with Python 3.8 and 3.12
+  - Validates installation and CLI commands
+
+- **Merge to Main**: Manual workflow to merge and release
+  - Merges branch to `main`
+  - Bumps version (patch/minor/major)
+  - Creates git tag
+  - Triggers release workflow
+
+- **Release Workflow**: Automatic release creation
+  - Builds Python package
+  - Generates changelog
+  - Creates GitHub Release
+  - Uploads distribution files
+
+See [CICD_GUIDE.md](CICD_GUIDE.md) for detailed instructions.
 
 ---
 

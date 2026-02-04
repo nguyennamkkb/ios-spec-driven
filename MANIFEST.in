@@ -1,0 +1,3 @@
+recursive-include src/ios_spec_driven_installer/templates *
+recursive-include src/ios_spec_driven_installer/templates/.claude *
+include src/ios_spec_driven_installer/templates/.mcp.json

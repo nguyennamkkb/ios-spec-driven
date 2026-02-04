@@ -52,7 +52,7 @@ struct [ComponentName]: View {
 ### File Names
 - Match struct name: `PrimaryButton.swift`
 - One component per file
-- Location: `Shared/Components/[Category]/[ComponentName].swift`
+- Location: `.claude/shared/Components/[Category]/[ComponentName].swift`
 
 ## Style Guidelines
 
@@ -150,7 +150,7 @@ struct PrimaryButton: View {
 ## Component Categories
 
 ### Buttons
-Location: `Shared/Components/Buttons/`
+Location: `.claude/shared/Components/Buttons/`
 
 Examples:
 - `PrimaryButton.swift` - Main CTA
@@ -159,7 +159,7 @@ Examples:
 - `IconButton.swift` - Icon-only button
 
 ### Inputs
-Location: `Shared/Components/Inputs/`
+Location: `.claude/shared/Components/Inputs/`
 
 Examples:
 - `PrimaryTextField.swift` - Text input
@@ -168,7 +168,7 @@ Examples:
 - `TextEditor.swift` - Multi-line input
 
 ### Cards
-Location: `Shared/Components/Cards/`
+Location: `.claude/shared/Components/Cards/`
 
 Examples:
 - `ItemCard.swift` - List item card
@@ -176,7 +176,7 @@ Examples:
 - `ActionCard.swift` - Card with actions
 
 ### Feedback
-Location: `Shared/Components/Feedback/`
+Location: `.claude/shared/Components/Feedback/`
 
 Examples:
 - `LoadingView.swift` - Loading indicator
@@ -185,7 +185,7 @@ Examples:
 - `ToastView.swift` - Toast notification
 
 ### Layouts
-Location: `Shared/Components/Layouts/`
+Location: `.claude/shared/Components/Layouts/`
 
 Examples:
 - `ScreenContainer.swift` - Screen wrapper

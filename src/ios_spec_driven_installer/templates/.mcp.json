@@ -1,0 +1,38 @@
+{
+  "mcpServers": {
+    "figmaRemoteMcp": {
+      "url": "https://mcp.figma.com/mcp",
+      "type": "http",
+      "autoApprove": [
+        "get_design_context"
+      ],
+      "disabled": true
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ],
+      "disabled": false
+    },
+    "XcodeBuildMCP": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "xcodebuildmcp@latest"
+      ],
+      "autoApprove": [
+        "build_sim",
+        "build_run_sim",
+        "screenshot",
+        "tap",
+        "describe_ui",
+        "discover_projs",
+        "list_schemes",
+        "gesture"
+      ],
+      "disabledTools": [],
+      "disabled": false
+    }
+  }
+}

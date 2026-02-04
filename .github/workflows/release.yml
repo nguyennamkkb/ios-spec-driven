@@ -1,0 +1,109 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install UV
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+      
+      - name: Build package
+        run: |
+          uv build
+      
+      - name: Get version from tag
+        id: get_version
+        run: |
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          else
+            VERSION=$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/')
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+      
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Get commits since last tag
+          LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            COMMITS=$(git log --pretty=format:"- %s (%h)" --no-merges)
+          else
+            COMMITS=$(git log ${LAST_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
+          fi
+          
+          # Create changelog
+          cat > CHANGELOG.md << EOF
+          ## What's Changed
+          
+          $COMMITS
+          
+          ## Installation
+          
+          \`\`\`bash
+          # Install to current directory
+          uvx --from git+https://github.com/${{ github.repository }}@v${{ steps.get_version.outputs.VERSION }} ios-spec-driven install
+          
+          # Install to specific directory
+          uvx --from git+https://github.com/${{ github.repository }}@v${{ steps.get_version.outputs.VERSION }} ios-spec-driven install /path/to/project
+          \`\`\`
+          
+          ## Components
+          
+          - **7 Skills**: dev-spec-driven, ios-architecture, ios-components, ios-ui-ux, ios-debug, mcp-xcode, mcp-figma
+          - **7 Agents**: write-spec, write-design, write-tasks, execute-tasks, refine-spec, quick-implement, research-prd
+          - **Validation Scripts**: Traceability checker
+          - **Guides**: Component format, PBT, Parallel execution
+          - **MCP Config**: Xcode + Figma integration
+          
+          ## Documentation
+          
+          - [README](https://github.com/${{ github.repository }}#readme)
+          - [Publishing Guide](https://github.com/${{ github.repository }}/blob/main/PUBLISH_GUIDE.md)
+          - [Plugin Plan](https://github.com/${{ github.repository }}/blob/main/PLUGIN_PLAN.md)
+          EOF
+          
+          echo "Changelog generated"
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: Release v${{ steps.get_version.outputs.VERSION }}
+          body_path: CHANGELOG.md
+          files: |
+            dist/*
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
