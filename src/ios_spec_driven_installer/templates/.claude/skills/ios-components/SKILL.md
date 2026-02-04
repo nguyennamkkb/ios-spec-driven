@@ -8,41 +8,215 @@ allowed-tools: Read, Grep, Glob, Bash
 # SwiftUI Reusable Components
 
 ## Table of Contents
-- [1. Workflow](#1-workflow) ......................... L15-L50
-- [2. Component Locations](#2-component-locations) ... L52-L80
-- [3. Design Integration](#3-design-integration) ..... L82-L130
-- [4. Style Files](#4-style-files) ................... L132-L180
-- [5. Checklist](#5-checklist) ....................... L182-L200
+- [1. Reuse First Strategy](#1-reuse-first-strategy) . L15-L80
+- [2. Workflow](#2-workflow) ......................... L82-L120
+- [3. Component Locations](#3-component-locations) ... L122-L150
+- [4. Design Integration](#4-design-integration) ..... L152-L200
+- [5. Style Files](#5-style-files) ................... L202-L250
+- [6. Checklist](#6-checklist) ....................... L252-L280
 
 ---
 
-## 1. Workflow
+## 1. Reuse First Strategy
+
+### Core Principle
+**ALWAYS try to reuse existing components before creating new ones.**
+
+Benefits:
+- Consistency across the app
+- Less code to maintain
+- Faster development
+- Fewer bugs
+
+---
+
+### Decision Tree
+
+```
+Need a UI component?
+    │
+    ├─→ Search existing components
+    │       │
+    │       ├─→ Found exact match?
+    │       │       └─→ ✅ Use it!
+    │       │
+    │       ├─→ Found similar component?
+    │       │       │
+    │       │       ├─→ Can customize with parameters?
+    │       │       │       └─→ ✅ Add parameters & use!
+    │       │       │
+    │       │       └─→ Need minor changes?
+    │       │               └─→ ✅ Extend or compose!
+    │       │
+    │       └─→ Nothing similar?
+    │               └─→ ⚠️ Create new component
+    │
+    └─→ Document for future reuse
+```
+
+---
+
+### Step-by-Step: Search Before Create
+
+#### 1. Search by Type
+```bash
+# List all components by category
+ls .claude/shared/Components/Buttons/
+ls .claude/shared/Components/Cards/
+ls .claude/shared/Components/Inputs/
+```
+
+#### 2. Search by Name Pattern
+```bash
+# Search for button-related components
+find .claude/shared/Components -name "*Button*"
+
+# Search for card-related components
+find .claude/shared/Components -name "*Card*"
+```
+
+#### 3. Grep for Similar Functionality
+```bash
+# Search for components with specific features
+grep -r "loading" .claude/shared/Components/
+grep -r "icon" .claude/shared/Components/
+```
+
+---
+
+### Reuse Strategies
+
+#### Strategy 1: Use As-Is
+Component already does what you need.
+
+```swift
+// Existing: PrimaryButton.swift
+// Just use it!
+PrimaryButton(title: "Submit", action: submit)
+```
+
+#### Strategy 2: Customize with Parameters
+Component is close, add parameters to make it flexible.
+
+**Before:**
+```swift
+struct PrimaryButton: View {
+    let title: String
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .foregroundColor(.white)
+        }
+        .background(Color.primary)
+    }
+}
+```
+
+**After (add icon parameter):**
+```swift
+struct PrimaryButton: View {
+    let title: String
+    let icon: String? = nil  // ← Add optional parameter
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                if let icon = icon {
+                    Image(systemName: icon)
+                }
+                Text(title)
+            }
+            .foregroundColor(.white)
+        }
+        .background(Color.primary)
+    }
+}
+```
+
+#### Strategy 3: Compose Multiple Components
+Combine existing components to create new functionality.
+
+```swift
+// Reuse existing components
+struct LoginForm: View {
+    var body: some View {
+        VStack(spacing: Spacing.md) {
+            // Reuse existing input component
+            TextInputField(placeholder: "Email", text: $email)
+            
+            // Reuse existing input component
+            SecureInputField(placeholder: "Password", text: $password)
+            
+            // Reuse existing button component
+            PrimaryButton(title: "Login", action: login)
+        }
+    }
+}
+```
+
+#### Strategy 4: Extend with ViewModifier
+Add functionality without modifying original component.
+
+```swift
+// Create reusable modifier
+struct ShakeEffect: ViewModifier {
+    let shakes: Int
+    
+    func body(content: Content) -> some View {
+        content
+            .modifier(ShakeAnimation(shakes: shakes))
+    }
+}
+
+// Use with any component
+PrimaryButton(title: "Submit", action: submit)
+    .modifier(ShakeEffect(shakes: errorCount))
+```
+
+---
+
+## 2. Workflow
 
 ### Step 1: Read Standard Format File
-ALWAYS read this file before creating components:
+ALWAYS read this file before working with components:
 ```
 .claude/shared/COMPONENT_FORMAT.md
 ```
 This file contains code format, style guide, and project rules.
 
-### Step 2: Reference Existing Components
-```
-.claude/shared/Components/     # View existing components
-.claude/shared/Styles/         # View design tokens
-.claude/shared/Modifiers/      # View custom modifiers
+### Step 2: Search Existing Components (REUSE FIRST!)
+```bash
+# Browse by category
+ls .claude/shared/Components/Buttons/
+ls .claude/shared/Components/Cards/
+ls .claude/shared/Components/Inputs/
+
+# Search by name
+find .claude/shared/Components -name "*Button*"
+
+# Search by functionality
+grep -r "loading" .claude/shared/Components/
 ```
 
-### Step 3: Create File in Correct Folder
-Follow the component locations table below.
+### Step 3: Evaluate Reuse Options
+- Can use as-is? → Use it!
+- Need customization? → Add parameters
+- Need combination? → Compose components
+- Nothing similar? → Create new (last resort)
 
-### Step 4: Implement Component
+### Step 4: If Creating New Component
 - Use design tokens from `.claude/shared/Styles/`
 - Follow format from `COMPONENT_FORMAT.md`
+- Make it reusable (add parameters)
 - Add Preview
+- Document usage
 
 ---
 
-## 2. Component Locations
+## 3. Component Locations
 
 | Type | Location |
 |------|----------|
@@ -54,35 +228,40 @@ Follow the component locations table below.
 | Feedback | `.claude/shared/Components/Feedback/` |
 | Navigation | `.claude/shared/Components/Navigation/` |
 
-### Feedback Components
+### Common Feedback Components
 
-| Component | Purpose |
-|-----------|---------|
-| `LoadingView.swift` | Loading indicator |
-| `EmptyStateView.swift` | Empty state with message + CTA |
-| `ErrorView.swift` | Error state with retry |
-| `SkeletonView.swift` | Skeleton loading placeholder |
-| `ToastView.swift` | Toast notifications |
+| Component | Purpose | Reuse For |
+|-----------|---------|-----------|
+| `LoadingView.swift` | Loading indicator | Any loading state |
+| `EmptyStateView.swift` | Empty state with message + CTA | Empty lists, no data |
+| `ErrorView.swift` | Error state with retry | API errors, failures |
+| `SkeletonView.swift` | Skeleton loading placeholder | Content loading |
+| `ToastView.swift` | Toast notifications | Success/error messages |
 
 ---
 
-## 3. Design Integration
+## 4. Design Integration
 
 ### When User Sends UI Design Image
 
-1. **Analyze the image to understand:**
+1. **First: Check if similar components exist**
+   - Search existing components
+   - Can you compose existing ones?
+   - Can you customize existing ones?
+
+2. **Analyze the image to understand:**
    - UI style (rounded, sharp, gradient, flat...)
    - Color scheme
    - Typography style
    - Spacing pattern
    - Shadow/elevation style
 
-2. **Update or create `.claude/shared/COMPONENT_FORMAT.md` with:**
+3. **Update or create `.claude/shared/COMPONENT_FORMAT.md` with:**
    - Code template for components
    - Style rules extracted from design
    - Specific examples
 
-3. **Update `.claude/shared/Styles/` if needed:**
+4. **Update `.claude/shared/Styles/` if needed:**
    - AppColors.swift
    - AppFonts.swift
    - AppSpacing.swift
@@ -101,7 +280,7 @@ File contents include:
 
 ---
 
-## 4. Style Files
+## 5. Style Files
 
 ### AppColors.swift
 
@@ -163,22 +342,26 @@ enum Spacing {
 
 ---
 
-## 5. Checklist
+## 6. Checklist
 
 ### Before creating component:
 - [ ] Read `.claude/shared/COMPONENT_FORMAT.md`
-- [ ] Check existing components in `.claude/shared/Components/`
+- [ ] **Search existing components** (ls, find, grep)
+- [ ] **Evaluate reuse options** (use as-is, customize, compose)
 - [ ] Identify design tokens needed
+- [ ] Only create new if nothing can be reused
 
 ### When creating component:
 - [ ] Use design tokens from `.claude/shared/Styles/`
 - [ ] Create file in correct folder by type
 - [ ] Follow format from COMPONENT_FORMAT.md
-- [ ] Make component configurable via parameters
-- [ ] Add Preview
+- [ ] **Make component reusable** (add parameters for flexibility)
+- [ ] Add Preview with multiple examples
+- [ ] Document parameters and usage
 
 ### After creating component:
 - [ ] Test in Preview
-- [ ] Test with different data
+- [ ] Test with different data/states
 - [ ] Test dark mode if applicable
-- [ ] Document usage if complex
+- [ ] **Document for future reuse**
+- [ ] Consider: Can this replace similar components?
