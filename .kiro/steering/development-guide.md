@@ -15,20 +15,26 @@ This is an **installer package** for iOS Spec-Driven Development Toolkit, not th
 ### Primary Development Location
 
 ```
-src/ios_spec_driven_installer/templates/.claude/
+src/ios_spec_driven_installer/templates/content/
 ```
 
 **This is where you develop:**
-- Skills (`.claude/skills/`)
-- Agents (`.claude/agents/`)
-- Scripts (`.claude/scripts/`)
-- Guides (`.claude/shared/`)
+- Skills (`content/skills/`)
+- Agents (`content/agents/`)
+- Scripts (`content/scripts/`)
+- Guides (`content/shared/`)
+
+**Format adapters** (rarely change):
+- Claude Code format (`formats/claude/`)
+- OpenCode format (`formats/opencode/`)
 
 ### DO NOT Edit
 
 - ❌ Root `.claude/` (doesn't exist anymore)
+- ❌ Root `.opencode/` (doesn't exist anymore)
 - ❌ Root `.mcp.json` (doesn't exist anymore)
-- ✅ Only edit in `templates/` directory
+- ❌ `templates/.claude/` (legacy, will be removed)
+- ✅ Only edit in `templates/content/` directory
 
 ## 🔧 Development Workflow
 
@@ -36,42 +42,50 @@ src/ios_spec_driven_installer/templates/.claude/
 
 ```bash
 # Edit skills
-vim src/ios_spec_driven_installer/templates/.claude/skills/dev-spec-driven/SKILL.md
+vim src/ios_spec_driven_installer/templates/content/skills/dev-spec-driven/SKILL.md
 
 # Edit agents
-vim src/ios_spec_driven_installer/templates/.claude/agents/write-spec.md
+vim src/ios_spec_driven_installer/templates/content/agents/write-spec.md
 
 # Edit guides
-vim src/ios_spec_driven_installer/templates/.claude/shared/PBT_GUIDE.md
+vim src/ios_spec_driven_installer/templates/content/shared/PBT_GUIDE.md
 ```
 
 ### 2. Test Changes
 
 ```bash
-# Install to test directory
+# Install to test directory (Claude Code)
 source .venv/bin/activate
-ios-spec-driven install /tmp/test-project --force
+ios-spec-driven install /tmp/test-project --ide claude --force
+
+# Or for OpenCode
+ios-spec-driven install /tmp/test-project --ide opencode --force
 
 # Test in the installed location
 cd /tmp/test-project
-# Use Claude Code to test the toolkit
+# Use Claude Code or OpenCode to test the toolkit
 ```
 
 ### 3. Validate
 
 ```bash
-# Check installation
-ios-spec-driven status /tmp/test-project
+# Check installation (Claude Code)
+ios-spec-driven status /tmp/test-project --ide claude
+
+# Or for OpenCode
+ios-spec-driven status /tmp/test-project --ide opencode
 
 # Verify files
-ls -la /tmp/test-project/.claude/
+ls -la /tmp/test-project/.claude/    # For Claude Code
+ls -la /tmp/test-project/.opencode/  # For OpenCode
 ```
 
 ### 4. Commit Changes
 
 ```bash
 # Add changes
-git add src/ios_spec_driven_installer/templates/.claude/
+git add src/ios_spec_driven_installer/templates/content/
+git add src/ios_spec_driven_installer/templates/formats/
 
 # Commit with clear message
 git commit -m "feat: improve write-spec agent with better validation"
@@ -89,15 +103,7 @@ ios-spec-driven-claude/
 │       ├── cli.py                    # CLI commands (rarely change)
 │       ├── installer.py              # Installation logic (rarely change)
 │       └── templates/                # ← MAIN WORKING AREA
-│           ├── .claude/              # ← DEVELOP HERE
-│           │   ├── skills/           # 7 skills
-│           │   │   ├── dev-spec-driven/
-│           │   │   ├── ios-architecture/
-│           │   │   ├── ios-components/
-│           │   │   ├── ios-ui-ux/
-│           │   │   ├── ios-debug/
-│           │   │   ├── mcp-xcode/
-│           │   │   └── mcp-figma/
+│           ├── content/              # ← DEVELOP HERE (Single source of truth)
 │           │   ├── agents/           # 7 agents
 │           │   │   ├── write-spec.md
 │           │   │   ├── write-design.md
@@ -106,15 +112,29 @@ ios-spec-driven-claude/
 │           │   │   ├── refine-spec.md
 │           │   │   ├── quick-implement.md
 │           │   │   └── research-prd.md
-│           │   ├── scripts/          # Validation scripts
-│           │   │   └── validate_traceability.py
+│           │   ├── skills/           # 7 skills
+│           │   │   ├── dev-spec-driven/
+│           │   │   ├── ios-architecture/
+│           │   │   ├── ios-components/
+│           │   │   ├── ios-ui-ux/
+│           │   │   ├── ios-debug/
+│           │   │   ├── mcp-xcode/
+│           │   │   └── mcp-figma/
 │           │   ├── shared/           # Guides
 │           │   │   ├── COMPONENT_FORMAT.md
 │           │   │   ├── PBT_GUIDE.md
 │           │   │   └── PARALLEL_EXECUTION_GUIDE.md
-│           │   ├── hooks/            # Hooks (if any)
-│           │   ├── settings.json
-│           │   └── settings.local.json
+│           │   ├── scripts/          # Validation scripts
+│           │   │   └── validate_traceability.py
+│           │   └── hooks/            # Hooks (if any)
+│           │       └── update_task_status.py
+│           ├── formats/              # Format adapters (rarely change)
+│           │   ├── claude/           # Claude Code format
+│           │   │   ├── settings.json
+│           │   │   └── settings.local.json
+│           │   └── opencode/         # OpenCode format
+│           │       └── opencode.json
+│           ├── .claude/              # Legacy (will be removed)
 │           ├── .mcp.json             # MCP server config
 │           └── __init__.py
 ├── .github/workflows/                # CI/CD (automated testing)
@@ -126,6 +146,12 @@ ios-spec-driven-claude/
 ## 🎯 Development Goals
 
 ### Current Version: 2.1.0
+
+### New in 2.1.0
+- **Multi-IDE Support**: Now supports both Claude Code and OpenCode
+- **Single Source Architecture**: Content stored once, formatted per IDE
+- **Interactive Installation**: Choose IDE during installation
+- **Improved PRD Agent**: Enhanced research-prd with interactive discovery
 
 ### Focus Areas
 
@@ -152,12 +178,12 @@ ios-spec-driven-claude/
 ## 📝 File Naming Conventions
 
 ### Skills
-- Location: `templates/.claude/skills/<skill-name>/SKILL.md`
+- Location: `templates/content/skills/<skill-name>/SKILL.md`
 - Format: Always `SKILL.md` (uppercase)
 - Frontmatter required: `name`, `description`, `keywords`
 
 ### Agents
-- Location: `templates/.claude/agents/<agent-name>.md`
+- Location: `templates/content/agents/<agent-name>.md`
 - Format: `<agent-name>.md` (lowercase with hyphens)
 - Frontmatter required: `name`, `description`, `tools`, `skills`
 

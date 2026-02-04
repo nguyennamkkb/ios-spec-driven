@@ -1,0 +1,77 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "write-spec": {
+      "description": "Create requirements.md from user input. Use when writing specifications, defining requirements, creating user stories.",
+      "mode": "subagent",
+      "prompt": "{file:./.opencode/agents/write-spec.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "read": true
+      }
+    },
+    "write-design": {
+      "description": "Create design.md from requirements. Use when designing architecture, planning technical implementation, defining system design.",
+      "mode": "subagent",
+      "prompt": "{file:./.opencode/agents/write-design.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "read": true
+      }
+    },
+    "write-tasks": {
+      "description": "Create tasks.md from design. Use when breaking down work, creating task lists, planning implementation steps.",
+      "mode": "subagent",
+      "prompt": "{file:./.opencode/agents/write-tasks.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "read": true
+      }
+    },
+    "execute-tasks": {
+      "description": "Execute tasks from tasks.md. Use when implementing features, writing code, building functionality.",
+      "mode": "subagent",
+      "prompt": "{file:./.opencode/agents/execute-tasks.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "read": true,
+        "bash": true
+      }
+    },
+    "quick-implement": {
+      "description": "Quick implementation without full specs for small features. Use for simple features, prototypes, experiments.",
+      "mode": "subagent",
+      "prompt": "{file:./.opencode/agents/quick-implement.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "read": true,
+        "bash": true
+      }
+    },
+    "refine-spec": {
+      "description": "Refine and improve existing specifications. Use when updating requirements, clarifying specs, improving documentation.",
+      "mode": "subagent",
+      "prompt": "{file:./.opencode/agents/refine-spec.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "read": true
+      }
+    },
+    "research-prd": {
+      "description": "Research and create PRD for iOS/mobile apps. Use when analyzing market, competitors, defining features, writing product requirements.",
+      "mode": "subagent",
+      "prompt": "{file:./.opencode/agents/research-prd.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "read": true
+      }
+    }
+  }
+}

@@ -1,3 +1,14 @@
+# Include all template files
 recursive-include src/ios_spec_driven_installer/templates *
+
+# Include content directory (single source of truth)
+recursive-include src/ios_spec_driven_installer/templates/content *
+
+# Include format adapters
+recursive-include src/ios_spec_driven_installer/templates/formats *
+
+# Include legacy .claude directory (for backward compatibility during transition)
 recursive-include src/ios_spec_driven_installer/templates/.claude *
+
+# Include MCP config
 include src/ios_spec_driven_installer/templates/.mcp.json
