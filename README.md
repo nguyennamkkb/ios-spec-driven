@@ -53,19 +53,21 @@ Install directly from GitHub using UVX:
 
 ```bash
 # Install to current directory
-uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude ios-spec-driven install
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install
 
 # Install to specific directory
-uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude ios-spec-driven install /path/to/your-project
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install /path/to/your-project
 
 # Check status
-uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude ios-spec-driven status
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven status
 
 # Show info
-uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude ios-spec-driven info
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven info
 ```
 
 **Requirements**: [UV](https://docs.astral.sh/uv/getting-started/installation/) (Python package manager)
+
+**Note**: Use `@dev` branch for latest version, or `@main` for stable release.
 
 #### Option 2: Manual Installation
 
