@@ -33,7 +33,7 @@ Get specific node details (frame, component, screen).
 Get design tokens.
 - Input: fileKey
 - Output: Color styles, text styles, effect styles
-- Use: Setup design system, create Shared/Styles/ files
+- Use: Setup design system, create .claude/shared/Styles/ files
 
 ### figma_export_image
 Export image from node.
@@ -48,10 +48,10 @@ Export image from node.
 
 ### Workflow (First Time)
 1. Run `figma_get_styles` with fileKey
-2. Create `Shared/Styles/AppColors.swift`
-3. Create `Shared/Styles/AppFonts.swift`
-4. Create `Shared/Styles/AppSpacing.swift`
-5. Update `Shared/COMPONENT_FORMAT.md`
+2. Create `.claude/shared/Styles/AppColors.swift`
+3. Create `.claude/shared/Styles/AppFonts.swift`
+4. Create `.claude/shared/Styles/AppSpacing.swift`
+5. Update `.claude/shared/COMPONENT_FORMAT.md`
 
 ### Figma to SwiftUI Mapping
 
@@ -75,7 +75,7 @@ Export image from node.
 2. Find nodeId of target screen
 3. Get screen details: `figma_get_node`
 4. Map Figma layout → SwiftUI
-5. Use design tokens from Shared/Styles/
+5. Use design tokens from .claude/shared/Styles/
 
 ---
 

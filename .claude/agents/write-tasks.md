@@ -504,5 +504,5 @@ After creating task sections, ADD:
 | 3.2.1.1 | 2.1.1 | 3.1.1.1, 3.3.1.1 |
 ```
 
-See `Shared/PARALLEL_EXECUTION_GUIDE.md` for details.
+See `.claude/shared/PARALLEL_EXECUTION_GUIDE.md` for details.
 
