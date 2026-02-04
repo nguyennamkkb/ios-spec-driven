@@ -301,20 +301,6 @@ Use any language you prefer:
 
 ---
 
-## 📊 Quality Metrics
-
-| Category | Score |
-|----------|-------|
-| **Overall** | **9.6/10** ⭐ |
-| Traceability | 9.8/10 |
-| Checkpoint System | 9.7/10 |
-| PBT Integration | 9.5/10 |
-| User Confirmation | 10.0/10 |
-
-**Components**: 7 Skills • 7 Agents • 3 Guides • 2 MCP Servers
-
----
-
 ## 📚 Documentation
 
 - **Skills**: `.claude/skills/*/SKILL.md` - Detailed skill documentation
@@ -326,28 +312,9 @@ Use any language you prefer:
 
 ---
 
-## 🤝 Contributing
-
-Found a bug or have a suggestion?
-
-[Create an issue](https://github.com/nguyennamkkb/ios-spec-driven-claude/issues) with:
-- Clear description
-- Steps to reproduce
-- Expected vs actual behavior
-
----
-
 ## 📝 License
 
 MIT License - See [LICENSE](LICENSE)
-
----
-
-## 🔗 Links
-
-- **Repository**: https://github.com/nguyennamkkb/ios-spec-driven-claude
-- **Issues**: https://github.com/nguyennamkkb/ios-spec-driven-claude/issues
-- **Releases**: https://github.com/nguyennamkkb/ios-spec-driven-claude/releases
 
 ---
 
