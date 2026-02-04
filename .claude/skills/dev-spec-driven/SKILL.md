@@ -640,7 +640,7 @@ func testUserRoundTrip() {
 
 #### Full Guide
 
-See `Shared/PBT_GUIDE.md` for:
+See `.claude/shared/PBT_GUIDE.md` for:
 - Complete templates for each property type
 - Custom generators
 - Best practices
@@ -713,7 +713,7 @@ Before parallel execution:
 
 #### Full Guide
 
-See `Shared/PARALLEL_EXECUTION_GUIDE.md` for:
+See `.claude/shared/PARALLEL_EXECUTION_GUIDE.md` for:
 - Dependency graphs
 - Conflict detection rules
 - Error handling
@@ -726,8 +726,8 @@ See `Shared/PARALLEL_EXECUTION_GUIDE.md` for:
 | Feature | Purpose | Status | Guide |
 |---------|---------|--------|-------|
 | Traceability Validation | Auto-check references | ✅ Ready | `.claude/scripts/validate_traceability.py` |
-| Property-Based Testing | SwiftCheck integration | ✅ Ready | `Shared/PBT_GUIDE.md` |
-| Parallel Execution | Faster implementation | 🧪 Experimental | `Shared/PARALLEL_EXECUTION_GUIDE.md` |
+| Property-Based Testing | SwiftCheck integration | ✅ Ready | `.claude/shared/PBT_GUIDE.md` |
+| Parallel Execution | Faster implementation | 🧪 Experimental | `.claude/shared/PARALLEL_EXECUTION_GUIDE.md` |
 
 ---
 

@@ -37,7 +37,7 @@ Create a plugin/installer that allows users to easily install the iOS Spec-Drive
 3. **Scripts** (`.claude/scripts/`)
    - validate_traceability.py
 
-4. **Guides** (`Shared/`)
+4. **Guides** (`.claude/shared/`)
    - COMPONENT_FORMAT.md
    - PBT_GUIDE.md
    - PARALLEL_EXECUTION_GUIDE.md
@@ -142,7 +142,7 @@ installer/
 │   └── utils.js
 ├── templates/
 │   ├── .claude/
-│   ├── Shared/
+│   ├── .claude/shared/
 │   └── .mcp.json
 └── README.md
 ```
@@ -386,7 +386,7 @@ async function validateInstallation(dir) {
   const checks = [
     { path: '.claude/skills/dev-spec-driven/SKILL.md', name: 'Skills' },
     { path: '.claude/agents/write-spec.md', name: 'Agents' },
-    { path: 'Shared/COMPONENT_FORMAT.md', name: 'Guides' }
+    { path: '.claude/shared/COMPONENT_FORMAT.md', name: 'Guides' }
   ];
   
   const errors = [];

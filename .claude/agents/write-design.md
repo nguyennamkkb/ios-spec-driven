@@ -521,7 +521,7 @@ For each property, specify:
 - **Idempotent**: Multiple executions = single execution
 - **Commutative**: Order doesn't matter
 
-**Framework**: SwiftCheck (see `Shared/PBT_GUIDE.md`)
+**Framework**: SwiftCheck (see `.claude/shared/PBT_GUIDE.md`)
 
 ### PBT Task Generation
 

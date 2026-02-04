@@ -85,7 +85,7 @@ Please create specs first:
 **Check for Figma link:**
 1. Use `figma_get_styles` → Fetch design tokens
 2. Use `figma_get_node` → Fetch component specs
-3. Update `Shared/Styles/` and `COMPONENT_FORMAT.md`
+3. Update `.claude/shared/Styles/` and `COMPONENT_FORMAT.md`
 4. Implement UI according to Figma specs
 
 ### Step 3: Implement
@@ -414,7 +414,7 @@ Waits for:
 All must pass before continuing.
 ```
 
-See `Shared/PARALLEL_EXECUTION_GUIDE.md` for full details.
+See `.claude/shared/PARALLEL_EXECUTION_GUIDE.md` for full details.
 
 ---
 

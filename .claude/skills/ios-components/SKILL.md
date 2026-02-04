@@ -21,22 +21,22 @@ allowed-tools: Read, Grep, Glob, Bash
 ### Step 1: Read Standard Format File
 ALWAYS read this file before creating components:
 ```
-Shared/COMPONENT_FORMAT.md
+.claude/shared/COMPONENT_FORMAT.md
 ```
 This file contains code format, style guide, and project rules.
 
 ### Step 2: Reference Existing Components
 ```
-Shared/Components/     # View existing components
-Shared/Styles/         # View design tokens
-Shared/Modifiers/      # View custom modifiers
+.claude/shared/Components/     # View existing components
+.claude/shared/Styles/         # View design tokens
+.claude/shared/Modifiers/      # View custom modifiers
 ```
 
 ### Step 3: Create File in Correct Folder
 Follow the component locations table below.
 
 ### Step 4: Implement Component
-- Use design tokens from `Shared/Styles/`
+- Use design tokens from `.claude/shared/Styles/`
 - Follow format from `COMPONENT_FORMAT.md`
 - Add Preview
 
@@ -46,13 +46,13 @@ Follow the component locations table below.
 
 | Type | Location |
 |------|----------|
-| Button | `Shared/Components/Buttons/` |
-| Input | `Shared/Components/Inputs/` |
-| Card | `Shared/Components/Cards/` |
-| Modal | `Shared/Components/Modals/` |
-| Layout | `Shared/Components/Layouts/` |
-| Feedback | `Shared/Components/Feedback/` |
-| Navigation | `Shared/Components/Navigation/` |
+| Button | `.claude/shared/Components/Buttons/` |
+| Input | `.claude/shared/Components/Inputs/` |
+| Card | `.claude/shared/Components/Cards/` |
+| Modal | `.claude/shared/Components/Modals/` |
+| Layout | `.claude/shared/Components/Layouts/` |
+| Feedback | `.claude/shared/Components/Feedback/` |
+| Navigation | `.claude/shared/Components/Navigation/` |
 
 ### Feedback Components
 
@@ -77,12 +77,12 @@ Follow the component locations table below.
    - Spacing pattern
    - Shadow/elevation style
 
-2. **Update or create `Shared/COMPONENT_FORMAT.md` with:**
+2. **Update or create `.claude/shared/COMPONENT_FORMAT.md` with:**
    - Code template for components
    - Style rules extracted from design
    - Specific examples
 
-3. **Update `Shared/Styles/` if needed:**
+3. **Update `.claude/shared/Styles/` if needed:**
    - AppColors.swift
    - AppFonts.swift
    - AppSpacing.swift
@@ -166,12 +166,12 @@ enum Spacing {
 ## 5. Checklist
 
 ### Before creating component:
-- [ ] Read `Shared/COMPONENT_FORMAT.md`
-- [ ] Check existing components in `Shared/Components/`
+- [ ] Read `.claude/shared/COMPONENT_FORMAT.md`
+- [ ] Check existing components in `.claude/shared/Components/`
 - [ ] Identify design tokens needed
 
 ### When creating component:
-- [ ] Use design tokens from `Shared/Styles/`
+- [ ] Use design tokens from `.claude/shared/Styles/`
 - [ ] Create file in correct folder by type
 - [ ] Follow format from COMPONENT_FORMAT.md
 - [ ] Make component configurable via parameters

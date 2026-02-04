@@ -34,7 +34,7 @@ A comprehensive Claude Code toolkit for iOS spec-driven development with advance
 - **Scripts** (`.claude/scripts/`):
   - `validate_traceability.py`: Auto-validate references
 
-- **Guides** (`Shared/`):
+- **Guides** (`.claude/shared/`):
   - `COMPONENT_FORMAT.md`: Component standards
   - `PBT_GUIDE.md`: Property-based testing with SwiftCheck
   - `PARALLEL_EXECUTION_GUIDE.md`: Parallel task execution
@@ -109,7 +109,7 @@ Templates for 4 property types:
 - Idempotent (multiple = single)
 - Commutative (order doesn't matter)
 
-See `Shared/PBT_GUIDE.md` for complete guide.
+See `.claude/shared/PBT_GUIDE.md` for complete guide.
 
 ### 3. Parallel Execution (Experimental)
 
@@ -123,7 +123,7 @@ execute-tasks 3.1.1.1
 execute-tasks --parallel 3.1.1.1,3.2.1.1,3.3.1.1
 ```
 
-See `Shared/PARALLEL_EXECUTION_GUIDE.md` for details.
+See `.claude/shared/PARALLEL_EXECUTION_GUIDE.md` for details.
 
 ---
 
@@ -206,9 +206,9 @@ Each agent has frontmatter with:
 
 ### Guides
 
-- `Shared/COMPONENT_FORMAT.md`: SwiftUI component standards
-- `Shared/PBT_GUIDE.md`: Property-based testing guide
-- `Shared/PARALLEL_EXECUTION_GUIDE.md`: Parallel execution guide
+- `.claude/shared/COMPONENT_FORMAT.md`: SwiftUI component standards
+- `.claude/shared/PBT_GUIDE.md`: Property-based testing guide
+- `.claude/shared/PARALLEL_EXECUTION_GUIDE.md`: Parallel execution guide
 
 ---
 
