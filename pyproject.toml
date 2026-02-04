@@ -43,9 +43,14 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/ios_spec_driven_installer"]
 
-# Include templates directory in the package
-[tool.hatch.build.targets.wheel.force-include]
-"src/ios_spec_driven_installer/templates" = "ios_spec_driven_installer/templates"
+# Include all files in templates directory (including hidden files like .claude)
+[tool.hatch.build]
+include = [
+    "src/ios_spec_driven_installer/**/*.py",
+    "src/ios_spec_driven_installer/templates/**/*",
+    "src/ios_spec_driven_installer/templates/.claude/**/*",
+    "src/ios_spec_driven_installer/templates/.mcp.json",
+]
 
 [tool.hatch.build.targets.sdist]
 include = [
