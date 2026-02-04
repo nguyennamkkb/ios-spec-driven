@@ -8,13 +8,6 @@
       ],
       "disabled": true
     },
-    "playwright": {
-      "command": "npx",
-      "args": [
-        "@playwright/mcp@latest"
-      ],
-      "disabled": false
-    },
     "XcodeBuildMCP": {
       "command": "npx",
       "args": [

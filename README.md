@@ -1,427 +1,323 @@
 # iOS Spec-Driven Development Toolkit
 
-**Version**: 2.1  
-**Score**: 9.6/10 ⭐  
-**Status**: Production Ready
+> Professional iOS development workflow with AI-powered automation
 
-A comprehensive Claude Code toolkit for iOS spec-driven development with advanced features.
-
----
-
-## 📦 What's Included
-
-### Core Components
-
-- **Skills** (`.claude/skills/`): 7 specialized skills
-  - `dev-spec-driven`: Core spec-driven workflow
-  - `ios-architecture`: iOS project structure
-  - `ios-components`: Reusable UI components
-  - `ios-ui-ux`: Design patterns
-  - `ios-debug`: Error fixing
-  - `mcp-xcode`: Xcode build/test integration
-  - `mcp-figma`: Figma design integration
-
-- **Agents** (`.claude/agents/`): 8 workflow agents
-  - `write-spec`: Create requirements.md
-  - `write-design`: Create design.md
-  - `write-tasks`: Create tasks.md
-  - `execute-tasks`: Implement code
-  - `refine-spec`: Update specs
-  - `quick-implement`: Lightweight mode
-  - `research-prd`: PRD creation
-  - Custom agents for specialized workflows
-
-- **Scripts** (`.claude/scripts/`):
-  - `validate_traceability.py`: Auto-validate references
-
-- **Guides** (`.claude/shared/`):
-  - `COMPONENT_FORMAT.md`: Component standards
-  - `PBT_GUIDE.md`: Property-based testing with SwiftCheck
-  - `PARALLEL_EXECUTION_GUIDE.md`: Parallel task execution
-
-- **MCP Config** (`.mcp.json`): Xcode + Figma integration
+[![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)](https://github.com/nguyennamkkb/ios-spec-driven-claude/releases)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)](https://developer.apple.com/ios/)
 
 ---
 
-## 🚀 Quick Start
+## 🎯 What is This?
 
-### Installation
+A complete toolkit that transforms iOS development with Claude Code. Instead of scattered AI conversations, you get:
 
-#### Option 1: UVX (Recommended)
+- **📋 Structured Workflow**: Idea → Requirements → Design → Tasks → Code
+- **🔗 Complete Traceability**: Every line of code traces back to user stories
+- **✅ Quality Gates**: Automated checkpoints ensure nothing is missed
+- **🤖 AI-Powered**: 7 specialized skills + 7 workflow agents
+- **🚀 Production Ready**: Battle-tested patterns and best practices
 
-Install directly from GitHub using UVX:
+### Why Use This?
+
+| Without Toolkit | With Toolkit |
+|----------------|--------------|
+| ❌ Scattered conversations | ✅ Structured workflow |
+| ❌ Lost context | ✅ Complete documentation |
+| ❌ No traceability | ✅ Full traceability chain |
+| ❌ Manual validation | ✅ Automated validation |
+| ❌ Inconsistent quality | ✅ Consistent, high quality |
+
+---
+
+## ⚡ Quick Start
+
+### Install (30 seconds)
 
 ```bash
-# Install to current directory
 uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install
-
-# Install to specific directory
-uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install /path/to/your-project
-
-# Check status
-uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven status
-
-# Show info
-uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven info
 ```
 
-**Requirements**: [UV](https://docs.astral.sh/uv/getting-started/installation/) (Python package manager)
+**Requirements**: [UV](https://docs.astral.sh/uv/) (Python package manager)
 
-**Note**: Use `@dev` branch for latest version, or `@main` for stable release.
-
-#### Option 2: Manual Installation
-
-```bash
-# Clone repository
-git clone https://github.com/nguyennamkkb/ios-spec-driven-claude.git
-
-# Copy toolkit to your iOS project
-cp -r ios-spec-driven-claude/.claude /path/to/your-project/
-cp ios-spec-driven-claude/.mcp.json /path/to/your-project/
-```
-
-### Basic Usage
+### Your First Feature
 
 ```
-# Full spec workflow
-"Create spec for user authentication"
-
-# Individual steps
-"Write requirements for shopping cart"
-"Write design for shopping cart"
-"Write tasks for shopping cart"
-"Implement task 3.1.2.1"
-
-# Quick mode (no specs)
-"Quick implementation of dark mode toggle"
+"Create spec for user login with email and password"
 ```
 
-### Workflow Output
+Claude will guide you through:
+1. **Requirements** → User stories + acceptance criteria
+2. **Design** → Architecture + properties
+3. **Tasks** → Implementation plan
+4. **Code** → SwiftUI implementation + tests
 
-Each feature creates 3 spec files:
-```
-.claude/specs/<feature-name>/
-├── requirements.md  (User Stories + EARS Acceptance Criteria)
-├── design.md        (Architecture + Wireframes + Properties)
-└── tasks.md         (Implementation Plan + Traceability)
-```
+**Result**: Complete feature with full documentation in ~10 minutes.
 
 ### CLI Commands
 
-The installer provides several commands:
-
 ```bash
-# Install toolkit
-ios-spec-driven install [TARGET_DIR]
-
-# Check installation status
-ios-spec-driven status [TARGET_DIR]
-
-# Uninstall toolkit
-ios-spec-driven uninstall [TARGET_DIR]
-
-# Show toolkit information
-ios-spec-driven info
-
-# Show help
-ios-spec-driven --help
+ios-spec-driven install [DIR]     # Install toolkit
+ios-spec-driven status [DIR]      # Check status
+ios-spec-driven uninstall [DIR]   # Uninstall
+ios-spec-driven info              # Show info
 ```
-
-**Options**:
-- `--force`: Force overwrite without confirmation
-- `--no-backup`: Skip backup of existing files
 
 ---
 
-## ✨ Advanced Features
+## 🎁 What You Get
 
-### 1. Traceability Validation
+### 7 Specialized Skills
 
-Auto-validate references across spec files:
+| Skill | Purpose |
+|-------|---------|
+| **dev-spec-driven** | Core workflow orchestration |
+| **ios-architecture** | MVVM, Clean Architecture, SwiftUI |
+| **ios-components** | Reusable UI components |
+| **ios-ui-ux** | Design patterns & accessibility |
+| **ios-debug** | Error fixing & optimization |
+| **mcp-xcode** | Xcode integration (build, test, analyze) |
+| **mcp-figma** | Figma design integration |
 
-```bash
-python .claude/scripts/validate_traceability.py user-authentication
-```
+### 7 Workflow Agents
 
-**Checks**:
-- ✅ All AC references exist
-- ✅ All Design references exist
-- ✅ All tasks have AC references
-- ⚠️ Orphaned ACs
-- ⚠️ Missing properties
+| Agent | Output |
+|-------|--------|
+| **write-spec** | `requirements.md` with user stories |
+| **write-design** | `design.md` with architecture |
+| **write-tasks** | `tasks.md` with implementation plan |
+| **execute-tasks** | SwiftUI code + tests |
+| **refine-spec** | Update existing specs |
+| **quick-implement** | Skip specs, code directly |
+| **research-prd** | PRD from research |
 
-### 2. Property-Based Testing
+### Automation & Validation
 
-Framework: **SwiftCheck 0.12.0+**
+- **Traceability Checker**: Validates US → AC → Design → Task → Code
+- **Property-Based Testing**: SwiftCheck templates (4 types)
+- **Component Standards**: Standardized SwiftUI structure
+- **Error Recovery**: Automatic retry with smart limits
+- **Parallel Execution**: Run independent tasks simultaneously
 
-Templates for 4 property types:
-- Round-trip (encode/decode)
-- Invariant (always true)
-- Idempotent (multiple = single)
-- Commutative (order doesn't matter)
+### MCP Integrations
 
-See `.claude/shared/PBT_GUIDE.md` for complete guide.
-
-### 3. Parallel Execution (Experimental)
-
-Execute independent tasks simultaneously:
-
-```bash
-# Sequential (default)
-execute-tasks 3.1.1.1
-
-# Parallel (40-50% faster)
-execute-tasks --parallel 3.1.1.1,3.2.1.1,3.3.1.1
-```
-
-See `.claude/shared/PARALLEL_EXECUTION_GUIDE.md` for details.
+- **Xcode MCP**: Build, test, run simulator, analyze
+- **Figma MCP**: Fetch designs, extract specs
 
 ---
 
-## 📚 Core Workflow
+## 📖 Workflow
 
-### Spec-Driven Process
+### Process
 
 ```
-Idea
+💡 Idea
   ↓
-write-spec → requirements.md
-  ↓ [User Confirm]
-write-design → design.md
-  ↓ [User Confirm]
-write-tasks → tasks.md
-  ↓ [User Confirm]
-execute-tasks → Code
-  ↓ [Checkpoints + Build + Test]
-Done
+📋 write-spec → requirements.md
+  ↓ [✓ User Confirms]
+🎨 write-design → design.md
+  ↓ [✓ User Confirms]
+📝 write-tasks → tasks.md
+  ↓ [✓ User Confirms]
+💻 execute-tasks → Code
+  ↓ [Checkpoints: Build + Test + Commit]
+✅ Done
 ```
 
-### Key Principles
+### Usage Examples
 
-1. **Feature-based**: Each feature is independent
-2. **Traceability**: US → AC → Design → Property → Task → Code
-3. **Checkpoints**: User confirmation at every step
-4. **No code in specs**: Specs describe, code implements
+#### Full Spec Workflow
 
----
+```
+"Create spec for shopping cart"
+```
 
-## 🎯 Features
+**Output**:
+```
+.claude/specs/shopping-cart/
+├── requirements.md  # User stories + EARS criteria
+├── design.md        # Architecture + properties
+└── tasks.md         # Implementation plan + traceability
+```
 
-### Traceability Chain
+**Time**: ~10-15 minutes
+
+#### Quick Implementation
+
+```
+"Quick implementation of dark mode toggle"
+```
+
+**Output**: Code directly, no specs  
+**Time**: ~2-5 minutes
+
+#### Individual Steps
+
+```
+"Write requirements for user profile"
+"Write design for user profile"
+"Write tasks for user profile"
+"Implement task 3.1.2.1"
+```
+
+#### Update Specs
+
+```
+"Add requirement: filter by priority"
+"Update design: add caching layer"
+"Sync tasks for todo-list feature"
+```
+
+### Spec Structure
+
+**requirements.md**:
+```markdown
+# User Stories
+US-001: As a user, I want to login with email...
+
+# Acceptance Criteria (EARS format)
+AC-001.1: WHEN user enters valid email
+          THEN system validates format
+```
+
+**design.md**:
+```markdown
+# Architecture
+- MVVM pattern
+- Combine for reactive updates
+
+# Properties
+P1: Valid email always passes validation
+P2: Login state persists across sessions
+```
+
+**tasks.md**:
+```markdown
+# Implementation Plan
+3.1.1.1 [AC-001.1] Create LoginViewModel
+3.1.1.2 [AC-001.1, P1] Add email validation [PBT]
+3.1.1.3 [AC-001.1] Implement login flow
+```
+
+### Complete Traceability
+
+Every line of code traces back:
 
 ```
 US-001 (User Story)
-  └── AC-001.1 (Acceptance Criteria - EARS)
-      └── Design 3.1 (Feature section)
-          └── Property P1 (Correctness Property)
-              └── Task 3.1.1.2 [PBT] (Property-based test)
-                  └── Code (Implementation)
+  └── AC-001.1 (Acceptance Criteria)
+      └── Design 3.1 (Architecture)
+          └── Property P1 (Correctness)
+              └── Task 3.1.1.2 [PBT]
+                  └── LoginViewModel.swift
 ```
 
-### Checkpoint System
+**Validate**:
+```bash
+python .claude/scripts/validate_traceability.py shopping-cart
+```
 
-**Checkpoint = Gate to next section**
+**Output**:
+```
+✅ Traceability: 100%
+- User Stories: 5
+- Acceptance Criteria: 12
+- Tasks: 24
+```
 
-Done means:
-1. ✅ Build passes (via mcp-xcode)
-2. ✅ All errors fixed (using ios-debug)
-3. ✅ Changes committed to git
-4. ✅ User confirms to continue
+### Quality Gates
 
-### Error Recovery
+Every checkpoint ensures:
+- ✅ Build passes (via mcp-xcode)
+- ✅ Tests pass
+- ✅ Code committed to git
+- ✅ User confirms to continue
 
-5 scenarios with retry limits:
-- Build fails (max 5 retries)
-- User rejects design (iterative)
-- Requirements change (refine-spec)
-- Test failures (max 3 retries)
-- Merge conflicts (manual)
+### Property-Based Testing
 
----
+Auto-generated tests with SwiftCheck:
 
-## 📖 Documentation
+```swift
+func testLoginValidation() {
+    property("Valid email passes") <- forAll { 
+        (email: String) in
+        email.contains("@") ==> {
+            LoginValidator.validate(email) == true
+        }
+    }
+}
+```
 
-### Skill Documentation
+**4 Property Types**:
+1. **Round-trip**: `encode(decode(x)) == x`
+2. **Invariant**: `condition(x) == true`
+3. **Idempotent**: `f(f(x)) == f(x)`
+4. **Commutative**: `f(x,y) == f(y,x)`
 
-- `.claude/skills/dev-spec-driven/SKILL.md`: Complete workflow guide
-- Includes: Concept, Workflow, Formats, Traceability, Agents, Advanced Features
+### Feature Independence
 
-### Agent Documentation
+Each feature is self-contained:
 
-Each agent has frontmatter with:
-- `name`: Agent identifier
-- `description`: What it does
-- `tools`: Available tools
-- `model`: Model to use
-- `skills`: Skills to reference
+```
+.claude/specs/
+├── user-authentication/
+│   ├── requirements.md
+│   ├── design.md
+│   └── tasks.md
+├── shopping-cart/
+│   ├── requirements.md
+│   ├── design.md
+│   └── tasks.md
+└── user-profile/
+    ├── requirements.md
+    ├── design.md
+    └── tasks.md
+```
 
-### Guides
-
-- `.claude/shared/COMPONENT_FORMAT.md`: SwiftUI component standards
-- `.claude/shared/PBT_GUIDE.md`: Property-based testing guide
-- `.claude/shared/PARALLEL_EXECUTION_GUIDE.md`: Parallel execution guide
+**Benefits**:
+- Work on multiple features in parallel
+- Easy to review and update
+- Clear ownership and scope
 
 ---
 
 ## 🌐 Language Support
 
-### User Commands
-**Fully flexible** - Use any language you prefer:
+Use any language you prefer:
 
 ```
-✅ English: "Create spec for login feature"
-✅ Vietnamese: "Tạo spec cho tính năng đăng nhập"
-✅ Mixed: "Create spec cho login feature"
+✅ "Create spec for login feature"
+✅ "Tạo spec cho tính năng đăng nhập"
+✅ "Create spec cho login feature"
 ```
 
-All agents understand and respond appropriately!
-
-### Documentation
-- **Agent/Skill docs**: English (for international collaboration)
-- **Specs**: English (default), but Vietnamese is fully supported
-- **Code**: English (Swift standard)
-- **User interaction**: Any language
-
-### Example Vietnamese Commands
-
+**Vietnamese examples**:
 ```
 "Viết requirements cho giỏ hàng"
 "Implement task 3.1.2.1"
 "Thêm requirement: lọc theo độ ưu tiên"
-"Sync tasks cho todo-list"
 "Quick implementation của dark mode toggle"
 ```
 
 ---
 
-## 🔄 CI/CD
+## 📚 Documentation
 
-This project uses GitHub Actions for automated testing and releasing:
-
-- **Test Workflow**: Runs on every push to `dev`/`plugin` branches
-  - Tests on Ubuntu and macOS
-  - Tests with Python 3.8 and 3.12
-  - Validates installation and CLI commands
-
-- **Merge to Main**: Manual workflow to merge and release
-  - Merges branch to `main`
-  - Bumps version (patch/minor/major)
-  - Creates git tag
-  - Triggers release workflow
-
-- **Release Workflow**: Automatic release creation
-  - Builds Python package
-  - Generates changelog
-  - Creates GitHub Release
-  - Uploads distribution files
-
-See [CICD_GUIDE.md](CICD_GUIDE.md) for detailed instructions.
-
----
-
-## 🔧 Configuration
-
-### MCP Servers
-
-`.mcp.json` includes:
-- **XcodeBuildMCP**: Build, test, analyze Xcode projects
-- **FigmaRemoteMCP**: Fetch Figma designs (disabled by default)
-
-Enable Figma:
-```json
-{
-  "figmaRemoteMcp": {
-    "disabled": false
-  }
-}
-```
-
-### Local Settings
-
-Copy `.claude/settings.local.json` to enable MCP servers locally.
-
----
-
-## 📊 System Metrics
-
-| Metric | Value |
-|--------|-------|
-| Overall Score | 9.6/10 ⭐ |
-| Skills | 7 |
-| Agents | 8 |
-| Guides | 3 |
-| Scripts | 1 |
-| Production Ready | ✅ Yes |
-
-### Category Scores
-
-| Category | Score |
-|----------|-------|
-| System Architecture | 9.2/10 |
-| Agent Quality | 9.3/10 |
-| Traceability | 9.8/10 |
-| Feature Independence | 9.0/10 |
-| Checkpoint System | 9.7/10 |
-| Error Recovery | 9.2/10 |
-| PBT Integration | 9.5/10 |
-| Validation | 9.8/10 |
-| User Confirmation | 10.0/10 |
-| Documentation | 9.5/10 |
-
----
-
-## 🎓 Examples
-
-### Full Spec vs Quick Implement
-
-| Aspect | Quick Implement | Full Spec |
-|--------|----------------|-----------|
-| Time | <4 hours | >4 hours |
-| Spec Files | 0 | 3 |
-| Traceability | Inline | Full chain |
-| Checkpoints | None | Multiple |
-| Team Collaboration | Solo | Team |
-
-### Time Savings with Parallel
-
-```
-Sequential: 9 hours
-Parallel:   5 hours
-Savings:    44% faster!
-```
-
----
-
-## 🚦 Status
-
-**Version**: 2.1  
-**Last Updated**: February 4, 2026  
-**Status**: ✅ Production Ready
-
-### Recent Improvements (v2.1)
-
-1. ✅ Automated traceability validation
-2. ✅ Property-based testing framework (SwiftCheck)
-3. ✅ Parallel task execution (experimental)
-
-**Score Improvement**: 9.2/10 → 9.6/10 (+0.4)
+- **Skills**: `.claude/skills/*/SKILL.md` - Detailed skill documentation
+- **Agents**: `.claude/agents/*.md` - Agent workflows
+- **Guides**: `.claude/shared/*.md` - Best practices
+  - `COMPONENT_FORMAT.md` - SwiftUI component standards
+  - `PBT_GUIDE.md` - Property-based testing guide
+  - `PARALLEL_EXECUTION_GUIDE.md` - Parallel execution guide
 
 ---
 
 ## 📝 License
 
-This toolkit is designed for use with Claude Code and iOS development projects.
+MIT License - See [LICENSE](LICENSE)
 
 ---
 
-## 🤝 Contributing
+**Version**: 2.1.0 • **Status**: ✅ Production Ready
 
-This is a toolkit repository. To improve:
-1. Test with real iOS projects
-2. Report issues or suggestions
-3. Share your experience
-
----
-
-*Built for iOS developers using Claude Code*  
-*Optimized for SwiftUI + MVVM architecture*
+*Built for iOS developers using Claude Code • Optimized for SwiftUI + MVVM*
