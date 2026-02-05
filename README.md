@@ -34,6 +34,17 @@ A complete toolkit that transforms iOS development with Claude Code. Instead of 
 
 ### Install (30 seconds)
 
+**For Claude Code (Kiro):**
+```bash
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install --ide claude
+```
+
+**For OpenCode:**
+```bash
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install --ide opencode
+```
+
+**Interactive (choose IDE during install):**
 ```bash
 uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install
 ```
