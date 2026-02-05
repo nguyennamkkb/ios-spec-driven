@@ -1,5 +1,17 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "figma": {
+      "type": "remote",
+      "url": "https://mcp.figma.com/mcp",
+      "enabled": false
+    },
+    "xcode-build": {
+      "type": "local",
+      "command": ["npx", "-y", "xcodebuildmcp@latest"],
+      "enabled": true
+    }
+  },
   "agent": {
     "write-spec": {
       "description": "Create requirements.md from user input. Use when writing specifications, defining requirements, creating user stories.",
@@ -39,7 +51,8 @@
         "write": true,
         "edit": true,
         "read": true,
-        "bash": true
+        "bash": true,
+        "xcode-build": true
       }
     },
     "quick-implement": {
@@ -50,7 +63,8 @@
         "write": true,
         "edit": true,
         "read": true,
-        "bash": true
+        "bash": true,
+        "xcode-build": true
       }
     },
     "refine-spec": {
