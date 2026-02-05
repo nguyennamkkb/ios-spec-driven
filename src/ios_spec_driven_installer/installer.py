@@ -97,18 +97,16 @@ class Installer:
                 self.target_config_dir / 'skills'
             )
         
-        # Copy agents (with transformation for OpenCode)
+        # Copy agents (with transformation for both IDEs)
         if (self.content_dir / 'agents').exists():
             agents_target = self.target_config_dir / 'agents'
             agents_target.mkdir(parents=True, exist_ok=True)
             
             for agent_file in (self.content_dir / 'agents').glob('*.md'):
-                if self.ide == "opencode":
-                    # Transform frontmatter for OpenCode
-                    self._copy_and_transform_agent(agent_file, agents_target / agent_file.name)
-                else:
-                    # Copy as-is for Claude Code
-                    shutil.copy2(agent_file, agents_target / agent_file.name)
+                # Transform for both Claude Code and OpenCode
+                # - Claude Code: Keep tools format, replace .claude/ paths
+                # - OpenCode: Transform tools format, replace .claude/ -> .opencode/
+                self._copy_and_transform_agent(agent_file, agents_target / agent_file.name)
         
         # Copy shared guides
         if (self.content_dir / 'shared').exists():
@@ -132,64 +130,74 @@ class Installer:
             )
     
     def _copy_and_transform_agent(self, source_file: Path, target_file: Path):
-        """Transform agent frontmatter from Claude Code format to OpenCode format
+        """Transform agent content for target IDE
         
-        Transforms:
-        - tools: Read, Write, Grep -> tools:\n  write: true\n  grepSearch: true
-        - skills: skill1, skill2 -> skills: skill1, skill2 (unchanged)
+        For Claude Code:
+        - Keep tools format as-is (comma-separated)
+        - Keep .claude/ paths as-is
+        
+        For OpenCode:
+        - Transform tools to YAML object format
+        - Replace .claude/ -> .opencode/ in paths
         """
         content = source_file.read_text(encoding='utf-8')
         
         # Extract frontmatter
         frontmatter_match = re.match(r'^---\n(.*?)\n---\n(.*)$', content, re.DOTALL)
         if not frontmatter_match:
-            # No frontmatter, copy as-is
+            # No frontmatter, just replace paths if needed
+            if self.ide == 'opencode':
+                content = content.replace('.claude/', '.opencode/')
             target_file.write_text(content, encoding='utf-8')
             return
         
         frontmatter = frontmatter_match.group(1)
         body = frontmatter_match.group(2)
         
-        # Transform tools field
-        tools_match = re.search(r'^tools:\s*(.+)$', frontmatter, re.MULTILINE)
-        if tools_match:
-            tools_str = tools_match.group(1).strip()
+        # Transform tools field ONLY for OpenCode
+        if self.ide == 'opencode':
+            tools_match = re.search(r'^tools:\s*(.+)$', frontmatter, re.MULTILINE)
+            if tools_match:
+                tools_str = tools_match.group(1).strip()
+                
+                # Map Claude Code tool names to OpenCode tool names
+                tool_mapping = {
+                    'Read': None,  # Not needed in OpenCode (automatic)
+                    'Write': 'write',
+                    'Edit': 'edit',
+                    'Grep': 'grepSearch',
+                    'Glob': 'fileSearch',
+                    'Bash': 'bash',
+                    'WebSearch': 'webSearch',
+                    'WebFetch': 'webFetch',
+                }
+                
+                # Parse tools
+                tools = [t.strip() for t in tools_str.split(',')]
+                opencode_tools = []
+                
+                for tool in tools:
+                    if tool in tool_mapping:
+                        mapped = tool_mapping[tool]
+                        if mapped:  # Skip None (Read)
+                            opencode_tools.append(mapped)
+                
+                # Build OpenCode tools format
+                if opencode_tools:
+                    tools_yaml = 'tools:\n' + '\n'.join(f'  {tool}: true' for tool in opencode_tools)
+                else:
+                    tools_yaml = 'tools: {}'
+                
+                # Replace in frontmatter
+                frontmatter = re.sub(
+                    r'^tools:\s*.+$',
+                    tools_yaml,
+                    frontmatter,
+                    flags=re.MULTILINE
+                )
             
-            # Map Claude Code tool names to OpenCode tool names
-            tool_mapping = {
-                'Read': None,  # Not needed in OpenCode (automatic)
-                'Write': 'write',
-                'Edit': 'edit',
-                'Grep': 'grepSearch',
-                'Glob': 'fileSearch',
-                'Bash': 'bash',
-                'WebSearch': 'webSearch',
-                'WebFetch': 'webFetch',
-            }
-            
-            # Parse tools
-            tools = [t.strip() for t in tools_str.split(',')]
-            opencode_tools = []
-            
-            for tool in tools:
-                if tool in tool_mapping:
-                    mapped = tool_mapping[tool]
-                    if mapped:  # Skip None (Read)
-                        opencode_tools.append(mapped)
-            
-            # Build OpenCode tools format
-            if opencode_tools:
-                tools_yaml = 'tools:\n' + '\n'.join(f'  {tool}: true' for tool in opencode_tools)
-            else:
-                tools_yaml = 'tools: {}'
-            
-            # Replace in frontmatter
-            frontmatter = re.sub(
-                r'^tools:\s*.+$',
-                tools_yaml,
-                frontmatter,
-                flags=re.MULTILINE
-            )
+            # Replace .claude/ paths with .opencode/
+            body = body.replace('.claude/', '.opencode/')
         
         # Reconstruct file
         new_content = f'---\n{frontmatter}\n---\n{body}'
