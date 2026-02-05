@@ -52,3 +52,9 @@ htmlcov/
 
 # Logs
 *.log
+
+# Test installations (local testing only)
+/.opencode/
+/opencode.json
+/.claude/
+/.mcp.json
