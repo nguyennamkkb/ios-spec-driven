@@ -88,14 +88,34 @@ class Installer:
         # Apply IDE-specific format
         self._apply_format()
     
+    def _transform_content_file(self, source_file: Path, target_file: Path):
+        """Transform content file paths for target IDE
+        
+        Replaces .claude/ -> .opencode/ for OpenCode installations
+        Keeps .claude/ unchanged for Claude Code installations
+        """
+        content = source_file.read_text(encoding='utf-8')
+        
+        # Replace .claude/ paths with IDE-specific directory for OpenCode
+        if self.ide == 'opencode':
+            content = content.replace('.claude/', '.opencode/')
+        
+        target_file.write_text(content, encoding='utf-8')
+    
     def _copy_content(self):
         """Copy shared content to target directory"""
-        # Copy skills (no transformation needed)
+        # Copy skills (with path transformation)
         if (self.content_dir / 'skills').exists():
-            shutil.copytree(
-                self.content_dir / 'skills',
-                self.target_config_dir / 'skills'
-            )
+            skills_target = self.target_config_dir / 'skills'
+            skills_target.mkdir(parents=True, exist_ok=True)
+            
+            for skill_dir in (self.content_dir / 'skills').iterdir():
+                if skill_dir.is_dir():
+                    skill_target_dir = skills_target / skill_dir.name
+                    skill_target_dir.mkdir(parents=True, exist_ok=True)
+                    
+                    for skill_file in skill_dir.glob('*.md'):
+                        self._transform_content_file(skill_file, skill_target_dir / skill_file.name)
         
         # Copy agents (with transformation for both IDEs)
         if (self.content_dir / 'agents').exists():
@@ -108,21 +128,22 @@ class Installer:
                 # - OpenCode: Transform tools format, replace .claude/ -> .opencode/
                 self._copy_and_transform_agent(agent_file, agents_target / agent_file.name)
         
-        # Copy shared guides
+        # Copy shared guides (with path transformation)
         if (self.content_dir / 'shared').exists():
-            shutil.copytree(
-                self.content_dir / 'shared',
-                self.target_config_dir / 'shared'
-            )
+            shared_target = self.target_config_dir / 'shared'
+            shared_target.mkdir(parents=True, exist_ok=True)
+            
+            for shared_file in (self.content_dir / 'shared').glob('*.md'):
+                self._transform_content_file(shared_file, shared_target / shared_file.name)
         
-        # Copy scripts
+        # Copy scripts (no transformation needed)
         if (self.content_dir / 'scripts').exists():
             shutil.copytree(
                 self.content_dir / 'scripts',
                 self.target_config_dir / 'scripts'
             )
         
-        # Copy hooks
+        # Copy hooks (no transformation needed)
         if (self.content_dir / 'hooks').exists():
             shutil.copytree(
                 self.content_dir / 'hooks',
