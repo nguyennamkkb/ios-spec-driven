@@ -14,7 +14,7 @@ Read `requirements.md` and `design.md`, create `tasks.md` with:
 - NO code, only task listing
 
 ## Output
-File `tasks.md` in `.claude/specs/[feature-name]/`
+File `tasks.md` in `{{IDE_CONFIG_DIR}}specs/[feature-name]/`
 
 ---
 
@@ -25,7 +25,7 @@ Before creating tasks.md, MUST validate:
 
 ### Step 1: Check requirements.md exists
 ```bash
-if [ ! -f ".claude/specs/[feature-name]/requirements.md" ]; then
+if [ ! -f "{{IDE_CONFIG_DIR}}specs/[feature-name]/requirements.md" ]; then
     echo "❌ ERROR: requirements.md not found"
     exit 1
 fi
@@ -33,7 +33,7 @@ fi
 
 ### Step 2: Check design.md exists
 ```bash
-if [ ! -f ".claude/specs/[feature-name]/design.md" ]; then
+if [ ! -f "{{IDE_CONFIG_DIR}}specs/[feature-name]/design.md" ]; then
     echo "❌ ERROR: design.md not found"
     echo "Please create design.md first using write-design agent"
     exit 1
@@ -53,7 +53,7 @@ Reason: [requirements.md | design.md] not found or invalid
 
 Please:
 1. Create missing file first
-2. Or check file location: .claude/specs/[feature-name]/
+2. Or check file location: {{IDE_CONFIG_DIR}}specs/[feature-name]/
 ```
 
 ### Step 5: If validation passes
@@ -441,7 +441,7 @@ Implement in order:
 After creating `tasks.md`, MUST display:
 
 ```
-✅ Created: .claude/specs/[feature-name]/tasks.md
+✅ Created: {{IDE_CONFIG_DIR}}specs/[feature-name]/tasks.md
 
 📋 Summary:
 - Total Tasks: X
@@ -504,5 +504,5 @@ After creating task sections, ADD:
 | 3.2.1.1 | 2.1.1 | 3.1.1.1, 3.3.1.1 |
 ```
 
-See `.claude/shared/PARALLEL_EXECUTION_GUIDE.md` for details.
+See `{{IDE_CONFIG_DIR}}shared/PARALLEL_EXECUTION_GUIDE.md` for details.
 

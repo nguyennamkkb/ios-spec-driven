@@ -91,17 +91,30 @@ class Installer:
     def _transform_content_file(self, source_file: Path, target_file: Path):
         """Transform content file paths for target IDE
         
-        Replaces .claude/ -> .opencode/ for OpenCode installations
-        Keeps .claude/ unchanged for Claude Code installations
+        Replaces {{IDE_CONFIG_DIR}} placeholder with IDE-specific directory:
+        - Claude Code: .claude/
+        - OpenCode: .opencode/
+        
+        Also handles {{{{IDE_CONFIG_DIR}}}} (escaped for Python f-strings)
+        Also handles legacy .claude/ references for backward compatibility
         """
         content = source_file.read_text(encoding='utf-8')
         
-        # Replace .claude/ paths with IDE-specific directory for OpenCode
+        # Get IDE-specific directory
+        ide_dir = '.claude/' if self.ide == 'claude' else '.opencode/'
+        
+        # Replace escaped placeholder (for Python f-strings)
+        content = content.replace('{{{{IDE_CONFIG_DIR}}}}', ide_dir)
+        
+        # Replace normal placeholder
+        content = content.replace('{{IDE_CONFIG_DIR}}', ide_dir)
+        
+        # Legacy: Also replace hardcoded .claude/ for backward compatibility
         if self.ide == 'opencode':
             content = content.replace('.claude/', '.opencode/')
         
         target_file.write_text(content, encoding='utf-8')
-    
+
     def _copy_content(self):
         """Copy shared content to target directory"""
         # Copy skills (with path transformation)
@@ -124,8 +137,6 @@ class Installer:
             
             for agent_file in (self.content_dir / 'agents').glob('*.md'):
                 # Transform for both Claude Code and OpenCode
-                # - Claude Code: Keep tools format, replace .claude/ paths
-                # - OpenCode: Transform tools format, replace .claude/ -> .opencode/
                 self._copy_and_transform_agent(agent_file, agents_target / agent_file.name)
         
         # Copy shared guides (with path transformation)
@@ -136,37 +147,48 @@ class Installer:
             for shared_file in (self.content_dir / 'shared').glob('*.md'):
                 self._transform_content_file(shared_file, shared_target / shared_file.name)
         
-        # Copy scripts (no transformation needed)
+        # Copy scripts (with path transformation for Python files)
         if (self.content_dir / 'scripts').exists():
-            shutil.copytree(
-                self.content_dir / 'scripts',
-                self.target_config_dir / 'scripts'
-            )
+            scripts_target = self.target_config_dir / 'scripts'
+            scripts_target.mkdir(parents=True, exist_ok=True)
+            
+            for script_file in (self.content_dir / 'scripts').iterdir():
+                if script_file.is_file():
+                    self._transform_content_file(script_file, scripts_target / script_file.name)
         
-        # Copy hooks (no transformation needed)
+        # Copy hooks (with path transformation for Python files)
         if (self.content_dir / 'hooks').exists():
-            shutil.copytree(
-                self.content_dir / 'hooks',
-                self.target_config_dir / 'hooks'
-            )
-    
+            hooks_target = self.target_config_dir / 'hooks'
+            hooks_target.mkdir(parents=True, exist_ok=True)
+            
+            for hook_file in (self.content_dir / 'hooks').iterdir():
+                if hook_file.is_file():
+                    self._transform_content_file(hook_file, hooks_target / hook_file.name)
+
     def _copy_and_transform_agent(self, source_file: Path, target_file: Path):
         """Transform agent content for target IDE
         
         For Claude Code:
         - Keep tools format as-is (comma-separated)
-        - Keep .claude/ paths as-is
+        - Replace {{IDE_CONFIG_DIR}} with .claude/
         
         For OpenCode:
         - Transform tools to YAML object format
-        - Replace .claude/ -> .opencode/ in paths
+        - Replace {{IDE_CONFIG_DIR}} with .opencode/
         """
         content = source_file.read_text(encoding='utf-8')
         
+        # Get IDE-specific directory
+        ide_dir = '.claude/' if self.ide == 'claude' else '.opencode/'
+        
         # Extract frontmatter
-        frontmatter_match = re.match(r'^---\n(.*?)\n---\n(.*)$', content, re.DOTALL)
+        frontmatter_pattern = r'^---\n(.*?)\n---\n(.*)$'
+        frontmatter_match = re.match(frontmatter_pattern, content, re.DOTALL)
+        
         if not frontmatter_match:
-            # No frontmatter, just replace paths if needed
+            # No frontmatter, just replace placeholders
+            content = content.replace('{{IDE_CONFIG_DIR}}', ide_dir)
+            # Legacy: Also replace hardcoded .claude/ for backward compatibility
             if self.ide == 'opencode':
                 content = content.replace('.claude/', '.opencode/')
             target_file.write_text(content, encoding='utf-8')
@@ -177,7 +199,9 @@ class Installer:
         
         # Transform tools field ONLY for OpenCode
         if self.ide == 'opencode':
-            tools_match = re.search(r'^tools:\s*(.+)$', frontmatter, re.MULTILINE)
+            tools_pattern = r'^tools:\s*(.+)$'
+            tools_match = re.search(tools_pattern, frontmatter, re.MULTILINE)
+            
             if tools_match:
                 tools_str = tools_match.group(1).strip()
                 
@@ -216,14 +240,18 @@ class Installer:
                     frontmatter,
                     flags=re.MULTILINE
                 )
-            
-            # Replace .claude/ paths with .opencode/
+        
+        # Replace placeholders in body
+        body = body.replace('{{IDE_CONFIG_DIR}}', ide_dir)
+        
+        # Legacy: Also replace hardcoded .claude/ for backward compatibility
+        if self.ide == 'opencode':
             body = body.replace('.claude/', '.opencode/')
         
         # Reconstruct file
         new_content = f'---\n{frontmatter}\n---\n{body}'
         target_file.write_text(new_content, encoding='utf-8')
-    
+
     def _apply_format(self):
         """Apply IDE-specific format and config files"""
         if self.ide == "claude":

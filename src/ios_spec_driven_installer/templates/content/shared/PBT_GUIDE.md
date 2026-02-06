@@ -319,7 +319,7 @@ let fastGen = Gen.choose((0, 100))  // Instead of complex arbitrary
 ## Examples
 
 See complete examples in:
-- `.claude/specs/example-todo-list/` (if exists)
+- `{{IDE_CONFIG_DIR}}specs/example-todo-list/` (if exists)
 - `Tests/PropertyTests/` in your project
 
 ---

@@ -61,25 +61,25 @@ Need a UI component?
 #### 1. Search by Type
 ```bash
 # List all components by category
-ls .claude/shared/Components/Buttons/
-ls .claude/shared/Components/Cards/
-ls .claude/shared/Components/Inputs/
+ls {{IDE_CONFIG_DIR}}shared/Components/Buttons/
+ls {{IDE_CONFIG_DIR}}shared/Components/Cards/
+ls {{IDE_CONFIG_DIR}}shared/Components/Inputs/
 ```
 
 #### 2. Search by Name Pattern
 ```bash
 # Search for button-related components
-find .claude/shared/Components -name "*Button*"
+find {{IDE_CONFIG_DIR}}shared/Components -name "*Button*"
 
 # Search for card-related components
-find .claude/shared/Components -name "*Card*"
+find {{IDE_CONFIG_DIR}}shared/Components -name "*Card*"
 ```
 
 #### 3. Grep for Similar Functionality
 ```bash
 # Search for components with specific features
-grep -r "loading" .claude/shared/Components/
-grep -r "icon" .claude/shared/Components/
+grep -r "loading" {{IDE_CONFIG_DIR}}shared/Components/
+grep -r "icon" {{IDE_CONFIG_DIR}}shared/Components/
 ```
 
 ---
@@ -183,22 +183,22 @@ PrimaryButton(title: "Submit", action: submit)
 ### Step 1: Read Standard Format File
 ALWAYS read this file before working with components:
 ```
-.claude/shared/COMPONENT_FORMAT.md
+{{IDE_CONFIG_DIR}}shared/COMPONENT_FORMAT.md
 ```
 This file contains code format, style guide, and project rules.
 
 ### Step 2: Search Existing Components (REUSE FIRST!)
 ```bash
 # Browse by category
-ls .claude/shared/Components/Buttons/
-ls .claude/shared/Components/Cards/
-ls .claude/shared/Components/Inputs/
+ls {{IDE_CONFIG_DIR}}shared/Components/Buttons/
+ls {{IDE_CONFIG_DIR}}shared/Components/Cards/
+ls {{IDE_CONFIG_DIR}}shared/Components/Inputs/
 
 # Search by name
-find .claude/shared/Components -name "*Button*"
+find {{IDE_CONFIG_DIR}}shared/Components -name "*Button*"
 
 # Search by functionality
-grep -r "loading" .claude/shared/Components/
+grep -r "loading" {{IDE_CONFIG_DIR}}shared/Components/
 ```
 
 ### Step 3: Evaluate Reuse Options
@@ -208,7 +208,7 @@ grep -r "loading" .claude/shared/Components/
 - Nothing similar? → Create new (last resort)
 
 ### Step 4: If Creating New Component
-- Use design tokens from `.claude/shared/Styles/`
+- Use design tokens from `{{IDE_CONFIG_DIR}}shared/Styles/`
 - Follow format from `COMPONENT_FORMAT.md`
 - Make it reusable (add parameters)
 - Add Preview
@@ -220,13 +220,13 @@ grep -r "loading" .claude/shared/Components/
 
 | Type | Location |
 |------|----------|
-| Button | `.claude/shared/Components/Buttons/` |
-| Input | `.claude/shared/Components/Inputs/` |
-| Card | `.claude/shared/Components/Cards/` |
-| Modal | `.claude/shared/Components/Modals/` |
-| Layout | `.claude/shared/Components/Layouts/` |
-| Feedback | `.claude/shared/Components/Feedback/` |
-| Navigation | `.claude/shared/Components/Navigation/` |
+| Button | `{{IDE_CONFIG_DIR}}shared/Components/Buttons/` |
+| Input | `{{IDE_CONFIG_DIR}}shared/Components/Inputs/` |
+| Card | `{{IDE_CONFIG_DIR}}shared/Components/Cards/` |
+| Modal | `{{IDE_CONFIG_DIR}}shared/Components/Modals/` |
+| Layout | `{{IDE_CONFIG_DIR}}shared/Components/Layouts/` |
+| Feedback | `{{IDE_CONFIG_DIR}}shared/Components/Feedback/` |
+| Navigation | `{{IDE_CONFIG_DIR}}shared/Components/Navigation/` |
 
 ### Common Feedback Components
 
@@ -256,12 +256,12 @@ grep -r "loading" .claude/shared/Components/
    - Spacing pattern
    - Shadow/elevation style
 
-3. **Update or create `.claude/shared/COMPONENT_FORMAT.md` with:**
+3. **Update or create `{{IDE_CONFIG_DIR}}shared/COMPONENT_FORMAT.md` with:**
    - Code template for components
    - Style rules extracted from design
    - Specific examples
 
-4. **Update `.claude/shared/Styles/` if needed:**
+4. **Update `{{IDE_CONFIG_DIR}}shared/Styles/` if needed:**
    - AppColors.swift
    - AppFonts.swift
    - AppSpacing.swift
@@ -345,14 +345,14 @@ enum Spacing {
 ## 6. Checklist
 
 ### Before creating component:
-- [ ] Read `.claude/shared/COMPONENT_FORMAT.md`
+- [ ] Read `{{IDE_CONFIG_DIR}}shared/COMPONENT_FORMAT.md`
 - [ ] **Search existing components** (ls, find, grep)
 - [ ] **Evaluate reuse options** (use as-is, customize, compose)
 - [ ] Identify design tokens needed
 - [ ] Only create new if nothing can be reused
 
 ### When creating component:
-- [ ] Use design tokens from `.claude/shared/Styles/`
+- [ ] Use design tokens from `{{IDE_CONFIG_DIR}}shared/Styles/`
 - [ ] Create file in correct folder by type
 - [ ] Follow format from COMPONENT_FORMAT.md
 - [ ] **Make component reusable** (add parameters for flexibility)

@@ -2,7 +2,7 @@
 
 > Professional iOS development workflow with AI-powered automation
 
-[![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)](https://github.com/nguyennamkkb/ios-spec-driven-claude/releases)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/nguyennamkkb/ios-spec-driven-claude/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)](https://developer.apple.com/ios/)
 
@@ -329,6 +329,6 @@ MIT License - See [LICENSE](LICENSE)
 
 ---
 
-**Version**: 2.1.0 • **Status**: ✅ Production Ready
+**Version**: 1.0.0 • **Status**: ✅ Production Ready
 
 *Built for iOS developers using Claude Code • Optimized for SwiftUI + MVVM*

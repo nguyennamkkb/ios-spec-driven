@@ -96,7 +96,7 @@ Create/modify files directly:
 ### For Single Component
 
 ```swift
-// File: .claude/shared/Components/[Name].swift
+// File: {{IDE_CONFIG_DIR}}shared/Components/[Name].swift
 // Feature: [Brief description]
 // AC: [Acceptance criteria]
 

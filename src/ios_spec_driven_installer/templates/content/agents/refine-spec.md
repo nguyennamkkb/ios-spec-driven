@@ -30,7 +30,7 @@ Update existing specs using **Understand → Analyze → Propose → Confirm →
 
 ```bash
 # Check requirements.md
-if [ ! -f ".claude/specs/[feature-name]/requirements.md" ]; then
+if [ ! -f "{{IDE_CONFIG_DIR}}specs/[feature-name]/requirements.md" ]; then
     echo "❌ ERROR: requirements.md not found"
     echo "Cannot refine spec that doesn't exist"
     echo "Please create specs first using write-spec agent"
@@ -38,14 +38,14 @@ if [ ! -f ".claude/specs/[feature-name]/requirements.md" ]; then
 fi
 
 # Check design.md
-if [ ! -f ".claude/specs/[feature-name]/design.md" ]; then
+if [ ! -f "{{IDE_CONFIG_DIR}}specs/[feature-name]/design.md" ]; then
     echo "❌ ERROR: design.md not found"
     echo "Please create design.md first using write-design agent"
     exit 1
 fi
 
 # Check tasks.md
-if [ ! -f ".claude/specs/[feature-name]/tasks.md" ]; then
+if [ ! -f "{{IDE_CONFIG_DIR}}specs/[feature-name]/tasks.md" ]; then
     echo "❌ ERROR: tasks.md not found"
     echo "Please create tasks.md first using write-tasks agent"
     exit 1
@@ -71,7 +71,7 @@ Please:
    - "Write requirements for [feature]"
    - "Write design for [feature]"
    - "Write tasks for [feature]"
-2. Or check file location: .claude/specs/[feature-name]/
+2. Or check file location: {{IDE_CONFIG_DIR}}specs/[feature-name]/
 ```
 
 ---
@@ -84,13 +84,13 @@ Please:
 
 ```bash
 # Read requirements.md
-cat .claude/specs/[feature-name]/requirements.md
+cat {{IDE_CONFIG_DIR}}specs/[feature-name]/requirements.md
 
 # Read design.md
-cat .claude/specs/[feature-name]/design.md
+cat {{IDE_CONFIG_DIR}}specs/[feature-name]/design.md
 
 # Read tasks.md
-cat .claude/specs/[feature-name]/tasks.md
+cat {{IDE_CONFIG_DIR}}specs/[feature-name]/tasks.md
 ```
 
 #### Step 1.2: Analyze Current State
@@ -448,7 +448,7 @@ echo "✅ Changes applied"
 
 ```bash
 # Run traceability validation
-python .claude/scripts/validate_traceability.py [feature-name]
+python {{IDE_CONFIG_DIR}}scripts/validate_traceability.py [feature-name]
 
 if [ $? -ne 0 ]; then
     echo "❌ Validation failed"
@@ -499,7 +499,7 @@ echo "✅ Validation passed"
 3. Continue implementation with new requirements
 4. Run validation again after implementation:
    ```bash
-   python .claude/scripts/validate_traceability.py [feature-name]
+   python {{IDE_CONFIG_DIR}}scripts/validate_traceability.py [feature-name]
    ```
 
 ### Rollback (if needed):

@@ -32,19 +32,19 @@ Before executing tasks, MUST validate:
 ### Step 1: Check all spec files exist
 ```bash
 # Check requirements.md
-if [ ! -f ".claude/specs/[feature-name]/requirements.md" ]; then
+if [ ! -f "{{IDE_CONFIG_DIR}}specs/[feature-name]/requirements.md" ]; then
     echo "❌ ERROR: requirements.md not found"
     exit 1
 fi
 
 # Check design.md
-if [ ! -f ".claude/specs/[feature-name]/design.md" ]; then
+if [ ! -f "{{IDE_CONFIG_DIR}}specs/[feature-name]/design.md" ]; then
     echo "❌ ERROR: design.md not found"
     exit 1
 fi
 
 # Check tasks.md
-if [ ! -f ".claude/specs/[feature-name]/tasks.md" ]; then
+if [ ! -f "{{IDE_CONFIG_DIR}}specs/[feature-name]/tasks.md" ]; then
     echo "❌ ERROR: tasks.md not found"
     echo "Please create tasks.md first using write-tasks agent"
     exit 1
@@ -85,7 +85,7 @@ Please create specs first:
 **Check for Figma link:**
 1. Use `figma_get_styles` → Fetch design tokens
 2. Use `figma_get_node` → Fetch component specs
-3. Update `.claude/shared/Styles/` and `COMPONENT_FORMAT.md`
+3. Update `{{IDE_CONFIG_DIR}}shared/Styles/` and `COMPONENT_FORMAT.md`
 4. Implement UI according to Figma specs
 
 ### Step 3: Implement
@@ -363,7 +363,7 @@ Is it build error?
 
 After each error:
 ```
-1. Log to .claude/specs/[feature-name]/errors.log
+1. Log to {{IDE_CONFIG_DIR}}specs/[feature-name]/errors.log
 2. Include:
    - Timestamp
    - Error type
@@ -414,7 +414,7 @@ Waits for:
 All must pass before continuing.
 ```
 
-See `.claude/shared/PARALLEL_EXECUTION_GUIDE.md` for full details.
+See `{{IDE_CONFIG_DIR}}shared/PARALLEL_EXECUTION_GUIDE.md` for full details.
 
 ---
 
@@ -424,7 +424,7 @@ See `.claude/shared/PARALLEL_EXECUTION_GUIDE.md` for full details.
 
 Run validation:
 ```bash
-python .claude/scripts/validate_traceability.py [feature-name]
+python {{IDE_CONFIG_DIR}}scripts/validate_traceability.py [feature-name]
 ```
 
 ### Validation Checks
@@ -449,4 +449,4 @@ Action:
 3. Run validation again
 ```
 
-See `.claude/scripts/validate_traceability.py` for details.
+See `{{IDE_CONFIG_DIR}}scripts/validate_traceability.py` for details.
