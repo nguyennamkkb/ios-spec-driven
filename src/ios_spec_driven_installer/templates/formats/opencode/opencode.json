@@ -13,6 +13,93 @@
     }
   },
   "agent": {
+    "write-project-docs": {
+      "description": "Orchestrate creation of all 5 project documentation files (Project Overview, Use Cases, Functional Requirements, Wireframes, UX Flows). Use when starting new project and need complete documentation set.",
+      "mode": "subagent",
+      "prompt": "{file:./.opencode/agents/write-project-docs.md}",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "read": true,
+        "task": true
+      },
+      "permission": {
+        "task": {
+          "*": "deny",
+          "write-project-overview": "allow",
+          "write-use-cases": "allow",
+          "write-functional-requirements": "allow",
+          "write-wireframes": "allow",
+          "write-ux-flows": "allow",
+          "review-project-docs": "allow"
+        }
+      }
+    },
+    "write-project-overview": {
+      "description": "Create Project_Overview.md with high-level vision, goals, and architecture. Use when starting new project, defining vision, outlining roadmap.",
+      "mode": "subagent",
+      "prompt": "{file:./.opencode/agents/write-project-overview.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "read": true,
+        "websearch": true,
+        "webfetch": true
+      }
+    },
+    "write-use-cases": {
+      "description": "Create Use_Cases.md with user stories and scenarios. Use when defining user interactions, writing user stories, documenting scenarios.",
+      "mode": "subagent",
+      "prompt": "{file:./.opencode/agents/write-use-cases.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "read": true
+      }
+    },
+    "write-functional-requirements": {
+      "description": "Create Functional_Requirements.md with detailed feature specifications. Use when defining features, specifying requirements, documenting system behavior.",
+      "mode": "subagent",
+      "prompt": "{file:./.opencode/agents/write-functional-requirements.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "read": true
+      }
+    },
+    "write-wireframes": {
+      "description": "Create Wireframes.md with UI mockups and screen descriptions. Use when designing UI, creating mockups, documenting screens.",
+      "mode": "subagent",
+      "prompt": "{file:./.opencode/agents/write-wireframes.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "read": true,
+        "websearch": true,
+        "webfetch": true
+      }
+    },
+    "write-ux-flows": {
+      "description": "Create UX_Flows.md with user journey diagrams and interaction flows. Use when mapping user journeys, documenting flows, creating navigation diagrams.",
+      "mode": "subagent",
+      "prompt": "{file:./.opencode/agents/write-ux-flows.md}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "read": true
+      }
+    },
+    "review-project-docs": {
+      "description": "Cross-review the 5 project documentation files for consistency, traceability, and contradictions. Produces an actionable review report with concrete change requests per file.",
+      "mode": "subagent",
+      "hidden": true,
+      "prompt": "{file:./.opencode/agents/review-project-docs.md}",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "read": true
+      }
+    },
     "write-spec": {
       "description": "Create requirements.md from user input. Use when writing specifications, defining requirements, creating user stories.",
       "mode": "subagent",

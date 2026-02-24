@@ -90,8 +90,19 @@ ios-spec-driven info              # Show info
 | **mcp-xcode** | Xcode integration (build, test, analyze) |
 | **mcp-figma** | Figma design integration |
 
-### 7 Workflow Agents
+### 12 Workflow Agents
 
+#### Specification Workflow (5 Documents)
+| Agent | Output |
+|-------|--------|
+| **write-project-docs** | Orchestrate all 5 project documentation files |
+| **write-project-overview** | `Project_Overview.md` with vision & architecture |
+| **write-use-cases** | `Use_Cases.md` with user stories & scenarios |
+| **write-functional-requirements** | `Functional_Requirements.md` with detailed specs |
+| **write-wireframes** | `Wireframes.md` with UI mockups |
+| **write-ux-flows** | `UX_Flows.md` with user journey diagrams |
+
+#### Feature Development Workflow
 | Agent | Output |
 |-------|--------|
 | **write-spec** | `requirements.md` with user stories |
@@ -119,6 +130,60 @@ ios-spec-driven info              # Show info
 
 ## 📖 Workflow
 
+### Two Workflows Available
+
+#### 1. Full Specification Workflow (New Projects)
+
+For new projects, create complete project documentation first:
+
+```
+"@write-project-docs Create complete documentation for [project name]"
+```
+
+**Output**:
+```
+.opencode/specs/[project-name]/
+├── Project_Overview.md      # Vision, architecture, roadmap
+├── Use_Cases.md             # User stories, scenarios
+├── Functional_Requirements.md  # Detailed feature specs
+├── Wireframes.md            # UI mockups, design system
+└── UX_Flows.md              # User journey diagrams
+```
+
+**Time**: 30-60 minutes  
+**Benefit**: Complete, traceable specifications before coding
+
+**Process**:
+```
+💡 Idea
+  ↓
+📋 write-project-docs → 5 Documents
+  ↓ [✓ User Reviews Each]
+🚀 Start Implementation
+```
+
+See `SPEC_WORKFLOW_GUIDE.md` for detailed instructions.
+
+---
+
+#### 2. Feature Development Workflow (Existing Projects)
+
+For individual features in existing projects:
+
+```
+"Create spec for [feature name]"
+```
+
+**Output**:
+```
+.opencode/specs/[feature-name]/
+├── requirements.md  # User stories + EARS criteria
+├── design.md        # Architecture + properties
+└── tasks.md         # Implementation plan + traceability
+```
+
+**Time**: 10-15 minutes per feature
+
 ### Process
 
 ```
@@ -136,6 +201,25 @@ ios-spec-driven info              # Show info
 ```
 
 ### Usage Examples
+
+#### Full Specification Workflow (New Project)
+
+```
+"@write-project-docs Create complete documentation for fitness tracking app"
+```
+
+**Agent will**:
+1. Ask about problem, users, features, tech stack
+2. Create Project_Overview.md → wait for approval
+3. Create Use_Cases.md → wait for approval
+4. Create Functional_Requirements.md → wait for approval
+5. Create Wireframes.md → wait for approval
+6. Create UX_Flows.md → wait for approval
+7. Show completion summary
+
+**Result**: Complete project documentation set ready for implementation
+
+---
 
 #### Full Spec Workflow
 
@@ -316,7 +400,8 @@ Use any language you prefer:
 
 - **Skills**: `.claude/skills/*/SKILL.md` - Detailed skill documentation
 - **Agents**: `.claude/agents/*.md` - Agent workflows
-- **Guides**: `.claude/shared/*.md` - Best practices
+- **Guides**: `.opencode/shared/*.md` - Best practices
+  - `SPEC_WORKFLOW_GUIDE.md` - Full specification workflow guide
   - `COMPONENT_FORMAT.md` - SwiftUI component standards
   - `PBT_GUIDE.md` - Property-based testing guide
   - `PARALLEL_EXECUTION_GUIDE.md` - Parallel execution guide
