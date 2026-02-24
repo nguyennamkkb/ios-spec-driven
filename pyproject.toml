@@ -1,6 +1,6 @@
 [project]
 name = "ios-spec-driven-installer"
-version = "2.1.0"
+version = "1.0.0"
 description = "iOS Spec-Driven Development toolkit installer for Claude Code"
 authors = [
     {name = "Nguyen Nam", email = "nguyennamkkb@gmail.com"}
@@ -57,5 +57,4 @@ include = [
 [tool.hatch.build.force-include]
 "src/ios_spec_driven_installer/templates/content" = "ios_spec_driven_installer/templates/content"
 "src/ios_spec_driven_installer/templates/formats" = "ios_spec_driven_installer/templates/formats"
-"src/ios_spec_driven_installer/templates/.claude" = "ios_spec_driven_installer/templates/.claude"
 "src/ios_spec_driven_installer/templates/.mcp.json" = "ios_spec_driven_installer/templates/.mcp.json"

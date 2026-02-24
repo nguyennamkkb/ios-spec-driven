@@ -13,7 +13,7 @@ from pathlib import Path
 
 def find_related_spec(file_path):
     """Find spec folder that might be related to this file change."""
-    specs_dir = Path(".claude/specs")
+    specs_dir = Path("{{IDE_CONFIG_DIR}}specs")
     if not specs_dir.exists():
         return None
 
@@ -65,7 +65,7 @@ def main():
             sys.exit(0)
 
         # Skip if editing spec files themselves
-        if ".claude/specs" in file_path:
+        if "{{IDE_CONFIG_DIR}}specs" in file_path:
             sys.exit(0)
 
         # Skip non-Swift files

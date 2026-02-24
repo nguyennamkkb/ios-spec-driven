@@ -14,7 +14,7 @@ Create `design.md` from `requirements.md` with focus on:
 - NO sample code
 
 ## Output
-File `design.md` in `.claude/specs/[feature-name]/`
+File `design.md` in `{{IDE_CONFIG_DIR}}specs/[feature-name]/`
 
 ---
 
@@ -26,7 +26,7 @@ Before creating design.md, MUST validate:
 ### Step 1: Check requirements.md exists
 ```bash
 # Check file exists
-if [ ! -f ".claude/specs/[feature-name]/requirements.md" ]; then
+if [ ! -f "{{IDE_CONFIG_DIR}}specs/[feature-name]/requirements.md" ]; then
     echo "❌ ERROR: requirements.md not found"
     echo "Please create requirements.md first using write-spec agent"
     exit 1
@@ -46,7 +46,7 @@ Reason: requirements.md not found or invalid
 
 Please:
 1. Create requirements.md first: "Write requirements for [feature]"
-2. Or check file location: .claude/specs/[feature-name]/requirements.md
+2. Or check file location: {{IDE_CONFIG_DIR}}specs/[feature-name]/requirements.md
 ```
 
 ### Step 4: If validation passes
@@ -472,7 +472,7 @@ Features/
 After creating `design.md`, MUST display:
 
 ```
-✅ Created: .claude/specs/[feature-name]/design.md
+✅ Created: {{IDE_CONFIG_DIR}}specs/[feature-name]/design.md
 
 📋 Summary:
 - Features: X screens/components
@@ -521,7 +521,7 @@ For each property, specify:
 - **Idempotent**: Multiple executions = single execution
 - **Commutative**: Order doesn't matter
 
-**Framework**: SwiftCheck (see `.claude/shared/PBT_GUIDE.md`)
+**Framework**: SwiftCheck (see `{{IDE_CONFIG_DIR}}shared/PBT_GUIDE.md`)
 
 ### PBT Task Generation
 

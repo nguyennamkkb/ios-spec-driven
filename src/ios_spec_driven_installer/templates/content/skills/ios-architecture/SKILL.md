@@ -1,6 +1,6 @@
 ---
 name: ios-architecture
-description: |
+description: 
   SwiftUI project structure. Use when creating new projects, new features, new screens, file placement, file naming, folder organization, code refactoring, ViewModel separation, standard directory structure, MVVM, Clean Architecture.
 allowed-tools: Read, Grep, Glob, Bash
 ---
@@ -31,7 +31,7 @@ ProjectName/
 │       ├── ViewModels/
 │       ├── Models/
 │       └── Services/
-├── .claude/shared/
+├── {{IDE_CONFIG_DIR}}shared/
 │   ├── Components/
 │   ├── Styles/
 │   └── Modifiers/
@@ -46,7 +46,7 @@ ProjectName/
 | `App/` | App entry point, app-level configuration |
 | `Core/` | Shared code across app (Extensions, Network, Utilities) |
 | `Features/` | Feature modules (Authentication, Home, Profile...) |
-| `.claude/shared/` | Reusable UI components (Buttons, Cards, Modifiers) |
+| `{{IDE_CONFIG_DIR}}shared/` | Reusable UI components (Buttons, Cards, Modifiers) |
 | `Resources/` | Assets, Localizable, Info.plist |
 | `Tests/` | Unit tests, UI tests |
 
@@ -57,7 +57,7 @@ ProjectName/
 ### Folder Naming
 - `Features/` - Feature modules by functionality
 - `Core/` - App-wide shared code
-- `.claude/shared/` - Reusable UI components
+- `{{IDE_CONFIG_DIR}}shared/` - Reusable UI components
 - `Services/` - Business logic, API services
 - `Resources/` - Assets, Localizable, Info.plist
 
@@ -77,11 +77,11 @@ ProjectName/
 
 | Type | Location | Example |
 |------|----------|---------|
-| Button | `.claude/shared/Components/Buttons/` | `PrimaryButton.swift` |
-| Input | `.claude/shared/Components/Inputs/` | `PrimaryTextField.swift` |
-| Card | `.claude/shared/Components/Cards/` | `ItemCard.swift` |
-| Modal | `.claude/shared/Components/Modals/` | `ConfirmationModal.swift` |
-| Feedback | `.claude/shared/Components/Feedback/` | `LoadingView.swift` |
+| Button | `{{IDE_CONFIG_DIR}}shared/Components/Buttons/` | `PrimaryButton.swift` |
+| Input | `{{IDE_CONFIG_DIR}}shared/Components/Inputs/` | `PrimaryTextField.swift` |
+| Card | `{{IDE_CONFIG_DIR}}shared/Components/Cards/` | `ItemCard.swift` |
+| Modal | `{{IDE_CONFIG_DIR}}shared/Components/Modals/` | `ConfirmationModal.swift` |
+| Feedback | `{{IDE_CONFIG_DIR}}shared/Components/Feedback/` | `LoadingView.swift` |
 
 ---
 
@@ -104,7 +104,7 @@ ProjectName/
 4. ViewModel contains state and business logic
 5. Model is data structure only
 6. Service handles API and data persistence
-7. Components in `.claude/shared/` are reusable across features
+7. Components in `{{IDE_CONFIG_DIR}}shared/` are reusable across features
 
 ### Dependencies Direction
 
@@ -173,7 +173,7 @@ Features/
 - [ ] Add Preview for View
 
 ### When creating reusable component:
-- [ ] Place in `.claude/shared/Components/[Type]/`
+- [ ] Place in `{{IDE_CONFIG_DIR}}shared/Components/[Type]/`
 - [ ] Make it configurable via parameters
 - [ ] Add Preview
 - [ ] Document usage

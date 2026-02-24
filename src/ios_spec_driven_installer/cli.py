@@ -9,11 +9,18 @@ from rich.panel import Panel
 from rich.table import Table
 from pathlib import Path
 from .installer import Installer
+import importlib.metadata
 
 console = Console()
 
+# Get version from package metadata
+try:
+    __version__ = importlib.metadata.version("ios-spec-driven-installer")
+except importlib.metadata.PackageNotFoundError:
+    __version__ = "unknown"
+
 @click.group()
-@click.version_option(version="2.1.0")
+@click.version_option(version=__version__)
 def main():
     """iOS Spec-Driven Development Toolkit Installer
     
@@ -52,7 +59,7 @@ def install(target_dir, ide, no_backup, force):
     
     console.print(Panel.fit(
         "[bold blue]🚀 iOS Spec-Driven Toolkit Installer[/bold blue]\n"
-        "[dim]Version 2.1.0[/dim]",
+        f"[dim]Version {__version__}[/dim]",
         border_style="blue"
     ))
     
@@ -218,7 +225,7 @@ def status(target_dir, ide):
         
         # Version info
         config_dir = '.claude' if ide == 'claude' else '.opencode'
-        console.print(f"\n[dim]Version: 2.1.0[/dim]")
+        console.print(f"\n[dim]Version: {__version__}[/dim]")
         console.print(f"[dim]IDE: {ide.title()}[/dim]")
         console.print(f"[dim]Location: {target_path / config_dir}[/dim]\n")
         
@@ -236,7 +243,7 @@ def info():
     
     console.print(Panel.fit(
         "[bold blue]iOS Spec-Driven Development Toolkit[/bold blue]\n"
-        "[dim]Version 2.1.0[/dim]",
+        f"[dim]Version {__version__}[/dim]",
         border_style="blue"
     ))
     

@@ -11,7 +11,7 @@ skills: dev-spec-driven
 Create `requirements.md` for new features with user confirmation before proceeding.
 
 ## Output
-File `.claude/specs/[feature-name]/requirements.md`
+File `{{IDE_CONFIG_DIR}}specs/[feature-name]/requirements.md`
 
 **IMPORTANT:**
 - ONLY create `requirements.md` in this agent
@@ -24,7 +24,7 @@ File `.claude/specs/[feature-name]/requirements.md`
 
 ### Step 1: Create folder
 ```
-.claude/specs/[feature-name]/
+{{IDE_CONFIG_DIR}}specs/[feature-name]/
 ```
 
 ### Step 2: Write requirements.md
@@ -66,7 +66,7 @@ File `.claude/specs/[feature-name]/requirements.md`
 After creating `requirements.md`, MUST display:
 
 ```
-✅ Created: .claude/specs/[feature-name]/requirements.md
+✅ Created: {{IDE_CONFIG_DIR}}specs/[feature-name]/requirements.md
 
 📋 Summary:
 - User Stories: X

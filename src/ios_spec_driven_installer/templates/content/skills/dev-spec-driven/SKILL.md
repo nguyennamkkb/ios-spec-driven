@@ -1,6 +1,6 @@
 ---
 name: dev-spec-driven
-description: |
+description: 
   Spec-driven development workflow for iOS. Use when creating new features, writing requirements, design documents, implementation plans, EARS notation, user stories, acceptance criteria, property-based testing, spec workflow, traceability.
 allowed-tools: Read, Write, Edit, Grep, Glob
 ---
@@ -21,7 +21,7 @@ allowed-tools: Read, Write, Edit, Grep, Glob
 ## 1. Concept
 
 ### Spec Files
-Each feature requires 3 files in `.claude/specs/[feature-name]/`:
+Each feature requires 3 files in `{{IDE_CONFIG_DIR}}specs/[feature-name]/`:
 
 | File | Content | Agent |
 |------|---------|-------|
@@ -31,7 +31,7 @@ Each feature requires 3 files in `.claude/specs/[feature-name]/`:
 
 ### Directory Structure
 ```
-.claude/specs/
+{{IDE_CONFIG_DIR}}specs/
 ├── user-authentication/
 │   ├── requirements.md
 │   ├── design.md
@@ -143,7 +143,7 @@ After each file is created, Claude will ask:
 
 All spec files are created in:
 ```
-.claude/specs/[feature-name]/
+{{IDE_CONFIG_DIR}}specs/[feature-name]/
 ├── requirements.md
 ├── design.md
 └── tasks.md
@@ -151,7 +151,7 @@ All spec files are created in:
 
 Example:
 ```
-.claude/specs/user-authentication/
+{{IDE_CONFIG_DIR}}specs/user-authentication/
 ├── requirements.md
 ├── design.md
 └── tasks.md
@@ -237,9 +237,9 @@ You: "What task should I do next?"
 
 This repo includes a complete example feature spec you can copy and adapt:
 
-- `.claude/specs/example-todo-list/requirements.md`
-- `.claude/specs/example-todo-list/design.md`
-- `.claude/specs/example-todo-list/tasks.md`
+- `{{IDE_CONFIG_DIR}}specs/example-todo-list/requirements.md`
+- `{{IDE_CONFIG_DIR}}specs/example-todo-list/design.md`
+- `{{IDE_CONFIG_DIR}}specs/example-todo-list/tasks.md`
 
 Use it as a reference for:
 - What “good” EARS acceptance criteria look like
@@ -546,7 +546,7 @@ US-001 (User Story)
 
 ```bash
 # Validate traceability for a feature
-python .claude/scripts/validate_traceability.py user-authentication
+python {{IDE_CONFIG_DIR}}scripts/validate_traceability.py user-authentication
 ```
 
 #### What It Checks
@@ -640,7 +640,7 @@ func testUserRoundTrip() {
 
 #### Full Guide
 
-See `.claude/shared/PBT_GUIDE.md` for:
+See `{{IDE_CONFIG_DIR}}shared/PBT_GUIDE.md` for:
 - Complete templates for each property type
 - Custom generators
 - Best practices
@@ -713,7 +713,7 @@ Before parallel execution:
 
 #### Full Guide
 
-See `.claude/shared/PARALLEL_EXECUTION_GUIDE.md` for:
+See `{{IDE_CONFIG_DIR}}shared/PARALLEL_EXECUTION_GUIDE.md` for:
 - Dependency graphs
 - Conflict detection rules
 - Error handling
@@ -725,9 +725,9 @@ See `.claude/shared/PARALLEL_EXECUTION_GUIDE.md` for:
 
 | Feature | Purpose | Status | Guide |
 |---------|---------|--------|-------|
-| Traceability Validation | Auto-check references | ✅ Ready | `.claude/scripts/validate_traceability.py` |
-| Property-Based Testing | SwiftCheck integration | ✅ Ready | `.claude/shared/PBT_GUIDE.md` |
-| Parallel Execution | Faster implementation | 🧪 Experimental | `.claude/shared/PARALLEL_EXECUTION_GUIDE.md` |
+| Traceability Validation | Auto-check references | ✅ Ready | `{{IDE_CONFIG_DIR}}scripts/validate_traceability.py` |
+| Property-Based Testing | SwiftCheck integration | ✅ Ready | `{{IDE_CONFIG_DIR}}shared/PBT_GUIDE.md` |
+| Parallel Execution | Faster implementation | 🧪 Experimental | `{{IDE_CONFIG_DIR}}shared/PARALLEL_EXECUTION_GUIDE.md` |
 
 ---
 

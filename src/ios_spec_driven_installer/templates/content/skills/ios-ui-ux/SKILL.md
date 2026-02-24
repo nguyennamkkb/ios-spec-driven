@@ -1,6 +1,6 @@
 ---
 name: ios-ui-ux
-description: |
+description:
   UI/UX design principles for iOS. Use when designing screens, making UI look good, user flow design, handling loading states, empty states, error states, animations, navigation patterns, accessibility, dark mode, form design, better UX.
 allowed-tools: Read, Grep, Glob
 ---

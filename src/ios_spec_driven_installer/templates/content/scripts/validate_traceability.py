@@ -36,7 +36,7 @@ class TraceabilityValidator:
     
     def __init__(self, feature_name: str):
         self.feature_name = feature_name
-        self.spec_dir = Path(f".claude/specs/{feature_name}")
+        self.spec_dir = Path(f"{{{{IDE_CONFIG_DIR}}}}specs/{feature_name}")
         
         # Collections
         self.user_stories: Set[str] = set()

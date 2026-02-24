@@ -6,6 +6,7 @@
   },
   "enabledMcpjsonServers": [
     "playwright",
-    "XcodeBuildMCP"
+    "XcodeBuildMCP",
+    "figmaRemoteMcp"
   ]
 }

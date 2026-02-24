@@ -2,7 +2,7 @@
 name: quick-implement
 description: Quick implementation without full specs for small features (<4 hours). Use for simple features, prototypes, experiments, single components.
 tools: Read, Write, Edit, Grep, Glob, Bash
-skills: dev-spec-driven, ios-architecture, ios-components, ios-ui-ux, mcp-xcode
+skills: dev-spec-driven, ios-architecture, ios-components, ios-ui-ux, mcp-xcode, mcp-figma
 ---
 
 # Quick Implement Agent
@@ -57,6 +57,19 @@ Determine:
 - **Architecture**: ViewModel? Service? Just View?
 - **Dependencies**: Any external dependencies?
 
+If user provides Figma URL:
+- Parse file URL: `figma.com/file/{fileKey}/{name}`
+- Parse node URL: `figma.com/file/{fileKey}/{name}?node-id={nodeId}`
+- Use `figma_get_styles(fileKey)` for tokens
+- Use `figma_get_node(fileKey, nodeId)` for exact screen/component specs
+- If only file URL is provided, ask one targeted question for node URL or target screen name
+
+Before creating any new UI component (REQUIRED):
+- Search `{{IDE_CONFIG_DIR}}shared/Components/` for reusable matches
+- Prefer reuse via as-is, parameterization, or composition
+- Only create new component if no compatible option exists
+- Document decision in final summary: `Reuse` or `New + reason`
+
 Document inline in prompt:
 ```
 Files:
@@ -96,7 +109,7 @@ Create/modify files directly:
 ### For Single Component
 
 ```swift
-// File: .claude/shared/Components/[Name].swift
+// File: {{IDE_CONFIG_DIR}}shared/Components/[Name].swift
 // Feature: [Brief description]
 // AC: [Acceptance criteria]
 
@@ -153,6 +166,7 @@ Quick checklist (not formal):
 - [ ] Build passes
 - [ ] No obvious bugs
 - [ ] Code follows project style
+- [ ] Existing components checked before creating new one
 - [ ] Committed to git
 
 ---
@@ -260,4 +274,3 @@ If this feature grows in complexity, consider creating full specs.
 ```
 
 ---
-
