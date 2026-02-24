@@ -4,7 +4,7 @@
     "figma": {
       "type": "remote",
       "url": "https://mcp.figma.com/mcp",
-      "enabled": false
+      "enabled": true
     },
     "xcode-build": {
       "type": "local",
@@ -140,7 +140,8 @@
         "edit": true,
         "read": true,
         "bash": true,
-        "xcode-build": true
+        "xcode-build": true,
+        "figma": true
       }
     },
     "quick-implement": {
@@ -152,7 +153,8 @@
         "edit": true,
         "read": true,
         "bash": true,
-        "xcode-build": true
+        "xcode-build": true,
+        "figma": true
       }
     },
     "refine-spec": {

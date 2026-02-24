@@ -17,6 +17,7 @@ Execute tasks from `tasks.md`:
 - Task ID (e.g., "2.1") or
 - "next" to execute next task
 - "next pbt" to execute next PBT task
+- Optional: Figma URL (file URL or node URL)
 
 ## Output
 - Code files
@@ -83,10 +84,23 @@ Please create specs first:
 
 ### Step 2: If UI Task
 **Check for Figma link:**
-1. Use `figma_get_styles` → Fetch design tokens
-2. Use `figma_get_node` → Fetch component specs
-3. Update `{{IDE_CONFIG_DIR}}shared/Styles/` and `COMPONENT_FORMAT.md`
-4. Implement UI according to Figma specs
+1. Parse URL:
+   - File URL: `figma.com/file/{fileKey}/{name}`
+   - Node URL: `figma.com/file/{fileKey}/{name}?node-id={nodeId}`
+2. Use `figma_get_styles(fileKey)` → Fetch design tokens
+3. If `nodeId` exists, use `figma_get_node(fileKey, nodeId)` → Fetch component specs
+4. If only file URL is provided, use `figma_get_file(fileKey)` then choose target node by screen name
+5. Update `{{IDE_CONFIG_DIR}}shared/Styles/` and `COMPONENT_FORMAT.md`
+6. Run `mcp-figma` deep UI/UX analysis summary (states, accessibility, consistency)
+7. Implement UI according to Figma specs and analysis findings
+
+**Component Reuse Gate (REQUIRED before creating new component):**
+1. Search existing components in `{{IDE_CONFIG_DIR}}shared/Components/`
+2. Evaluate reuse options: use as-is, parameterize, compose
+3. Only create a new component if no compatible option exists
+4. Record reuse decision in task notes:
+   - `Reuse: <component-name>` or
+   - `New: <component-name> | Reason: <why reuse not possible>`
 
 ### Step 3: Implement
 
@@ -216,6 +230,7 @@ func testUserRoundTripProperty() {
 - ONLY work on 1 task at a time
 - MUST read design.md before coding
 - MUST update tasks.md after completion
+- MUST check existing components before creating any new UI component
 
 ### Phase Completion (IMPORTANT)
 - AFTER completing all tasks in a phase:
@@ -232,6 +247,11 @@ func testUserRoundTripProperty() {
 - `mcp-figma`: Fetch design specs for UI tasks
 - `ios-architecture`: Folder/file structure
 - `ios-components`: Create reusable UI components
+
+### Figma URL Handling
+- If user provides a Figma URL, parse `fileKey` and `node-id` immediately
+- If parse fails, ask one targeted question: "Please share the Figma node URL for the exact screen/component"
+- For UI tasks, prefer Figma specs over assumptions
 
 ### PBT Specific
 - MUST copy Property statement to test comment

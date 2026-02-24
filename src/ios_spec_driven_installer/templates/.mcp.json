@@ -6,7 +6,7 @@
       "autoApprove": [
         "get_design_context"
       ],
-      "disabled": true
+      "disabled": false
     },
     "XcodeBuildMCP": {
       "command": "npx",

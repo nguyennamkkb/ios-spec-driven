@@ -11,7 +11,8 @@ allowed-tools: Read, Write, MCP
 - [2. Setup Design System](#2-setup-design-system)
 - [3. Implement Screen](#3-implement-screen)
 - [4. Export Assets](#4-export-assets)
-- [5. Checklist](#5-checklist)
+- [5. Deep UI/UX Analysis](#5-deep-uiux-analysis)
+- [6. Checklist](#6-checklist)
 
 ---
 
@@ -93,7 +94,67 @@ Export image from node.
 
 ---
 
-## 5. Checklist
+## 5. Deep UI/UX Analysis
+
+Use this section before implementation when quality matters.
+
+### 5.1 Screen Audit (per node)
+
+For each target screen, extract:
+- Layout structure (containers, spacing system, breakpoints)
+- Typography scale (title/body/caption hierarchy)
+- Color roles (primary/surface/text/error/success)
+- Component states (default/focus/pressed/disabled/loading/error/empty)
+- Interaction patterns (tap, swipe, drag, long press, transitions)
+
+### 5.2 UX Heuristic Review
+
+Evaluate each screen with these checks:
+- Clarity: primary action obvious within 3 seconds
+- Feedback: every action has visible response
+- Error prevention: destructive actions require confirmation
+- Recovery: clear path after error and offline state
+- Consistency: same pattern for same intent across screens
+
+### 5.3 Accessibility Review
+
+Verify design intent supports:
+- Touch target >= 44x44 pt
+- Text contrast target >= WCAG AA
+- Dynamic Type scaling
+- VoiceOver reading order and labels
+- Color not used as the only signal
+
+### 5.4 Flow Completeness
+
+Check full flow states exist in Figma:
+- Happy path
+- Empty state
+- Loading/skeleton
+- Validation and server/network errors
+- Permission denied / blocked states
+
+### 5.5 Required Output (before coding)
+
+Produce a concise report:
+
+```markdown
+## Figma UI/UX Analysis Summary
+- Screens analyzed: N
+- Components extracted: N
+- Missing states: [list]
+- Accessibility risks: [list]
+- Consistency issues: [list]
+
+## Implementation Decisions
+- Token mapping: [done/pending]
+- Reusable components to create: [list]
+- UX fixes applied during implementation: [list]
+```
+
+---
+
+## 6. Checklist
 
 ### Setup Project
 - [ ] Get design tokens with figma_get_styles
@@ -107,3 +168,9 @@ Export image from node.
 - [ ] Map layout to SwiftUI
 - [ ] Use design tokens
 - [ ] Export assets if needed
+
+### Deep UI/UX Quality Gate
+- [ ] Component states covered (default/loading/error/empty)
+- [ ] Interaction feedback defined for key actions
+- [ ] Accessibility checks documented
+- [ ] UX risks documented with proposed fixes

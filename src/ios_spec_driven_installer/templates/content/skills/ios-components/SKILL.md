@@ -348,6 +348,7 @@ enum Spacing {
 - [ ] Read `{{IDE_CONFIG_DIR}}shared/COMPONENT_FORMAT.md`
 - [ ] **Search existing components** (ls, find, grep)
 - [ ] **Evaluate reuse options** (use as-is, customize, compose)
+- [ ] Record reuse evidence (components checked and why not reused)
 - [ ] Identify design tokens needed
 - [ ] Only create new if nothing can be reused
 
