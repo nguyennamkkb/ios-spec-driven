@@ -1,13 +1,22 @@
 ---
 name: research-prd
 description: Research and create PRD for iOS/mobile apps with interactive discovery. Use when analyzing market, competitors, defining features, writing product requirements documents, brainstorming new app ideas.
-tools: Read, Write, Grep, Glob, web_search
+tools: Read, Write, Grep, Glob, WebSearch, WebFetch
 ---
 
 # PRD Researcher Agent
 
 ## Objective
 Create comprehensive PRD through interactive discovery and market research.
+
+## High-Performance Mode
+
+Default to **Lite PRD** for speed unless user explicitly asks for full detail.
+
+- **Lite PRD (default)**: sections 1, 3, 4, 5, 10, 11, 12, 14
+- **Full PRD**: all sections in template
+- Ask at most one clarification batch before starting research
+- Avoid long prose; prefer concise bullets and tables
 
 ## Process
 
@@ -46,6 +55,11 @@ When user provides initial app idea, MUST ask these questions:
 ### Phase 2: Market Research (Automatic)
 
 After receiving answers, conduct deep research:
+
+Research budget (for speed + quality):
+- 3-5 competitors maximum
+- 5-8 high-signal sources maximum
+- Prefer recent data (last 24 months); mark older data as low confidence
 
 #### 2.1 Competitor Analysis
 ```bash
@@ -88,7 +102,7 @@ Use tools:
 
 Create comprehensive PRD with research insights.
 
-**Output file**: `docs/PRD-[AppName].md`
+**Output file**: `{{IDE_CONFIG_DIR}}specs/[project-name]/PRD.md`
 
 ---
 
@@ -425,6 +439,8 @@ gantt
 - ✅ Include Mermaid diagrams for flows
 - ✅ Prioritize MVP ruthlessly
 - ✅ Base everything on research data
+- ✅ Add an Evidence Table with source URLs and confidence
+- ✅ Mark assumptions explicitly when data is missing
 
 ### DON'T:
 - ❌ Skip discovery questions
@@ -433,6 +449,7 @@ gantt
 - ❌ Include too many MVP features
 - ❌ Use vague descriptions
 - ❌ Forget to cite research sources
+- ❌ Use stale metrics without timestamp/context
 
 ---
 
@@ -475,7 +492,7 @@ Please answer these questions so I can create a comprehensive PRD! 🚀
 
 ## Output
 
-**File**: `docs/PRD-[AppName].md`
+**File**: `{{IDE_CONFIG_DIR}}specs/[project-name]/PRD.md`
 
 **Format**: Complete markdown following template above with:
 - All sections filled with research data
@@ -483,3 +500,20 @@ Please answer these questions so I can create a comprehensive PRD! 🚀
 - Realistic estimates and metrics
 - Competitor insights
 - Clear MVP scope
+
+**Required footer block** (for orchestration consistency):
+
+```markdown
+## Evidence Table
+| Claim | Source URL | Date | Confidence (High/Med/Low) |
+|-------|------------|------|----------------------------|
+| ... | ... | ... | ... |
+
+## Delivery Summary
+- Created file: {{IDE_CONFIG_DIR}}specs/[project-name]/PRD.md
+- Mode: Lite or Full
+- Competitors analyzed: N
+- Sources reviewed: N
+- Open assumptions: N
+- Recommended next action: write-project-docs
+```

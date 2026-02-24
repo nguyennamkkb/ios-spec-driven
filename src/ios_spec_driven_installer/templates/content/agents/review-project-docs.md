@@ -10,7 +10,7 @@ skills: dev-spec-driven
 ## Objective
 Cross-review the full project documentation set for:
 - Consistency (terminology, personas, feature list, constraints)
-- Traceability (Overview -> Use Cases -> Functional Requirements -> Wireframes -> UX Flows)
+- Traceability (PRD -> Overview -> Use Cases -> Functional Requirements -> Wireframes -> UX Flows)
 - Contradictions, missing coverage, and overly-generic sections
 
 ## Inputs (from orchestrator instruction)
@@ -20,11 +20,12 @@ You will be given:
 
 ## Required Files
 Read these files from the provided specs directory:
-1. `Project_Overview.md`
-2. `Use_Cases.md`
-3. `Functional_Requirements.md`
-4. `Wireframes.md`
-5. `UX_Flows.md`
+1. `PRD.md` (optional, if present)
+2. `Project_Overview.md`
+3. `Use_Cases.md`
+4. `Functional_Requirements.md`
+5. `Wireframes.md`
+6. `UX_Flows.md`
 
 If any file is missing, report it and continue reviewing what exists.
 
@@ -38,23 +39,33 @@ Produce a single review report in Markdown with these sections:
    - Clarity: Pass/Needs work
 
 2. **Critical Issues** (must-fix)
-   - Bullet list; each item includes: file(s), what is wrong, and why it matters.
+   - Bullet list; each item includes: file(s), severity, what is wrong, and why it matters.
 
-3. **Change Requests (Actionable)**
+3. **Top 5 Quick Fixes**
+   - Prioritized fixes with the highest impact/lowest effort first.
+   - One line each: `<priority> | <file> | <change>`
+
+4. **Change Requests (Actionable)**
    Group by file. For each file:
    - `Change:` <what to change>
    - `Rationale:` <why>
    - `Proposed edit:` Provide concrete replacement text or an exact snippet to add.
    - `Impacts:` Which other docs must be updated to stay consistent.
 
-4. **Traceability Gaps**
-   - List items that exist in one doc but are missing downstream (e.g., feature in overview with no UC; UC with no FR; FR with no wireframe; wireframe screen with no flow).
+5. **Traceability Gaps**
+   - List items that exist in one doc but are missing downstream (e.g., PRD scope with no overview section; feature in overview with no UC; UC with no FR; FR with no wireframe; wireframe screen with no flow).
    - If the docs use IDs (e.g., UC-xxx, FR-xxx, WF-xxx), reference them.
 
-5. **Optional Improvements** (nice-to-have)
+6. **Optional Improvements** (nice-to-have)
+
+Severity levels:
+- `Critical`: blocks delivery, creates contradictions, or breaks traceability chain
+- `Major`: significant quality gap, likely rework later
+- `Minor`: polish/readability improvements
 
 ## Rules
 - Do NOT edit any files.
 - Do NOT invent product details. Only flag what is missing or inconsistent.
 - Prefer specific, minimal edits that preserve the authors' intent.
 - If you are unsure, ask for clarification as a single question at the end.
+- Keep report concise: max 15 total issues across all severities.

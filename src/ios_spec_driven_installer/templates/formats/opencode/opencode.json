@@ -26,6 +26,7 @@
       "permission": {
         "task": {
           "*": "deny",
+          "research-prd": "allow",
           "write-project-overview": "allow",
           "write-use-cases": "allow",
           "write-functional-requirements": "allow",
@@ -171,7 +172,9 @@
       "tools": {
         "write": true,
         "edit": true,
-        "read": true
+        "read": true,
+        "websearch": true,
+        "webfetch": true
       }
     }
   }

@@ -507,6 +507,19 @@ After creating `Functional_Requirements.md`, MUST display:
 - If user selects modify → apply changes → ask again
 - If user selects continue → call `write-wireframes` agent
 
+### Exit Checklist (Efficiency)
+- No placeholder tokens like `[Feature]`, `[Module]`, `[If applicable]` in final file
+- Every P0 use case maps to at least one FR
+- Every FR includes: Description, Input, Processing, Output, Acceptance Criteria
+- IDs are unique and sequential (`FR-XXX`, `NFR-XXX`, `BR-XXX.Y`, `ERR-XXX.Y`)
+
+### Delivery Summary (Required)
+At the end, include concise summary bullets:
+- Created file path
+- Total FR and NFR counts
+- Coverage: mapped UCs / total UCs
+- Open assumptions count
+
 ---
 
 ## Tips for AI

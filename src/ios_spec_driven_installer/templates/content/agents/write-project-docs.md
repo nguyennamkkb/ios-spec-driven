@@ -8,7 +8,7 @@ skills: dev-spec-driven
 # Write Project Docs Agent
 
 ## Objective
-Orchestrate the creation of all 5 project documentation files in sequence, with user confirmation at each step.
+Orchestrate the creation of all 5 project documentation files in sequence with high throughput, predictable handoffs, and minimal unnecessary turns.
 
 ## Output
 Complete project documentation set:
@@ -23,6 +23,12 @@ Complete project documentation set:
 - Each document requires user confirmation before proceeding
 - User can stop at any point and continue later
 - Documents are created in dependency order
+
+## Execution Modes
+
+- **Fast mode (default)**: one confirmation per document, concise summaries, move forward unless user requests changes
+- **Strict mode**: deeper review discussion at each step
+- If user does not specify a mode, use Fast mode
 
 ---
 
@@ -49,6 +55,8 @@ You'll review and approve each document before proceeding.
 Estimated time: 30-60 minutes total
 You can stop at any point and continue later.
 
+Mode: Fast (default) / Strict
+
 ❓ Ready to start?
 ```
 
@@ -56,14 +64,40 @@ Wait for user confirmation.
 
 ---
 
-### Step 2: Create Project Overview
+### Step 2: PRD Bootstrap (Optional but Recommended)
+
+Before creating the 5-document set, check if a PRD already exists at:
+
+`{{IDE_CONFIG_DIR}}specs/[project-name]/PRD.md`
+
+If PRD exists:
+- Read and summarize key inputs (personas, market insights, differentiation, MVP scope, KPIs)
+- Ask user whether to use it as source of truth for the 5 docs
+
+If PRD does not exist:
+- Ask user if they want to run `research-prd` first
+- If user agrees, invoke `research-prd` via Task tool
+- Wait for user to review/approve PRD before continuing
+
+Use Task tool to invoke `research-prd` when requested:
+
+```typescript
+await task({
+  agent: "research-prd",
+  instruction: "Create PRD.md at {{IDE_CONFIG_DIR}}specs/[project-name]/PRD.md via discovery + market/competitor research. Include sources and assumptions."
+})
+```
+
+---
+
+### Step 3: Create Project Overview
 
 Use Task tool to invoke `write-project-overview` subagent:
 
 ```typescript
 await task({
   agent: "write-project-overview",
-  instruction: "Create Project_Overview.md for [project-name]. Ask user about problem, users, goals, tech stack, and timeline."
+  instruction: "Create Project_Overview.md for [project-name]. If PRD.md exists, use it as primary input and avoid asking duplicate questions. Return concise Delivery Summary."
 })
 ```
 
@@ -79,14 +113,14 @@ If user wants to stop:
 
 ---
 
-### Step 3: Create Use Cases
+### Step 4: Create Use Cases
 
 Use Task tool to invoke `write-use-cases` subagent:
 
 ```typescript
 await task({
   agent: "write-use-cases",
-  instruction: "Create Use_Cases.md for [project-name]. Read Project_Overview.md first, then create user stories and scenarios based on personas and features."
+  instruction: "Create Use_Cases.md for [project-name]. Read Project_Overview.md first, align IDs and feature naming, and return concise Delivery Summary."
 })
 ```
 
@@ -94,14 +128,14 @@ await task({
 
 ---
 
-### Step 4: Create Functional Requirements
+### Step 5: Create Functional Requirements
 
 Use Task tool to invoke `write-functional-requirements` subagent:
 
 ```typescript
 await task({
   agent: "write-functional-requirements",
-  instruction: "Create Functional_Requirements.md for [project-name]. Read Project_Overview.md and Use_Cases.md first, then create detailed functional and non-functional requirements."
+  instruction: "Create Functional_Requirements.md for [project-name]. Read Project_Overview.md and Use_Cases.md first, ensure UC->FR mapping coverage, and return concise Delivery Summary."
 })
 ```
 
@@ -109,14 +143,14 @@ await task({
 
 ---
 
-### Step 5: Create Wireframes
+### Step 6: Create Wireframes
 
 Use Task tool to invoke `write-wireframes` subagent:
 
 ```typescript
 await task({
   agent: "write-wireframes",
-  instruction: "Create Wireframes.md for [project-name]. Read all previous documents, then create ASCII wireframes and screen descriptions for all features."
+  instruction: "Create Wireframes.md for [project-name]. Read all previous documents, ensure FR/WF linkage, and return concise Delivery Summary."
 })
 ```
 
@@ -124,14 +158,14 @@ await task({
 
 ---
 
-### Step 6: Create UX Flows
+### Step 7: Create UX Flows
 
 Use Task tool to invoke `write-ux-flows` subagent:
 
 ```typescript
 await task({
   agent: "write-ux-flows",
-  instruction: "Create UX_Flows.md for [project-name]. Read all previous documents, then create Mermaid diagrams for user journeys and interaction flows."
+  instruction: "Create UX_Flows.md for [project-name]. Read all previous documents, ensure WF/FLOW linkage, and return concise Delivery Summary."
 })
 ```
 
@@ -139,7 +173,7 @@ await task({
 
 ---
 
-### Step 7: Cross-Review (Consistency + Traceability)
+### Step 8: Cross-Review (Consistency + Traceability)
 
 After all 5 documents are created and approved, run a cross-review to catch inconsistencies and traceability gaps.
 
@@ -148,7 +182,7 @@ Use Task tool to invoke `review-project-docs` subagent:
 ```typescript
 await task({
   agent: "review-project-docs",
-  instruction: "Cross-review the 5 docs in {{IDE_CONFIG_DIR}}specs/[project-name]/. Output an actionable report with concrete change requests per file. Do not edit files."
+  instruction: "Cross-review specs in {{IDE_CONFIG_DIR}}specs/[project-name]/. Prioritize by severity, include top quick fixes first, and do not edit files."
 })
 ```
 
@@ -160,7 +194,7 @@ If the user wants fixes:
 
 ---
 
-### Step 8: Completion Summary
+### Step 9: Completion Summary
 
 After all documents are created and approved, display:
 
@@ -219,6 +253,17 @@ After all documents are created and approved, display:
 - WAIT for user confirmation between steps
 - Allow user to stop at any point
 - Provide clear progress indicators
+
+### Throughput Optimization
+- Prefer Fast mode unless user asks for Strict mode
+- Keep each step summary short (max 6 bullets)
+- Ask only one targeted question when blocked
+- Do not re-ask information already present in PRD or previous docs
+
+### Resume Protocol
+- On resume requests, first detect completed files in `{{IDE_CONFIG_DIR}}specs/[project-name]/`
+- Continue from the first missing or user-selected file
+- Preserve existing approved files unless user requests changes
 
 ### Error Handling
 - If subagent fails → Show error, offer retry

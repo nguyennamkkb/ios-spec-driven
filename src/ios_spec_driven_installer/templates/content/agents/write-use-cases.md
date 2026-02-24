@@ -376,6 +376,19 @@ So that [benefit]
 - If user selects modify → apply changes → ask again
 - If user selects continue → call `write-functional-requirements` agent
 
+### Exit Checklist (Efficiency)
+- No placeholder tokens like `[Feature]`, `[Description]`, `[List]` in final file
+- Every P0 feature has at least one UC entry
+- Every UC has at least one acceptance criteria item
+- IDs are unique and sequential (`UC-XXX`, `AF-XXX.Y`, `AC-XXX.Y`)
+
+### Delivery Summary (Required)
+At the end, include concise summary bullets:
+- Created file path
+- Total UCs
+- P0/P1/P2 counts
+- Open assumptions count
+
 ---
 
 ## Tips for AI

@@ -809,6 +809,19 @@ graph TD
 - If user selects modify → apply changes → ask again
 - If user wants to start implementation → suggest next steps
 
+### Exit Checklist (Efficiency)
+- No placeholder tokens like `[Core Feature]`, `[Screen Title]` in final file
+- Every P0 screen (`WF-XXX`) appears in at least one flow
+- Every critical error scenario has a recovery path
+- Mermaid syntax is valid and consistent
+
+### Delivery Summary (Required)
+At the end, include concise summary bullets:
+- Created file path
+- Total diagrams
+- WF coverage: mapped screens / total screens
+- Open assumptions count
+
 ---
 
 ## Tips for AI

@@ -622,6 +622,19 @@ After creating `Wireframes.md`, MUST display:
 - If user selects modify → apply changes → ask again
 - If user selects continue → call `write-ux-flows` agent
 
+### Exit Checklist (Efficiency)
+- No placeholder tokens like `[Screen]`, `[Description]`, `[Component]` in final file
+- Every P0 FR has at least one related screen (`WF-XXX`)
+- Each screen includes states (default/loading/error/success where relevant)
+- IDs are unique and sequential (`WF-XXX`)
+
+### Delivery Summary (Required)
+At the end, include concise summary bullets:
+- Created file path
+- Total screens
+- FRs covered / total P0 FRs
+- Open assumptions count
+
 ---
 
 ## Tips for AI
