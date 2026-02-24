@@ -1,6 +1,6 @@
 ---
 name: dev-spec-driven
-description: |
+description: 
   Spec-driven development workflow for iOS. Use when creating new features, writing requirements, design documents, implementation plans, EARS notation, user stories, acceptance criteria, property-based testing, spec workflow, traceability.
 allowed-tools: Read, Write, Edit, Grep, Glob
 ---
