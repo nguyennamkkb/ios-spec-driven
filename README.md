@@ -1,419 +1,259 @@
-# iOS Spec-Driven Development Toolkit
+<a id="readme-top"></a>
 
-> Professional iOS development workflow with AI-powered automation
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/nguyennamkkb/ios-spec-driven-claude/releases)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-iOS-lightgrey.svg)](https://developer.apple.com/ios/)
+<div align="center">
+  <h1 align="center">iOS Spec-Driven Development Toolkit</h1>
+  <p align="center">
+    English | <a href="README.vi.md">Tiếng Việt</a>
+    <br />
+    <br />
+    A production-oriented workflow kit for Claude Code and OpenCode.
+    <br />
+    Move from idea to implementation with clear artifacts: requirements -> design -> tasks -> code.
+    <br />
+    <br />
+    <a href="https://github.com/nguyennamkkb/ios-spec-driven-claude"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/nguyennamkkb/ios-spec-driven-claude/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/nguyennamkkb/ios-spec-driven-claude/issues">Request Feature</a>
+  </p>
+</div>
 
----
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#about">About</a></li>
+    <li><a href="#why-it-works">Why It Works</a></li>
+    <li><a href="#workflow-modes">Workflow Modes</a></li>
+    <li><a href="#what-you-get">What You Get</a></li>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#delivery-artifacts">Delivery Artifacts</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
 
-## 🎯 What is This?
+## About
 
-A complete toolkit that transforms iOS development with Claude Code. Instead of scattered AI conversations, you get:
+Many AI coding sessions lose quality at handoff: requirements are vague, design decisions are scattered, and implementation is hard to validate.
 
-- **📋 Structured Workflow**: Idea → Requirements → Design → Tasks → Code
-- **🔗 Complete Traceability**: Every line of code traces back to user stories
-- **✅ Quality Gates**: Automated checkpoints ensure nothing is missed
-- **🤖 AI-Powered**: 7 specialized skills + 7 workflow agents
-- **🚀 Production Ready**: Battle-tested patterns and best practices
+This toolkit introduces a disciplined execution model for iOS teams:
 
-### Why Use This?
+- define outcomes before coding
+- convert outcomes into structured specs
+- map implementation tasks to acceptance criteria
+- execute with consistent standards and review checkpoints
 
-| Without Toolkit | With Toolkit |
-|----------------|--------------|
-| ❌ Scattered conversations | ✅ Structured workflow |
-| ❌ Lost context | ✅ Complete documentation |
-| ❌ No traceability | ✅ Full traceability chain |
-| ❌ Manual validation | ✅ Automated validation |
-| ❌ Inconsistent quality | ✅ Consistent, high quality |
+It supports both new product definition and feature-by-feature delivery in existing codebases.
 
----
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## ⚡ Quick Start
+## Why It Works
 
-### Install (30 seconds)
+- **Single delivery path** from idea to implementation, reducing context switching
+- **Traceable specs** that connect requirements, design, and tasks
+- **Reusable standards** for architecture, UI components, testing, and execution flow
+- **Dual-IDE support** with automatic template transformation for Claude Code and OpenCode
+- **Agentized workflow** that keeps progress predictable across team members
 
-**For Claude Code (Kiro):**
-```bash
-uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install --ide claude
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Workflow Modes
+
+### 1) Full Documentation Mode (new products)
+
+Use this when starting from an idea and you need market-backed target documentation before implementation.
+
+`@write-project-docs` is used to:
+
+- research market context, user segments, and competing patterns
+- clarify product goals and success criteria
+- produce a complete target documentation set for delivery alignment
+
+```text
+@write-project-docs Create complete documentation for [project name]
 ```
 
-**For OpenCode:**
-```bash
-uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install --ide opencode
+Example:
+
+```text
+@write-project-docs Create complete documentation for fitness tracking app
 ```
 
-**Interactive (choose IDE during install):**
-```bash
-uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install
+### 2) Feature Delivery Mode (existing products)
+
+Use this to ship one feature at a time with clear traceability.
+
+```text
+Create spec for [feature name]
 ```
 
-**Requirements**: [UV](https://docs.astral.sh/uv/) (Python package manager)
+Example:
 
-### Your First Feature
-
-```
-"Create spec for user login with email and password"
+```text
+Create spec for user login feature
 ```
 
-Claude will guide you through:
-1. **Requirements** → User stories + acceptance criteria
-2. **Design** → Architecture + properties
-3. **Tasks** → Implementation plan
-4. **Code** → SwiftUI implementation + tests
+Fast path for small changes:
 
-**Result**: Complete feature with full documentation in ~10 minutes.
-
-### CLI Commands
-
-```bash
-ios-spec-driven install [DIR]     # Install toolkit
-ios-spec-driven status [DIR]      # Check status
-ios-spec-driven uninstall [DIR]   # Uninstall
-ios-spec-driven info              # Show info
+```text
+Quick implementation of [small feature]
 ```
 
----
+Example:
 
-## 🎁 What You Get
+```text
+Update design: add caching layer for dashboard data
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## What You Get
 
 ### 7 Specialized Skills
 
 | Skill | Purpose |
-|-------|---------|
-| **dev-spec-driven** | Core workflow orchestration |
-| **ios-architecture** | MVVM, Clean Architecture, SwiftUI |
-| **ios-components** | Reusable UI components |
-| **ios-ui-ux** | Design patterns & accessibility |
-| **ios-debug** | Error fixing & optimization |
-| **mcp-xcode** | Xcode integration (build, test, analyze) |
-| **mcp-figma** | Figma design integration |
+|---|---|
+| `dev-spec-driven` | Workflow orchestration and process discipline |
+| `ios-architecture` | MVVM, Clean Architecture, SwiftUI patterns |
+| `ios-components` | Reusable UI component standards |
+| `ios-ui-ux` | UX patterns and accessibility |
+| `ios-debug` | Debugging and performance optimization |
+| `mcp-xcode` | Build, test, simulator, analysis |
+| `mcp-figma` | Figma extraction and design handoff |
 
-### 12 Workflow Agents
+### 14 Workflow Agents
 
-#### Specification Workflow (5 Documents)
+#### Project Documentation Workflow
+
 | Agent | Output |
-|-------|--------|
-| **write-project-docs** | Orchestrate all 5 project documentation files |
-| **write-project-overview** | `Project_Overview.md` with vision & architecture |
-| **write-use-cases** | `Use_Cases.md` with user stories & scenarios |
-| **write-functional-requirements** | `Functional_Requirements.md` with detailed specs |
-| **write-wireframes** | `Wireframes.md` with UI mockups |
-| **write-ux-flows** | `UX_Flows.md` with user journey diagrams |
+|---|---|
+| `write-project-docs` | Orchestrates complete 5-document project flow |
+| `write-project-overview` | `Project_Overview.md` |
+| `write-use-cases` | `Use_Cases.md` |
+| `write-functional-requirements` | `Functional_Requirements.md` |
+| `write-wireframes` | `Wireframes.md` |
+| `write-ux-flows` | `UX_Flows.md` |
+| `review-project-docs` | Review and consistency checks |
 
 #### Feature Development Workflow
+
 | Agent | Output |
-|-------|--------|
-| **write-spec** | `requirements.md` with user stories |
-| **write-design** | `design.md` with architecture |
-| **write-tasks** | `tasks.md` with implementation plan |
-| **execute-tasks** | SwiftUI code + tests |
-| **refine-spec** | Update existing specs |
-| **quick-implement** | Skip specs, code directly |
-| **research-prd** | PRD from research |
+|---|---|
+| `write-spec` | `requirements.md` |
+| `write-design` | `design.md` |
+| `write-tasks` | `tasks.md` |
+| `execute-tasks` | SwiftUI implementation + tests |
+| `refine-spec` | Update existing specs |
+| `quick-implement` | Direct implementation for small scope |
+| `research-prd` | PRD draft from research context |
 
-### Automation & Validation
+### Shared Guides
 
-- **Traceability Checker**: Validates US → AC → Design → Task → Code
-- **Property-Based Testing**: SwiftCheck templates (4 types)
-- **Component Standards**: Standardized SwiftUI structure
-- **Error Recovery**: Automatic retry with smart limits
-- **Parallel Execution**: Run independent tasks simultaneously
+- `COMPONENT_FORMAT.md`
+- `PBT_GUIDE.md`
+- `PARALLEL_EXECUTION_GUIDE.md`
+- `SPEC_WORKFLOW_GUIDE.md`
 
-### MCP Integrations
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-- **Xcode MCP**: Build, test, run simulator, analyze
-- **Figma MCP**: Fetch designs, extract specs
+## Getting Started
 
----
+### Prerequisite
 
-## 📖 Workflow
+- Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
 
-### Two Workflows Available
+### Install for Claude Code
 
-#### 1. Full Specification Workflow (New Projects)
-
-For new projects, create complete project documentation first:
-
-```
-"@write-project-docs Create complete documentation for [project name]"
-```
-
-**Output**:
-```
-.opencode/specs/[project-name]/
-├── Project_Overview.md      # Vision, architecture, roadmap
-├── Use_Cases.md             # User stories, scenarios
-├── Functional_Requirements.md  # Detailed feature specs
-├── Wireframes.md            # UI mockups, design system
-└── UX_Flows.md              # User journey diagrams
-```
-
-**Time**: 30-60 minutes  
-**Benefit**: Complete, traceable specifications before coding
-
-**Process**:
-```
-💡 Idea
-  ↓
-📋 write-project-docs → 5 Documents
-  ↓ [✓ User Reviews Each]
-🚀 Start Implementation
-```
-
-See `SPEC_WORKFLOW_GUIDE.md` for detailed instructions.
-
----
-
-#### 2. Feature Development Workflow (Existing Projects)
-
-For individual features in existing projects:
-
-```
-"Create spec for [feature name]"
-```
-
-**Output**:
-```
-.opencode/specs/[feature-name]/
-├── requirements.md  # User stories + EARS criteria
-├── design.md        # Architecture + properties
-└── tasks.md         # Implementation plan + traceability
-```
-
-**Time**: 10-15 minutes per feature
-
-### Process
-
-```
-💡 Idea
-  ↓
-📋 write-spec → requirements.md
-  ↓ [✓ User Confirms]
-🎨 write-design → design.md
-  ↓ [✓ User Confirms]
-📝 write-tasks → tasks.md
-  ↓ [✓ User Confirms]
-💻 execute-tasks → Code
-  ↓ [Checkpoints: Build + Test + Commit]
-✅ Done
-```
-
-### Usage Examples
-
-#### Full Specification Workflow (New Project)
-
-```
-"@write-project-docs Create complete documentation for fitness tracking app"
-```
-
-**Agent will**:
-1. Ask about problem, users, features, tech stack
-2. Create Project_Overview.md → wait for approval
-3. Create Use_Cases.md → wait for approval
-4. Create Functional_Requirements.md → wait for approval
-5. Create Wireframes.md → wait for approval
-6. Create UX_Flows.md → wait for approval
-7. Show completion summary
-
-**Result**: Complete project documentation set ready for implementation
-
----
-
-#### Full Spec Workflow
-
-```
-"Create spec for shopping cart"
-```
-
-**Output**:
-```
-.claude/specs/shopping-cart/
-├── requirements.md  # User stories + EARS criteria
-├── design.md        # Architecture + properties
-└── tasks.md         # Implementation plan + traceability
-```
-
-**Time**: ~10-15 minutes
-
-#### Quick Implementation
-
-```
-"Quick implementation of dark mode toggle"
-```
-
-**Output**: Code directly, no specs  
-**Time**: ~2-5 minutes
-
-#### Individual Steps
-
-```
-"Write requirements for user profile"
-"Write design for user profile"
-"Write tasks for user profile"
-"Implement task 3.1.2.1"
-```
-
-#### Update Specs
-
-```
-"Add requirement: filter by priority"
-"Update design: add caching layer"
-"Sync tasks for todo-list feature"
-```
-
-### Spec Structure
-
-**requirements.md**:
-```markdown
-# User Stories
-US-001: As a user, I want to login with email...
-
-# Acceptance Criteria (EARS format)
-AC-001.1: WHEN user enters valid email
-          THEN system validates format
-```
-
-**design.md**:
-```markdown
-# Architecture
-- MVVM pattern
-- Combine for reactive updates
-
-# Properties
-P1: Valid email always passes validation
-P2: Login state persists across sessions
-```
-
-**tasks.md**:
-```markdown
-# Implementation Plan
-3.1.1.1 [AC-001.1] Create LoginViewModel
-3.1.1.2 [AC-001.1, P1] Add email validation [PBT]
-3.1.1.3 [AC-001.1] Implement login flow
-```
-
-### Complete Traceability
-
-Every line of code traces back:
-
-```
-US-001 (User Story)
-  └── AC-001.1 (Acceptance Criteria)
-      └── Design 3.1 (Architecture)
-          └── Property P1 (Correctness)
-              └── Task 3.1.1.2 [PBT]
-                  └── LoginViewModel.swift
-```
-
-**Validate**:
 ```bash
-python .claude/scripts/validate_traceability.py shopping-cart
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install --ide claude
 ```
 
-**Output**:
-```
-✅ Traceability: 100%
-- User Stories: 5
-- Acceptance Criteria: 12
-- Tasks: 24
+### Install for OpenCode
+
+```bash
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install --ide opencode
 ```
 
-### Quality Gates
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-Every checkpoint ensures:
-- ✅ Build passes (via mcp-xcode)
-- ✅ Tests pass
-- ✅ Code committed to git
-- ✅ User confirms to continue
+## Delivery Artifacts
 
-### Property-Based Testing
+### Full Documentation Mode Output
 
-Auto-generated tests with SwiftCheck:
-
-```swift
-func testLoginValidation() {
-    property("Valid email passes") <- forAll { 
-        (email: String) in
-        email.contains("@") ==> {
-            LoginValidator.validate(email) == true
-        }
-    }
-}
+```text
+[.claude|.opencode]/specs/[project-name]/
+  Project_Overview.md
+  Use_Cases.md
+  Functional_Requirements.md
+  Wireframes.md
+  UX_Flows.md
 ```
 
-**4 Property Types**:
-1. **Round-trip**: `encode(decode(x)) == x`
-2. **Invariant**: `condition(x) == true`
-3. **Idempotent**: `f(f(x)) == f(x)`
-4. **Commutative**: `f(x,y) == f(y,x)`
+### Feature Delivery Mode Output
 
-### Feature Independence
-
-Each feature is self-contained:
-
-```
-.claude/specs/
-├── user-authentication/
-│   ├── requirements.md
-│   ├── design.md
-│   └── tasks.md
-├── shopping-cart/
-│   ├── requirements.md
-│   ├── design.md
-│   └── tasks.md
-└── user-profile/
-    ├── requirements.md
-    ├── design.md
-    └── tasks.md
+```text
+[.claude|.opencode]/specs/[feature-name]/
+  requirements.md
+  design.md
+  tasks.md
 ```
 
-**Benefits**:
-- Work on multiple features in parallel
-- Easy to review and update
-- Clear ownership and scope
+Typical delivery sequence:
 
----
-
-## 🌐 Language Support
-
-Use any language you prefer:
-
-```
-✅ "Create spec for login feature"
-✅ "Tạo spec cho tính năng đăng nhập"
-✅ "Create spec cho login feature"
+```text
+Idea
+  -> market research and positioning
+  -> project docs (target artifacts)
+  -> feature planning
+  -> implementation
+  -> verification
 ```
 
-**Vietnamese examples**:
+Typical feature sequence:
+
+```text
+Idea
+  -> requirements
+  -> design
+  -> tasks
+  -> implementation
+  -> verification
 ```
-"Viết requirements cho giỏ hàng"
-"Implement task 3.1.2.1"
-"Thêm requirement: lọc theo độ ưu tiên"
-"Quick implementation của dark mode toggle"
-```
 
----
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 📚 Documentation
+## Roadmap
 
-- **Skills**: `.claude/skills/*/SKILL.md` - Detailed skill documentation
-- **Agents**: `.claude/agents/*.md` - Agent workflows
-- **Guides**: `.opencode/shared/*.md` - Best practices
-  - `SPEC_WORKFLOW_GUIDE.md` - Full specification workflow guide
-  - `COMPONENT_FORMAT.md` - SwiftUI component standards
-  - `PBT_GUIDE.md` - Property-based testing guide
-  - `PARALLEL_EXECUTION_GUIDE.md` - Parallel execution guide
+- [ ] Improve automated tests for installer and template transformations
+- [ ] Introduce release channels (`stable` and `dev`)
+- [ ] Expand docs for multilingual team onboarding
+- [ ] Extend validation for full project-document workflows
 
----
+See [open issues](https://github.com/nguyennamkkb/ios-spec-driven-claude/issues) for ongoing discussions.
 
-## 📝 License
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-MIT License - See [LICENSE](LICENSE)
+## Contact
 
----
+Nguyen Nam - nguyennamkkb@gmail.com
 
-**Version**: 1.0.0 • **Status**: ✅ Production Ready
+Project Link: [https://github.com/nguyennamkkb/ios-spec-driven-claude](https://github.com/nguyennamkkb/ios-spec-driven-claude)
 
-*Built for iOS developers using Claude Code • Optimized for SwiftUI + MVVM*
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- MARKDOWN LINKS -->
+[contributors-shield]: https://img.shields.io/github/contributors/nguyennamkkb/ios-spec-driven-claude.svg?style=for-the-badge
+[contributors-url]: https://github.com/nguyennamkkb/ios-spec-driven-claude/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/nguyennamkkb/ios-spec-driven-claude.svg?style=for-the-badge
+[forks-url]: https://github.com/nguyennamkkb/ios-spec-driven-claude/network/members
+[stars-shield]: https://img.shields.io/github/stars/nguyennamkkb/ios-spec-driven-claude.svg?style=for-the-badge
+[stars-url]: https://github.com/nguyennamkkb/ios-spec-driven-claude/stargazers
+[issues-shield]: https://img.shields.io/github/issues/nguyennamkkb/ios-spec-driven-claude.svg?style=for-the-badge
+[issues-url]: https://github.com/nguyennamkkb/ios-spec-driven-claude/issues
