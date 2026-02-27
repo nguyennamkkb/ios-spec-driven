@@ -177,3 +177,21 @@ Features/
 - [ ] Make it configurable via parameters
 - [ ] Add Preview
 - [ ] Document usage
+
+---
+
+## Autopilot Integration Contract
+
+When used with spec agents:
+- `design.md` sections define feature modules and file plan.
+- `tasks.md` Task Registry must reference real paths under this structure.
+- checkpoint order should follow architecture dependencies:
+  1. Models/Services
+  2. ViewModels
+  3. Views
+  4. Integration
+
+Required alignment:
+- Every task file path must map to `Features/[FeatureName]/...` or shared folders.
+- Avoid cross-feature coupling before integration checkpoint.
+- Keep dependency flow: View -> ViewModel -> Service -> Model.

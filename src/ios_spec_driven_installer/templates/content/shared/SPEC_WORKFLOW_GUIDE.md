@@ -605,6 +605,61 @@ After completing the workflow, you should have:
 
 ---
 
+## ⚙️ Feature Autopilot Contract (Agent + Skill Alignment)
+
+For feature-level workflow (`write-spec`, `write-design`, `write-tasks`, `execute-tasks`), use this contract:
+
+### State Machine
+
+```text
+draft_requirements -> approved_requirements
+-> draft_design -> approved_design
+-> draft_tasks -> approved_tasks
+-> executing -> blocked | done
+```
+
+### Required Files
+
+```text
+{{IDE_CONFIG_DIR}}specs/[feature-name]/
+  requirements.md
+  design.md
+  tasks.md
+  spec-state.json
+```
+
+### Task Schema (tasks.md)
+
+Must include:
+- Task Registry (machine-readable)
+- Dependency Matrix
+- Traceability Matrix
+- Implementation checklist sections
+
+Allowed status values:
+- `pending`, `in_progress`, `blocked`, `done`
+
+### Checkpoint Gates
+
+A phase can advance only when all pass:
+1. Build (mcp-xcode)
+2. Tests (targeted or phase-level)
+3. Traceability validation script
+
+### iOS Quality Gate
+
+Before marking UI tasks complete:
+- loading/empty/error/success states implemented
+- accessibility checks completed
+- component reuse decision recorded
+
+### Parallel Policy
+
+Default is sequential autopilot.
+Parallel execution is allowed only when dependency matrix explicitly permits it.
+
+---
+
 **Version**: 1.0  
 **Last Updated**: 2026-02-06  
 **Status**: Production Ready

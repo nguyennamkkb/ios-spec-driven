@@ -1,134 +1,86 @@
 ---
 name: mcp-xcode
-description: Build and test iOS apps with Xcode. Use when building projects, running tests, checking errors, getting build logs, listing schemes, clean builds, archiving apps.
+description: Build and test iOS apps with Xcode MCP during autopilot checkpoints and recovery loops.
 allowed-tools: Read, MCP, Bash
 ---
 
-# Xcode MCP Integration
+# Xcode MCP Checkpoint Skill
 
-## Table of Contents
-- [1. MCP Tools](#1-mcp-tools)
-- [2. Workflows](#2-workflows)
-- [3. Error Handling](#3-error-handling)
-- [4. Build Configurations](#4-build-configurations)
-- [5. Checklist](#5-checklist)
+## Purpose
+Provide strict build/test gates for spec-driven autopilot execution.
 
----
-
-## 1. MCP Tools
-
-### xcode_list_schemes
-List all schemes in project.
-- Input: None (auto-detect)
-- Output: Scheme list, default scheme
-- Use: First setup, before build
-
-### xcode_build
-Build project or workspace.
-- Input: scheme (required), configuration (Debug/Release), clean (true/false)
-- Output: Build status, errors, warnings, build time
-- Use: After implementing tasks, before commit
-
-### xcode_test
-Run unit and UI tests.
-- Input: scheme (required), testPlan (optional), only (specific test)
-- Output: Test results, failed details, coverage
-- Use: After writing tests, before commit
-
-### xcode_clean
-Clean build folder.
-- Input: scheme (required)
-- Output: Clean status
-- Use: Unclear build errors, after dependency changes
-
-### xcode_get_build_settings
-Get project build settings.
-- Input: scheme, configuration
-- Output: All build settings
-- Use: Debug build issues
-
+Use this skill at:
+- task-level scoped checks
+- checkpoint/phase gates
+- recovery loops after failures
 
 ---
 
-## 2. Workflows
+## 1) Standard Commands
 
-### Setup Project (First Time)
-1. `xcode_list_schemes` → Save scheme name
-2. `xcode_build` with scheme, Debug config
-3. Fix errors if any
-
-### After Task Implementation
-1. `xcode_build` with scheme
-2. Success → Continue
-3. Failed → Fix errors → Rebuild
-
-### After Phase Completion
-1. `xcode_clean`
-2. `xcode_build` with clean: true
-3. `xcode_test`
-4. All pass → git commit
-
-### Pre-Commit
-1. xcode_clean
-2. xcode_build (clean: true)
-3. xcode_test
-4. All pass → commit
+- `xcode_list_schemes`
+- `xcode_build`
+- `xcode_test`
+- `xcode_clean`
+- `xcode_get_build_settings`
 
 ---
 
-## 3. Error Handling
+## 2) Gate Sequence (Required)
 
-### Common Build Errors
+At each checkpoint:
+1. list scheme (if not cached)
+2. build in Debug
+3. run relevant tests
+4. if needed, clean + rebuild
 
-| Error | Fix |
-|-------|-----|
-| Syntax error | Read file, fix syntax |
-| Type mismatch | Check types, convert if needed |
-| Missing import | Add import statement |
-| Unresolved identifier | Check declaration, DI |
+Only pass gate when build and required tests pass.
 
-### Common Test Errors
+Recommended order:
 
-| Error | Fix |
-|-------|-----|
-| Test timeout | Increase timeout or check async |
-| Assertion failed | Check logic, update test/code |
-| Missing test target | Check scheme includes tests |
-
----
-
-## 4. Build Configurations
-
-### Debug vs Release
-
-| Setting | Debug | Release |
-|---------|-------|---------|
-| Optimization | None | Aggressive |
-| Debug Symbols | Yes | No |
-| Build Time | Fast | Slow |
-| App Size | Large | Small |
-
-### Destinations
-- Simulator: `platform=iOS Simulator,name=iPhone 15 Pro`
-- Device: `platform=iOS,id=[UDID]`
-- Generic: `generic/platform=iOS`
+```text
+xcode_list_schemes
+-> xcode_build (Debug)
+-> xcode_test (targeted)
+-> xcode_test (broader suite at phase end)
+```
 
 ---
 
-## 5. Checklist
+## 3) Scoped Checks by Task Type
 
-### Each Build
-- [ ] Correct scheme name
-- [ ] Appropriate configuration
-- [ ] Read errors if any
-- [ ] Fix errors top to bottom
+- model/service task: unit tests for model/service layer
+- ViewModel task: ViewModel tests + state transition tests
+- UI task: compile + relevant UI/snapshot tests (if available)
+- integration task: end-to-end integration tests for feature flow
 
-### Each Test Run
-- [ ] Build passes first
-- [ ] Scheme includes test targets
-- [ ] Read failed test details
+---
 
-### Pre-Commit
-- [ ] Clean build
-- [ ] All tests pass
-- [ ] No warnings (or acceptable)
+## 4) Failure Recovery Policy
+
+Retry tiers:
+- Attempt 1-2: direct code fix, rerun scoped checks
+- Attempt 3: review design/task mismatch, then rerun
+- Still failing: mark task `blocked` and stop autopilot
+
+Never advance checkpoint while build/test is failing.
+
+---
+
+## 5) Pre-Completion Gate (Feature/Phase)
+
+Before marking phase done:
+- clean build
+- full phase test pass
+- no unresolved compile errors
+- update task statuses and traceability rows
+
+---
+
+## 6) Checklist
+
+- [ ] Correct scheme selected
+- [ ] Build passes for changed code
+- [ ] Required tests pass for task and phase
+- [ ] Failures triaged with retry policy
+- [ ] Gate result reflected in task/phase status

@@ -181,6 +181,18 @@ uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude ios-spec-d
 uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude ios-spec-driven install --ide opencode
 ```
 
+### Cấu hình Figma Token (Framelink MCP)
+
+Sau khi cài đặt, hãy thay `YOUR_FIGMA_TOKEN` bằng token cá nhân của bạn:
+
+- Claude Code: `.mcp.json`
+- OpenCode: `.opencode/opencode.json`
+
+Cách tạo Figma token:
+
+- Xem hướng dẫn chính thức: https://help.figma.com/hc/en-us/articles/8085703771159-Manage-personal-access-tokens
+- Quyền cần có: **File content (read)** và **Dev resources (read)**
+
 <p align="right">(<a href="#readme-top">lên đầu trang</a>)</p>
 
 ## Sản phẩm đầu ra

@@ -1,12 +1,13 @@
 {
   "mcpServers": {
-    "figmaRemoteMcp": {
-      "url": "https://mcp.figma.com/mcp",
-      "type": "http",
-      "autoApprove": [
-        "get_design_context"
-      ],
-      "disabled": false
+    "Framelink MCP for Figma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "figma-developer-mcp",
+        "--figma-api-key=YOUR_FIGMA_TOKEN",
+        "--stdio"
+      ]
     },
     "XcodeBuildMCP": {
       "command": "npx",

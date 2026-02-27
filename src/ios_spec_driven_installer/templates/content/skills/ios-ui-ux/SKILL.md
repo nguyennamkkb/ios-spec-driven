@@ -278,3 +278,17 @@ Text("Hello")
 - [ ] Performance acceptable
 - [ ] Animations smooth (60fps)
 - [ ] No layout issues on different devices
+
+---
+
+## Autopilot UI Gate
+
+Before a UI task can be marked `done` in autopilot:
+- [ ] Loading state implemented and testable
+- [ ] Empty state implemented and testable
+- [ ] Error state implemented with recovery action
+- [ ] Success/default state implemented
+- [ ] Accessibility labels/hints added for key interactions
+- [ ] Dynamic Type and touch-target checks completed
+
+If any item fails, task status should remain `in_progress` or move to `blocked`.

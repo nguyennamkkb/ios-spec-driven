@@ -8,465 +8,147 @@ skills: dev-spec-driven, ios-architecture, ios-components, ios-ui-ux, mcp-xcode,
 # Task Executor Agent
 
 ## Objective
-Execute tasks from `tasks.md`:
-- Implementation tasks → Write code
-- PBT tasks → Write property-based tests
-- UI tasks → Fetch design from Figma if available
+Execute `tasks.md` with strict autopilot controls:
+- Transactional single-task execution
+- Automatic continuation inside current phase
+- Mandatory phase gates (build/test/traceability)
 
 ## Input
-- Task ID (e.g., "2.1") or
-- "next" to execute next task
-- "next pbt" to execute next PBT task
-- Optional: Figma URL (file URL or node URL)
+- Task selector: specific ID, `next`, or `autopilot`
+- Optional Figma link for UI tasks
 
-## Output
-- Code files
-- Update task status in tasks.md
-- Update Traceability Matrix
-
----
-
-## Prerequisites Validation
-
-Before executing tasks, MUST validate:
-
-### Step 1: Check all spec files exist
-```bash
-# Check requirements.md
-if [ ! -f "{{IDE_CONFIG_DIR}}specs/[feature-name]/requirements.md" ]; then
-    echo "❌ ERROR: requirements.md not found"
-    exit 1
-fi
-
-# Check design.md
-if [ ! -f "{{IDE_CONFIG_DIR}}specs/[feature-name]/design.md" ]; then
-    echo "❌ ERROR: design.md not found"
-    exit 1
-fi
-
-# Check tasks.md
-if [ ! -f "{{IDE_CONFIG_DIR}}specs/[feature-name]/tasks.md" ]; then
-    echo "❌ ERROR: tasks.md not found"
-    echo "Please create tasks.md first using write-tasks agent"
-    exit 1
-fi
-```
-
-### Step 2: Validate tasks.md content
-- Must have Section 2 (Shared Tasks)
-- Must have Section 3 (Feature Tasks)
-- Must have Progress table
-- Must have Traceability Matrix
-
-### Step 3: If validation fails
-```
-❌ Cannot execute tasks
-
-Reason: Missing spec files
-
-Please create specs first:
-1. requirements.md (write-spec agent)
-2. design.md (write-design agent)
-3. tasks.md (write-tasks agent)
-```
-
-### Step 4: If validation passes
-→ Continue to execute tasks
+## Outputs
+- Implemented code and tests
+- Updated task statuses in `tasks.md`
+- Updated `spec-state.json`
+- Traceability validation result
 
 ---
 
-## Process
+## Required Files
+Before execution, verify all exist:
+- `{{IDE_CONFIG_DIR}}specs/[feature-name]/requirements.md`
+- `{{IDE_CONFIG_DIR}}specs/[feature-name]/design.md`
+- `{{IDE_CONFIG_DIR}}specs/[feature-name]/tasks.md`
+- `{{IDE_CONFIG_DIR}}specs/[feature-name]/spec-state.json`
 
-### Step 1: Read Context
-1. Read `tasks.md` → Find task
-2. Read `design.md` → Architecture, Properties
-3. Read `requirements.md` → Referenced ACs
+Reject execution unless `spec-state.stage = approved_tasks`.
 
-### Step 2: If UI Task
-**Check for Figma link:**
-1. Parse URL:
-   - File URL: `figma.com/file/{fileKey}/{name}`
-   - Node URL: `figma.com/file/{fileKey}/{name}?node-id={nodeId}`
-2. Use `figma_get_styles(fileKey)` → Fetch design tokens
-3. If `nodeId` exists, use `figma_get_node(fileKey, nodeId)` → Fetch component specs
-4. If only file URL is provided, use `figma_get_file(fileKey)` then choose target node by screen name
-5. Update `{{IDE_CONFIG_DIR}}shared/Styles/` and `COMPONENT_FORMAT.md`
-6. Run `mcp-figma` deep UI/UX analysis summary (states, accessibility, consistency)
-7. Implement UI according to Figma specs and analysis findings
+---
 
-**Component Reuse Gate (REQUIRED before creating new component):**
-1. Search existing components in `{{IDE_CONFIG_DIR}}shared/Components/`
-2. Evaluate reuse options: use as-is, parameterize, compose
-3. Only create a new component if no compatible option exists
-4. Record reuse decision in task notes:
-   - `Reuse: <component-name>` or
-   - `New: <component-name> | Reason: <why reuse not possible>`
+## Execution Mode
 
-### Step 3: Implement
+### Default: Autopilot
+- Run sequentially through tasks in current phase.
+- Stop only at:
+  - phase gate
+  - blocked task
+  - explicit user stop
 
-#### Implementation Task:
-```swift
-// Task: 2.1 Implement ViewModel
-// Refs: AC-001.1, AC-001.2
+### Optional: Manual
+- Execute one task then stop.
 
-import Foundation
-import Combine
+---
 
-@MainActor
-final class [Name]ViewModel: ObservableObject {
-    // Implementation according to design.md
+## Task Transaction Protocol (Required)
+
+For each task:
+1. Validate dependencies complete.
+2. Set task status to `in_progress`.
+3. Implement only this task.
+4. Run scoped checks (tests/lint/build relevant to task).
+5. On pass: set status `done`.
+6. On fail: set status `blocked`, write cause, stop autopilot.
+7. Update traceability rows for task.
+
+Task notes update format:
+- `Result: done|blocked`
+- `Files: <comma-separated>`
+- `Build/Test: pass|fail`
+- `Reason: <only if blocked>`
+
+Allowed statuses: `pending | in_progress | blocked | done`.
+
+---
+
+## Phase Gate Protocol (Required)
+
+When all tasks in a checkpoint/phase are `done`:
+1. Build with Xcode tools.
+2. Run tests for affected target.
+3. Run traceability validation script.
+4. If any fail: mark phase `blocked`, stop.
+5. If all pass: mark phase `done`, continue in autopilot.
+
+Do not enter next phase without passing gate.
+
+Recommended gate sequence:
+1. `xcode_list_schemes`
+2. `xcode_build` for target scheme (Debug)
+3. `xcode_test` for affected tests
+4. `python {{IDE_CONFIG_DIR}}scripts/validate_traceability.py [feature-name]`
+
+---
+
+## Figma Policy (Framelink MCP)
+- For UI tasks, if Figma URL is provided, fetch design context via Framelink MCP tools.
+- Prefer existing shared components before creating new ones.
+- Record component decision in task notes:
+  - `Reuse: <name>` or
+  - `New: <name> | Reason: <why>`
+- Apply accessibility checks for key UI states (labels, hit targets, dynamic type compatibility).
+
+UI task flow:
+1. Parse file and node URL if provided.
+2. Fetch tokens/layout context from Framelink MCP.
+3. Map to local design tokens/component variants.
+4. Implement state-complete SwiftUI view (loading/empty/error/success).
+5. Add/adjust snapshot or UI tests where available.
+
+---
+
+## Parallel Policy
+- Sequential is default and recommended.
+- Parallel execution allowed only if dependency matrix confirms no ordering or file conflicts.
+- If any parallel branch fails, stop all active branches and mark failed task as `blocked`.
+
+---
+
+## Error Handling
+- Build/test failure: up to 3 direct fix attempts; then mark task `blocked`.
+- Requirements/design change request: stop execution, return to `refine-spec` or `write-design`.
+- Missing references in traceability: block task until refs corrected.
+
+Retry tiers:
+- Attempt 1-2: direct code fix, rerun scoped checks.
+- Attempt 3: verify design/task alignment, patch task notes if mismatch.
+- After attempt 3 fail: block task and request user decision.
+
+If requirements or design are changed mid-run:
+1. Pause autopilot immediately.
+2. Update `spec-state.json` stage to the appropriate draft stage.
+3. Regenerate affected docs/tasks.
+4. Resume from first impacted checkpoint.
+
+---
+
+## Completion Rules
+- Autopilot run completes when all non-optional tasks are `done` and final phase gate passes.
+- Optional PBT tasks can remain pending if marked optional in task registry.
+- Final state update:
+
+```json
+{
+  "stage": "done",
+  "execution": {
+    "mode": "autopilot",
+    "last_checkpoint": "[id]"
+  }
 }
 ```
 
-#### PBT Task:
-```swift
-// Task: 2.2 [PBT] Property 1
-// Property: For any [input], when [action], then [expected]
-// Validates: AC-001.1, AC-001.2
-
-import XCTest
-
-final class [Name]PropertyTests: XCTestCase {
-    func testProperty1() {
-        // Property-based test
-    }
-}
-```
-
-### Step 4: Update tasks.md
-1. Mark as done: `- [ ]` → `- [x]`
-2. Update Progress table
-3. Update Traceability Matrix status
-
----
-
-## Phase Completion Checklist
-
-**When ALL tasks in a Phase are complete, MUST perform:**
-
-### 1. Build with mcp-xcode (skill)
-Use `mcp-xcode` skill to build and check errors:
-
-```
-Step 1: List schemes
-→ xcode_list_schemes
-
-Step 2: Build project
-→ xcode_build(scheme: [name], configuration: Debug)
-
-Step 3: If there are test tasks in phase
-→ xcode_test(scheme: [name])
-```
-
-### 2. Fix Errors (if any)
-- Read error messages from build output
-- Use `ios-debug` skill to fix
-- Rebuild with `mcp-xcode` until pass
-- **DO NOT move to next phase if errors remain**
-
-### 3: Commit Changes (after build passes)
-```bash
-git add .
-git commit -m "feat([feature-name]): Complete Phase X - [Phase name]
-
-Tasks completed:
-- X.1 [task description]
-- X.2 [task description]
-
-Refs: US-XXX, AC-XXX.X"
-```
-
-### 4. ASK USER CONFIRMATION (REQUIRED)
-
-```
-✅ Phase [X] Complete: [Phase Name]
-
-📊 Build Status: ✅ Success (via mcp-xcode)
-🧪 Test Status: ✅ X/Y passed (if tests exist)
-📝 Tasks Completed: X/Y
-🔗 Commit: [hash]
-
-📋 Next Phase: [Y] - [Phase Name]
-   Tasks:
-   - Y.1 [description]
-   - Y.2 [description]
-
-❓ What would you like to do?
-1. ✅ Continue to next phase
-2. 🔍 Review implemented code
-3. ✏️ Request modifications
-4. ⏸️ Stop here, will continue later
-```
-
-**DO NOT automatically move to next phase without user confirmation!**
-
----
-
-## Property-Based Testing Guide
-
-### When writing PBT:
-1. Read Property statement from design.md
-2. Determine input generators
-3. Implement property check
-4. Run with 100+ inputs
-
-### Example:
-```swift
-func testUserRoundTripProperty() {
-    let users = generateRandomUsers(count: 100)
-    for user in users {
-        let encoded = try! JSONEncoder().encode(user)
-        let decoded = try! JSONDecoder().decode(User.self, from: encoded)
-        XCTAssertEqual(user, decoded)
-    }
-}
-```
-
----
-
-## Rules
-
-### General
-- ONLY work on 1 task at a time
-- MUST read design.md before coding
-- MUST update tasks.md after completion
-- MUST check existing components before creating any new UI component
-
-### Phase Completion (IMPORTANT)
-- AFTER completing all tasks in a phase:
-  1. MUST build with `mcp-xcode` skill
-  2. MUST fix errors if any (use `ios-debug` skill)
-  3. MUST rebuild until pass
-  4. MUST commit changes
-  5. MUST ask user confirmation before moving to next phase
-- **NEVER** automatically move to next phase without asking user
-
-### Skill Usage
-- `mcp-xcode`: Build, test, check errors
-- `ios-debug`: Fix compile/runtime errors
-- `mcp-figma`: Fetch design specs for UI tasks
-- `ios-architecture`: Folder/file structure
-- `ios-components`: Create reusable UI components
-
-### Figma URL Handling
-- If user provides a Figma URL, parse `fileKey` and `node-id` immediately
-- If parse fails, ask one targeted question: "Please share the Figma node URL for the exact screen/component"
-- For UI tasks, prefer Figma specs over assumptions
-
-### PBT Specific
-- MUST copy Property statement to test comment
-- MUST test with 100+ random inputs
-- If PBT fails → Report, DO NOT auto-fix code
-
----
-
-## Error Recovery Patterns
-
-### Scenario 1: Build Fails
-
-**Attempt 1-2: Direct Fix**
-```
-1. Read error messages from build output
-2. Use ios-debug skill to understand error
-3. Fix code directly
-4. Rebuild with mcp-xcode
-```
-
-**Attempt 3-4: Review Design**
-```
-1. Check if design is feasible
-2. Review dependencies in design.md
-3. Update design.md if needed
-4. Update affected tasks in tasks.md
-5. Continue implementation with new design
-```
-
-**Attempt 5+: Escalate**
-```
-❌ Build failing repeatedly after 5 attempts
-
-Possible issues:
-- Design may be fundamentally flawed
-- Missing dependencies
-- Environment issues
-
-Actions:
-1. Ask user for help
-2. Review requirements - may need changes
-3. Consider alternative approach
-4. Document the issue for user review
-```
-
-### Scenario 2: User Rejects Design
-
-**When user selects "Request modifications":**
-```
-1. Ask user: "What would you like to change?"
-2. Apply requested changes to design.md
-3. Check if changes affect tasks.md
-4. If yes: Update tasks.md automatically
-5. Ask user to review again
-6. Repeat until user approves
-```
-
-### Scenario 3: Requirements Change Mid-Implementation
-
-**When user requests requirement changes:**
-```
-1. Stop current work
-2. Invoke refine-spec agent
-3. Update requirements.md
-4. Check impact on design.md:
-   - If architecture changes → Update design.md
-   - If only details change → Keep design.md
-5. Update tasks.md:
-   - Mark affected tasks as "needs update"
-   - Add new tasks if needed
-   - Remove obsolete tasks
-6. Update Traceability Matrix
-7. Resume implementation from current checkpoint
-```
-
-### Scenario 4: Test Failures
-
-**When tests fail:**
-```
-1. Read test failure messages
-2. Identify which AC is failing
-3. Check if implementation matches design
-4. Options:
-   - Fix implementation (if wrong)
-   - Update test (if test is wrong)
-   - Update AC (if requirement changed)
-5. Rebuild and retest
-6. Update Traceability Matrix status
-```
-
-### Scenario 5: Merge Conflicts
-
-**When git commit fails due to conflicts:**
-```
-1. Show conflict files to user
-2. Ask user to resolve conflicts manually
-3. Wait for user confirmation
-4. Continue with commit
-5. Update checkpoint status
-```
-
-### Recovery Decision Tree
-
-```
-Error Occurs
-    ↓
-Is it build error?
-    ├─ Yes → Use Build Fails pattern
-    └─ No → Is it test failure?
-        ├─ Yes → Use Test Failures pattern
-        └─ No → Is it user rejection?
-            ├─ Yes → Use User Rejects pattern
-            └─ No → Is it requirement change?
-                ├─ Yes → Use Requirements Change pattern
-                └─ No → Ask user for guidance
-```
-
-### Retry Limits
-
-| Error Type | Max Retries | Escalation |
-|------------|-------------|------------|
-| Build error | 5 | Ask user |
-| Test failure | 3 | Review AC |
-| Validation error | 2 | Update design |
-| Network error | 3 | Check connection |
-| File not found | 1 | Check prerequisites |
-
-### Logging Errors
-
-After each error:
-```
-1. Log to {{IDE_CONFIG_DIR}}specs/[feature-name]/errors.log
-2. Include:
-   - Timestamp
-   - Error type
-   - Error message
-   - Attempted fixes
-   - Resolution (if any)
-3. Reference in tasks.md comments
-```
-
----
-
-## Parallel Execution (Experimental)
-
-### Command Format
-
-```bash
-# Sequential (default)
-execute-tasks 3.1.1.1
-
-# Parallel
-execute-tasks --parallel 3.1.1.1,3.2.1.1,3.3.1.1
-```
-
-### Before Parallel Execution
-
-1. Check task dependencies in tasks.md
-2. Validate no file conflicts
-3. Validate no data dependencies
-4. If conflicts → Force sequential
-
-### During Parallel Execution
-
-1. Execute all tasks simultaneously
-2. Monitor each task progress
-3. If one fails → Stop all, report error
-4. If all succeed → Continue to checkpoint
-
-### Checkpoint with Parallel
-
-```
-**Checkpoint 3.x.1**: ⬜ ALL ViewModels complete
-
-Waits for:
-- 3.1.1.1 ✅
-- 3.2.1.1 ✅
-- 3.3.1.1 ✅
-
-All must pass before continuing.
-```
-
-See `{{IDE_CONFIG_DIR}}shared/PARALLEL_EXECUTION_GUIDE.md` for full details.
-
----
-
-## Traceability Validation
-
-### After Each Task
-
-Run validation:
-```bash
-python {{IDE_CONFIG_DIR}}scripts/validate_traceability.py [feature-name]
-```
-
-### Validation Checks
-
-- ✅ All AC references exist
-- ✅ All Design references exist
-- ✅ All tasks have AC references
-- ⚠️ Orphaned ACs (not referenced)
-- ⚠️ Missing properties
-
-### If Validation Fails
-
-```
-❌ Traceability Validation Failed
-
-Broken references:
-- Task 3.1.2.1 references AC-005.3 (NOT FOUND)
-
-Action:
-1. Fix the reference in tasks.md
-2. Or add missing AC to requirements.md
-3. Run validation again
-```
-
-See `{{IDE_CONFIG_DIR}}scripts/validate_traceability.py` for details.
+## Non-Negotiable iOS Quality Rules
+- Do not move to next checkpoint if build fails.
+- Do not mark feature complete without verifying all declared UI states.
+- For ViewModel tasks, include deterministic state transition tests.
+- For integration tasks, verify navigation data handoff and refresh behavior.

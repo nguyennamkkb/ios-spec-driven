@@ -366,3 +366,17 @@ enum Spacing {
 - [ ] Test dark mode if applicable
 - [ ] **Document for future reuse**
 - [ ] Consider: Can this replace similar components?
+
+---
+
+## Autopilot Contract
+
+For `tasks.md` integration:
+- Component tasks must include file paths in Task Registry `Files` column.
+- Record reuse decision in task notes:
+  - `Reuse: <component>`
+  - `New: <component> | Reason: <why>`
+- Do not mark component task `done` until:
+  - preview compiles
+  - required states render
+  - component can be reused via parameters where practical

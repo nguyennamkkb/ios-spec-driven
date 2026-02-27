@@ -430,3 +430,14 @@ frame variable       // All variables in frame
 - [ ] No memory leaks
 - [ ] Tests pass
 - [ ] Performance acceptable
+
+---
+
+## Autopilot Retry Policy
+
+When running under `execute-tasks` autopilot:
+- Attempt 1-2: direct fix from compiler/test output.
+- Attempt 3: verify requirement/design/task alignment, then fix.
+- If still failing: mark task `blocked`, record root cause, stop autopilot.
+
+Do not continue to next checkpoint with unresolved build or test failures.
