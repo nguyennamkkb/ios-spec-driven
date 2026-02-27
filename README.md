@@ -172,13 +172,13 @@ Update design: add caching layer for dashboard data
 ### Install for Claude Code
 
 ```bash
-uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install --ide claude
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude ios-spec-driven install --ide claude
 ```
 
 ### Install for OpenCode
 
 ```bash
-uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude@dev ios-spec-driven install --ide opencode
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude ios-spec-driven install --ide opencode
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
