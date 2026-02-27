@@ -66,7 +66,7 @@ def install(target_dir, ide, no_backup, force):
     # Interactive IDE selection if not provided
     if not ide:
         console.print("\n[bold cyan]? Select target IDE:[/bold cyan]")
-        console.print("  [1] Claude Code (Kiro)")
+        console.print("  [1] Claude Code")
         console.print("  [2] OpenCode")
         
         choice = click.prompt("\nEnter your choice", type=click.IntRange(1, 2), default=1)
