@@ -163,10 +163,19 @@
         "figma": true
       }
     },
-    "refine-spec": {
-      "description": "Refine and improve existing specifications. Use when updating requirements, clarifying specs, improving documentation.",
+    "refine-spec-orchestrator": {
+      "description": "Route spec refinement by impact level. Use when deciding whether to patch specs or regenerate spec/design/tasks.",
       "mode": "subagent",
-      "prompt": "{file:./.opencode/agents/refine-spec.md}",
+      "prompt": "{file:./.opencode/agents/refine-spec-orchestrator.md}",
+      "tools": {
+        "read": true,
+        "task": true
+      }
+    },
+    "refine-spec-patch": {
+      "description": "Apply minor, format-safe spec updates. Use for small requirement/design/tasks corrections without major rework.",
+      "mode": "subagent",
+      "prompt": "{file:./.opencode/agents/refine-spec-patch.md}",
       "tools": {
         "write": true,
         "edit": true,

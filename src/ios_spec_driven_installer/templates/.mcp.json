@@ -13,16 +13,18 @@
       "command": "npx",
       "args": [
         "-y",
-        "xcodebuildmcp@latest"
+        "xcodebuildmcp@latest",
+        "mcp"
       ],
       "autoApprove": [
-        "build_sim",
-        "build_run_sim",
-        "screenshot",
-        "tap",
-        "describe_ui",
         "discover_projs",
         "list_schemes",
+        "build_sim",
+        "build_run_sim",
+        "show_build_settings",
+        "screenshot",
+        "snapshot_ui",
+        "tap",
         "gesture"
       ],
       "disabledTools": [],

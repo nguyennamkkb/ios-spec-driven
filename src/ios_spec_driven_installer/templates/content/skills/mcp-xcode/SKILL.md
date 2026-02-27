@@ -18,30 +18,35 @@ Use this skill at:
 
 ## 1) Standard Commands
 
-- `xcode_list_schemes`
-- `xcode_build`
-- `xcode_test` (optional/manual)
-- `xcode_clean`
-- `xcode_get_build_settings`
+- `discover_projs`
+- `list_schemes`
+- `build_sim` (default gate command)
+- `build_run_sim` (optional, run intent)
+- `show_build_settings`
+- `clean`
+- `test_sim` (optional/manual)
+- `doctor` (diagnostics)
 
 ---
 
 ## 2) Gate Sequence (Required)
 
 At each checkpoint:
-1. list scheme (if not cached)
-2. build in Debug
-3. if needed, clean + rebuild
+1. discover project/workspace
+2. list scheme (if not cached)
+3. build for simulator in Debug
+4. if needed, clean + rebuild
 
 Only pass gate when build passes.
 
 Recommended order:
 
 ```text
-xcode_list_schemes
--> xcode_build (Debug)
--> xcode_clean (optional, on unstable build cache)
--> xcode_build (Debug, clean rebuild if needed)
+discover_projs
+-> list_schemes
+-> build_sim (Debug)
+-> clean (optional, on unstable build cache)
+-> build_sim (Debug, clean rebuild if needed)
 ```
 
 ---
@@ -54,6 +59,11 @@ xcode_list_schemes
 - integration task: compile integrated feature path
 
 Note: tests are optional/manual and not part of checkpoint gate.
+
+Optional commands by intent:
+- run intent: `build_run_sim`
+- manual test intent: `test_sim`
+- diagnostics: `show_build_settings`, `doctor`
 
 ---
 
@@ -79,6 +89,8 @@ Before marking phase done:
 
 ## 6) Checklist
 
+- [ ] MCP server reachable (tool calls available)
+- [ ] Project/workspace discovered via `discover_projs`
 - [ ] Correct scheme selected
 - [ ] Build passes for changed code
 - [ ] Failures triaged with retry policy

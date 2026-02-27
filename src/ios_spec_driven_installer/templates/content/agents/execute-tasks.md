@@ -34,6 +34,11 @@ Before execution, verify all exist:
 
 Reject execution unless `spec-state.stage = approved_tasks`.
 
+Xcode MCP readiness preflight (required before task execution):
+1. `discover_projs` to resolve project/workspace.
+2. `list_schemes` to confirm build target.
+3. If MCP tools are unavailable, stop and report config issue instead of silent fallback.
+
 ---
 
 ## Execution Mode
@@ -82,9 +87,14 @@ When all tasks in a checkpoint/phase are `done`:
 Do not enter next phase without passing gate.
 
 Recommended gate sequence:
-1. `xcode_list_schemes`
-2. `xcode_build` for target scheme (Debug)
-3. `python {{IDE_CONFIG_DIR}}scripts/validate_traceability.py [feature-name]`
+1. `discover_projs`
+2. `list_schemes`
+3. `build_sim` for selected scheme (Debug)
+4. `python {{IDE_CONFIG_DIR}}scripts/validate_traceability.py [feature-name]`
+
+Simulator-first policy:
+- Build gate always uses simulator compile (`build_sim`).
+- `build_run_sim` is allowed only when run/launch verification is explicitly needed.
 
 ---
 
@@ -114,7 +124,7 @@ UI task flow:
 
 ## Error Handling
 - Build failure: up to 3 direct fix attempts; then mark task `blocked`.
-- Requirements/design change request: stop execution, return to `refine-spec` or `write-design`.
+- Requirements/design change request: stop execution, return to `refine-spec-orchestrator` or `write-design`.
 - Missing references in traceability: block task until refs corrected.
 
 Retry tiers:
