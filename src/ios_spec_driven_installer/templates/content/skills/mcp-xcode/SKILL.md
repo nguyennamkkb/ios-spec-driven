@@ -11,7 +11,7 @@ Provide strict build gates for spec-driven autopilot execution.
 
 Use this skill at:
 - task-level scoped checks
-- checkpoint/phase gates
+- phase-end gates
 - recovery loops after failures
 
 ---
@@ -27,17 +27,21 @@ Use this skill at:
 - `test_sim` (optional/manual)
 - `doctor` (diagnostics)
 
+Default gate policy:
+- Use `build_sim` only for phase-end build gates.
+- Do not run or boot simulator by default.
+
 ---
 
 ## 2) Gate Sequence (Required)
 
-At each checkpoint:
+At each phase-end gate:
 1. discover project/workspace
 2. list scheme (if not cached)
 3. build for simulator in Debug
 4. if needed, clean + rebuild
 
-Only pass gate when build passes.
+Only pass phase-end gate when build passes.
 
 Recommended order:
 
@@ -61,9 +65,13 @@ discover_projs
 Note: tests are optional/manual and not part of checkpoint gate.
 
 Optional commands by intent:
-- run intent: `build_run_sim`
+- run intent (explicit user request only): `build_run_sim`
 - manual test intent: `test_sim`
 - diagnostics: `show_build_settings`, `doctor`
+
+Simulator launch restrictions:
+- `build_run_sim`, `boot_sim`, and `open_sim` are user-triggered only.
+- Never use run/boot simulator tools in default autopilot phase gates.
 
 ---
 
@@ -74,7 +82,7 @@ Retry tiers:
 - Attempt 3: review design/task mismatch, then rerun
 - Still failing: mark task `blocked` and stop autopilot
 
-Never advance checkpoint while build is failing.
+Never advance to next phase while build is failing.
 
 ---
 

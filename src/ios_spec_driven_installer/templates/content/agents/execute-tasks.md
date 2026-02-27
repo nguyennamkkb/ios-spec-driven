@@ -78,13 +78,13 @@ Allowed statuses: `pending | in_progress | blocked | done`.
 
 ## Phase Gate Protocol (Required)
 
-When all tasks in a checkpoint/phase are `done`:
+When all tasks in a phase are `done`:
 1. Build with Xcode tools.
 2. Run traceability validation script.
 3. If any fail: mark phase `blocked`, stop.
 4. If all pass: mark phase `done`, continue in autopilot.
 
-Do not enter next phase without passing gate.
+Do not enter next phase without passing phase-end gate.
 
 Recommended gate sequence:
 1. `discover_projs`
@@ -95,6 +95,11 @@ Recommended gate sequence:
 Simulator-first policy:
 - Build gate always uses simulator compile (`build_sim`).
 - `build_run_sim` is allowed only when run/launch verification is explicitly needed.
+- `boot_sim` and other simulator launch actions are prohibited unless the user explicitly asks.
+
+Run/boot restriction (required):
+- Do not call `build_run_sim`, `boot_sim`, or `open_sim` in default autopilot flow.
+- Use these tools only with explicit user intent (for example: "run app", "boot simulator", "verify launch").
 
 ---
 

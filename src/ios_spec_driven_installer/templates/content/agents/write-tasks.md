@@ -70,7 +70,7 @@ If prerequisites fail, stop and ask user to complete prior stage.
   - File: `Tests/PropertyTests/XModelPropertyTests.swift`
   - Optional: Yes
 
-**Checkpoint 2:** Build passes and traceability check passes
+**Phase Gate 2 (end of Shared phase):** Run XcodeBuildMCP `discover_projs -> list_schemes -> build_sim`, then traceability check passes
 
 ## 2. Feature Tasks
 - [ ] **3.1.1** Build list ViewModel
@@ -93,9 +93,8 @@ If prerequisites fail, stop and ask user to complete prior stage.
   - Design: 7.3
   - File: `Features/X/Views/XFormView.swift`
 
-**Checkpoint 3.1:** List feature complete (build + traceability)
-**Checkpoint 3.2:** Detail feature complete (build + traceability)
-**Checkpoint 3.3:** Form feature complete (build + traceability)
+**Phase 3 internal checkpoints:** 3.1 / 3.2 / 3.3 track progress only
+**Phase Gate 3 (end of Feature phase):** Run XcodeBuildMCP `discover_projs -> list_schemes -> build_sim`, then traceability check passes
 
 ## 3. Integration Tasks
 - [ ] **4.1.1** Wire navigation
@@ -110,7 +109,7 @@ If prerequisites fail, stop and ask user to complete prior stage.
   - Design: 6, 8
   - File: `Tests/IntegrationTests/XFlowTests.swift`
 
-**Checkpoint 4:** Full feature integrated and build-stable
+**Phase Gate 4 (end of Integration phase):** Run XcodeBuildMCP `discover_projs -> list_schemes -> build_sim`, then traceability check passes
 
 ## Traceability Matrix
 | Task ID | AC | Design | Property | Status |
@@ -140,6 +139,13 @@ If prerequisites fail, stop and ask user to complete prior stage.
 - Use iOS-first implementation order: Shared -> List -> Detail -> Form -> Integration.
 - Each feature task set must include ViewModel, View, and Verify tasks.
 - PBT tasks are optional by default but must still be in registry and matrix.
+
+## Phase-End Debug Gate (Required)
+- Run full debug/build gate at the end of each phase only (Phase 2, Phase 3, Phase 4).
+- Phase-end gate must use XcodeBuildMCP sequence: `discover_projs -> list_schemes -> build_sim`.
+- After simulator build passes, run traceability validation.
+- Do not promote to next phase if phase-end gate fails.
+- Do not run or boot simulator during phase-end gates unless user explicitly requests run/launch verification.
 
 ## Autopilot Sequencing Rules
 - Default execution order follows checkpoint order.

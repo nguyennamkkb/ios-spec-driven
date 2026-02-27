@@ -656,11 +656,15 @@ Must include:
 Allowed status values:
 - `pending`, `in_progress`, `blocked`, `done`
 
-### Checkpoint Gates
+### Phase-End Gates
 
 A phase can advance only when all pass:
-1. Build (mcp-xcode)
+1. Build (mcp-xcode simulator flow: `discover_projs -> list_schemes -> build_sim`)
 2. Traceability validation script
+
+Note:
+- Run full debug/build gate at end of each phase (not every internal checkpoint).
+- Default gate is build-only on simulator (`build_sim`); do not run/boot simulator unless user explicitly requests it.
 
 ### Post-Tasks Approval Rule
 
