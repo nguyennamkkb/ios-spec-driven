@@ -25,7 +25,7 @@ If prerequisites fail, stop and ask user to complete prior stage.
 
 ## State Machine
 - On entry: set `stage = draft_tasks`.
-- On approval: set `stage = approved_tasks` and `execution.mode = autopilot`.
+- On approval: set `stage = approved_tasks` and stop.
 
 ---
 
@@ -158,12 +158,18 @@ After writing/updating `tasks.md`, always ask:
 
 Do the tasks look good?
 
-1. ✅ Approve and start autopilot execution
+1. ✅ Approve tasks and stop here
 2. ✏️ Request changes
-3. ⏸️ Stop here
+3. ▶️ Start execution now (explicit)
+4. ⏸️ Stop here
 ```
 
 Behavior:
-- If approved: set `stage = approved_tasks`, invoke `execute-tasks` with `autopilot`.
+- If approved (option 1): set `stage = approved_tasks`, stop and wait for explicit execution command.
 - If changes requested: revise tasks, keep `stage = draft_tasks`, ask again.
+- If start execution now (option 3): set `stage = approved_tasks`, invoke `execute-tasks` with `autopilot`.
 - If stop: end.
+
+Execution trigger safety:
+- Never auto-start execution from ambiguous user replies.
+- Start `execute-tasks` only when user gives explicit intent (for example: "start execution", "run autopilot", or option 3).

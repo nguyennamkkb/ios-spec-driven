@@ -662,6 +662,13 @@ A phase can advance only when all pass:
 1. Build (mcp-xcode)
 2. Traceability validation script
 
+### Post-Tasks Approval Rule
+
+After `write-tasks` generates `tasks.md`:
+- Default behavior is stop-and-confirm.
+- Do not auto-run `execute-tasks` from a generic approval.
+- Start execution only when user gives explicit execution intent.
+
 ### iOS Quality Gate
 
 Before marking UI tasks complete:

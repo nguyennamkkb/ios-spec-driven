@@ -63,7 +63,11 @@ Rules:
 Explicit user approval is required after each document:
 - `requirements.md` -> continue to design
 - `design.md` -> continue to tasks
-- `tasks.md` -> start execution
+- `tasks.md` -> approve and stop by default
+
+Execution must be explicit opt-in:
+- Do not auto-run `execute-tasks` immediately after tasks approval.
+- Start execution only when user explicitly asks (for example: "start execution", "run autopilot", or an explicit start option).
 
 If user requests edits:
 - revise current document
@@ -196,5 +200,8 @@ Validation must ensure:
 
 - `autopilot` (default): automatic within phase, strict gates.
 - `manual`: execute one task and stop.
+
+Default post-`write-tasks` behavior:
+- stop and wait for explicit execution command.
 
 Parallel execution is optional and only allowed if dependency matrix declares no conflicts.
