@@ -643,8 +643,7 @@ Allowed status values:
 
 A phase can advance only when all pass:
 1. Build (mcp-xcode)
-2. Tests (targeted or phase-level)
-3. Traceability validation script
+2. Traceability validation script
 
 ### iOS Quality Gate
 

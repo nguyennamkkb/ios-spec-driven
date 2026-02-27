@@ -154,12 +154,11 @@ Stop conditions:
 
 At checkpoint boundary, all must pass:
 1. build
-2. tests
-3. traceability validation
+2. traceability validation
 
 Only then move to next checkpoint.
 
-Recommended build/test flow uses `mcp-xcode` skill.
+Recommended build flow uses `mcp-xcode` skill.
 
 ---
 

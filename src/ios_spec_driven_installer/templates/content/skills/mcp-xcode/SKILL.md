@@ -1,13 +1,13 @@
 ---
 name: mcp-xcode
-description: Build and test iOS apps with Xcode MCP during autopilot checkpoints and recovery loops.
+description: Build iOS apps with Xcode MCP during autopilot checkpoints and recovery loops.
 allowed-tools: Read, MCP, Bash
 ---
 
 # Xcode MCP Checkpoint Skill
 
 ## Purpose
-Provide strict build/test gates for spec-driven autopilot execution.
+Provide strict build gates for spec-driven autopilot execution.
 
 Use this skill at:
 - task-level scoped checks
@@ -20,7 +20,7 @@ Use this skill at:
 
 - `xcode_list_schemes`
 - `xcode_build`
-- `xcode_test`
+- `xcode_test` (optional/manual)
 - `xcode_clean`
 - `xcode_get_build_settings`
 
@@ -31,28 +31,29 @@ Use this skill at:
 At each checkpoint:
 1. list scheme (if not cached)
 2. build in Debug
-3. run relevant tests
-4. if needed, clean + rebuild
+3. if needed, clean + rebuild
 
-Only pass gate when build and required tests pass.
+Only pass gate when build passes.
 
 Recommended order:
 
 ```text
 xcode_list_schemes
 -> xcode_build (Debug)
--> xcode_test (targeted)
--> xcode_test (broader suite at phase end)
+-> xcode_clean (optional, on unstable build cache)
+-> xcode_build (Debug, clean rebuild if needed)
 ```
 
 ---
 
 ## 3) Scoped Checks by Task Type
 
-- model/service task: unit tests for model/service layer
-- ViewModel task: ViewModel tests + state transition tests
-- UI task: compile + relevant UI/snapshot tests (if available)
-- integration task: end-to-end integration tests for feature flow
+- model/service task: compile impacted module files
+- ViewModel task: compile impacted feature module
+- UI task: compile impacted UI targets
+- integration task: compile integrated feature path
+
+Note: tests are optional/manual and not part of checkpoint gate.
 
 ---
 
@@ -63,7 +64,7 @@ Retry tiers:
 - Attempt 3: review design/task mismatch, then rerun
 - Still failing: mark task `blocked` and stop autopilot
 
-Never advance checkpoint while build/test is failing.
+Never advance checkpoint while build is failing.
 
 ---
 
@@ -71,7 +72,6 @@ Never advance checkpoint while build/test is failing.
 
 Before marking phase done:
 - clean build
-- full phase test pass
 - no unresolved compile errors
 - update task statuses and traceability rows
 
@@ -81,6 +81,6 @@ Before marking phase done:
 
 - [ ] Correct scheme selected
 - [ ] Build passes for changed code
-- [ ] Required tests pass for task and phase
 - [ ] Failures triaged with retry policy
 - [ ] Gate result reflected in task/phase status
+- [ ] Traceability validation passed

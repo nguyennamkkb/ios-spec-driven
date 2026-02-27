@@ -1,6 +1,6 @@
 ---
 name: execute-tasks
-description: Execute tasks from an implementation plan. Use to implement task IDs from tasks.md, keep progress/traceability updated, write property-based tests, and build/test with XcodeBuildMCP.
+description: Execute tasks from an implementation plan. Use to implement task IDs from tasks.md, keep progress/traceability updated, write property-based tests, and build-check with XcodeBuildMCP.
 tools: Read, Write, Edit, Grep, Glob, Bash
 skills: dev-spec-driven, ios-architecture, ios-components, ios-ui-ux, mcp-xcode, mcp-figma
 ---
@@ -11,7 +11,7 @@ skills: dev-spec-driven, ios-architecture, ios-components, ios-ui-ux, mcp-xcode,
 Execute `tasks.md` with strict autopilot controls:
 - Transactional single-task execution
 - Automatic continuation inside current phase
-- Mandatory phase gates (build/test/traceability)
+- Mandatory phase gates (build/traceability)
 
 ## Input
 - Task selector: specific ID, `next`, or `autopilot`
@@ -56,7 +56,7 @@ For each task:
 1. Validate dependencies complete.
 2. Set task status to `in_progress`.
 3. Implement only this task.
-4. Run scoped checks (tests/lint/build relevant to task).
+4. Run scoped checks (build-first, lint optional).
 5. On pass: set status `done`.
 6. On fail: set status `blocked`, write cause, stop autopilot.
 7. Update traceability rows for task.
@@ -64,7 +64,7 @@ For each task:
 Task notes update format:
 - `Result: done|blocked`
 - `Files: <comma-separated>`
-- `Build/Test: pass|fail`
+- `Build: pass|fail`
 - `Reason: <only if blocked>`
 
 Allowed statuses: `pending | in_progress | blocked | done`.
@@ -75,18 +75,16 @@ Allowed statuses: `pending | in_progress | blocked | done`.
 
 When all tasks in a checkpoint/phase are `done`:
 1. Build with Xcode tools.
-2. Run tests for affected target.
-3. Run traceability validation script.
-4. If any fail: mark phase `blocked`, stop.
-5. If all pass: mark phase `done`, continue in autopilot.
+2. Run traceability validation script.
+3. If any fail: mark phase `blocked`, stop.
+4. If all pass: mark phase `done`, continue in autopilot.
 
 Do not enter next phase without passing gate.
 
 Recommended gate sequence:
 1. `xcode_list_schemes`
 2. `xcode_build` for target scheme (Debug)
-3. `xcode_test` for affected tests
-4. `python {{IDE_CONFIG_DIR}}scripts/validate_traceability.py [feature-name]`
+3. `python {{IDE_CONFIG_DIR}}scripts/validate_traceability.py [feature-name]`
 
 ---
 
@@ -115,7 +113,7 @@ UI task flow:
 ---
 
 ## Error Handling
-- Build/test failure: up to 3 direct fix attempts; then mark task `blocked`.
+- Build failure: up to 3 direct fix attempts; then mark task `blocked`.
 - Requirements/design change request: stop execution, return to `refine-spec` or `write-design`.
 - Missing references in traceability: block task until refs corrected.
 
@@ -152,3 +150,4 @@ If requirements or design are changed mid-run:
 - Do not mark feature complete without verifying all declared UI states.
 - For ViewModel tasks, include deterministic state transition tests.
 - For integration tasks, verify navigation data handoff and refresh behavior.
+- Tests are optional during checkpoint gating and can be run manually after build-stable milestones.
