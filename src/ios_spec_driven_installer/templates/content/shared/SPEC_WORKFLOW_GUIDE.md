@@ -628,6 +628,17 @@ draft_requirements -> approved_requirements
   spec-state.json
 ```
 
+### Project Docs Directory Preflight (Required)
+
+Before creating any project documentation file (`Project_Overview.md`, `Use_Cases.md`, `Functional_Requirements.md`, `Wireframes.md`, `UX_Flows.md`), ensure this directory exists:
+
+`{{IDE_CONFIG_DIR}}specs/[project-name]/`
+
+Rules:
+- If missing, create it first.
+- If directory cannot be created/verified, stop the workflow.
+- Never write documentation files to repository root as fallback.
+
 ### Task Schema (tasks.md)
 
 Must include:

@@ -31,7 +31,18 @@ File `{{IDE_CONFIG_DIR}}specs/[project-name]/Wireframes.md`
 # - Functional_Requirements.md: Features to design
 ```
 
-### Step 2: Write Wireframes.md
+### Step 2: Ensure target directory exists (REQUIRED)
+
+Verify this directory before writing:
+
+`{{IDE_CONFIG_DIR}}specs/[project-name]/`
+
+Required behavior:
+- If missing, create it first.
+- If creation or path verification fails, stop and report error.
+- Never write `Wireframes.md` to repository root.
+
+### Step 3: Write Wireframes.md
 
 ```markdown
 # [Project Name] - Wireframes
@@ -621,6 +632,10 @@ After creating `Wireframes.md`, MUST display:
 - WAIT for user confirmation before continuing
 - If user selects modify → apply changes → ask again
 - If user selects continue → call `write-ux-flows` agent
+
+### File Safety
+- Write only to `{{IDE_CONFIG_DIR}}specs/[project-name]/Wireframes.md`
+- If target directory is missing/unwritable, stop instead of fallback writes
 
 ### Exit Checklist (Efficiency)
 - No placeholder tokens like `[Screen]`, `[Description]`, `[Component]` in final file

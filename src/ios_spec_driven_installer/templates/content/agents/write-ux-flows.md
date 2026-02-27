@@ -32,7 +32,18 @@ File `{{IDE_CONFIG_DIR}}specs/[project-name]/UX_Flows.md`
 # - Wireframes.md: Screen layouts, components
 ```
 
-### Step 2: Write UX_Flows.md
+### Step 2: Ensure target directory exists (REQUIRED)
+
+Verify this directory before writing:
+
+`{{IDE_CONFIG_DIR}}specs/[project-name]/`
+
+Required behavior:
+- If missing, create it first.
+- If creation or path verification fails, stop and report error.
+- Never write `UX_Flows.md` to repository root.
+
+### Step 3: Write UX_Flows.md
 
 ```markdown
 # [Project Name] - UX Flows
@@ -808,6 +819,10 @@ graph TD
 - This is the FINAL document
 - If user selects modify → apply changes → ask again
 - If user wants to start implementation → suggest next steps
+
+### File Safety
+- Write only to `{{IDE_CONFIG_DIR}}specs/[project-name]/UX_Flows.md`
+- If target directory is missing/unwritable, stop instead of fallback writes
 
 ### Exit Checklist (Efficiency)
 - No placeholder tokens like `[Core Feature]`, `[Screen Title]` in final file

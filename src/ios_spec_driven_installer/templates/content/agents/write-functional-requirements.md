@@ -30,7 +30,18 @@ File `{{IDE_CONFIG_DIR}}specs/[project-name]/Functional_Requirements.md`
 # - Use_Cases.md: User stories, scenarios, priorities
 ```
 
-### Step 2: Write Functional_Requirements.md
+### Step 2: Ensure target directory exists (REQUIRED)
+
+Verify this directory before writing:
+
+`{{IDE_CONFIG_DIR}}specs/[project-name]/`
+
+Required behavior:
+- If missing, create it first.
+- If creation or path verification fails, stop and report error.
+- Never write `Functional_Requirements.md` to repository root.
+
+### Step 3: Write Functional_Requirements.md
 
 ```markdown
 # [Project Name] - Functional Requirements
@@ -506,6 +517,10 @@ After creating `Functional_Requirements.md`, MUST display:
 - WAIT for user confirmation before continuing
 - If user selects modify → apply changes → ask again
 - If user selects continue → call `write-wireframes` agent
+
+### File Safety
+- Write only to `{{IDE_CONFIG_DIR}}specs/[project-name]/Functional_Requirements.md`
+- If target directory is missing/unwritable, stop instead of fallback writes
 
 ### Exit Checklist (Efficiency)
 - No placeholder tokens like `[Feature]`, `[Module]`, `[If applicable]` in final file

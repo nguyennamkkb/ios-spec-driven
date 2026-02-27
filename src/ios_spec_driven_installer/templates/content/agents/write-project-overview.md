@@ -31,9 +31,17 @@ Ask user about:
 - Timeline/phases?
 
 ### Step 2: Create folder
+
+Ensure target directory exists before writing:
+
 ```
 {{IDE_CONFIG_DIR}}specs/[project-name]/
 ```
+
+Required behavior:
+- If missing, create it first.
+- If path cannot be created or verified, stop and report error.
+- Never write `Project_Overview.md` outside this directory.
 
 ### Step 3: Write Project_Overview.md
 
@@ -248,6 +256,10 @@ After creating `Project_Overview.md`, MUST display:
 - WAIT for user confirmation before continuing
 - If user selects modify → apply changes → ask again
 - If user selects continue → call `write-use-cases` agent
+
+### File Safety
+- Write file only to `{{IDE_CONFIG_DIR}}specs/[project-name]/Project_Overview.md`
+- If target directory is missing/unwritable, stop instead of writing to repo root
 
 ### Consistency
 - Use consistent terminology throughout

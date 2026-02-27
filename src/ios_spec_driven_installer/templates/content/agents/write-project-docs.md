@@ -64,7 +64,21 @@ Wait for user confirmation.
 
 ---
 
-### Step 2: PRD Bootstrap (Optional but Recommended)
+### Step 2: Directory Preflight (Required)
+
+Before invoking any document subagent, ensure this directory exists:
+
+`{{IDE_CONFIG_DIR}}specs/[project-name]/`
+
+Required behavior:
+- If missing, create the directory first.
+- Confirm all project-doc outputs will be written only inside this directory.
+- If directory cannot be created or verified, stop and report error.
+- Never continue to subagent execution when preflight fails.
+
+---
+
+### Step 2b: PRD Bootstrap (Optional but Recommended)
 
 Before creating the 5-document set, check if a PRD already exists at:
 
@@ -250,6 +264,7 @@ After all documents are created and approved, display:
 ### Orchestration
 - ALWAYS use Task tool to invoke subagents
 - NEVER create documents directly
+- ALWAYS run directory preflight before first subagent call
 - WAIT for user confirmation between steps
 - Allow user to stop at any point
 - Provide clear progress indicators
@@ -269,6 +284,7 @@ After all documents are created and approved, display:
 - If subagent fails → Show error, offer retry
 - If user cancels → Save progress, provide resume instructions
 - If document exists → Ask if user wants to overwrite or modify
+- If docs directory missing/unwritable → Stop workflow, do not generate files
 
 ### Progress Tracking
 Keep track of:
