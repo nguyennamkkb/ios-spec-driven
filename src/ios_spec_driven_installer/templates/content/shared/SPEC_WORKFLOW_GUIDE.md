@@ -102,9 +102,15 @@ Use the orchestrator agent to create all 5 documents in sequence:
 6. Creates UX_Flows.md → waits for your approval
 7. Runs cross-review (consistency + traceability) and proposes fixes
 8. Shows completion summary
+9. Suggests implementation spec queue (project-setup first, then priority features)
+10. Asks which spec to start first and can invoke `write-spec` immediately
 
 **Time**: 30-60 minutes total  
 **Benefit**: Complete, consistent specification set
+
+**Handoff rule**:
+- First implementation spec should be `project-setup` to establish architecture and shared foundation.
+- Then proceed with top MVP/High-priority features from `Functional_Requirements.md` and `Use_Cases.md`.
 
 ---
 

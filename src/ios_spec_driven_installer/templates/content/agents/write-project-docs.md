@@ -242,19 +242,54 @@ After all documents are created and approved, display:
    - Feature flows: H
    - Mermaid diagrams: I
 
-📁 Location: {{IDE_CONFIG_DIR}}specs/[project-name]/
+ 📁 Location: {{IDE_CONFIG_DIR}}specs/[project-name]/
 
- 📊 Next Steps:
- 1. Generate traceability matrix
- 2. Export specifications
- 3. Share with team for review
- 4. Modify any document
+ 📊 Next Steps (Recommended):
+  1. 🧱 Create project setup spec (foundation first)
+  2. 🚀 Start highest-priority feature spec
+  3. ✏️ Modify any project document
+  4. ⏸️ Done for now
+```
 
- ❓ What would you like to do next?
- 1. 📊 Generate traceability matrix
- 2. 📤 Export specifications
- 3. ✏️ Modify any document
- 4. ⏸️ Done for now
+---
+
+### Step 10: Handoff to Feature Spec Flow (Required)
+
+After project docs are complete, proactively guide the user into implementation specs.
+
+Handoff behavior:
+1. Read `Project_Overview.md`, `Use_Cases.md`, and `Functional_Requirements.md`.
+2. Build a suggested implementation queue:
+   - First item is always `project-setup` (app skeleton, modules, shared architecture, environment config).
+   - Remaining items are top feature candidates prioritized by High/MVP priority and dependency order.
+3. Present options and ask which spec to start first.
+
+Suggested prompt:
+
+```text
+✅ Project docs are complete.
+
+Recommended implementation order:
+1. project-setup (foundation)
+2. [Feature A from FR/UC docs]
+3. [Feature B from FR/UC docs]
+4. [Feature C from FR/UC docs]
+
+Which spec would you like to create first?
+1) project-setup
+2) [Feature A]
+3) [Feature B]
+4) [Feature C]
+5) Custom feature name
+```
+
+If user selects an item, invoke `write-spec` via Task tool immediately:
+
+```typescript
+await task({
+  agent: "write-spec",
+  instruction: "Create requirements.md for [selected-feature] using context from {{IDE_CONFIG_DIR}}specs/[project-name]/Project_Overview.md, Use_Cases.md, and Functional_Requirements.md."
+})
 ```
 
 ---
@@ -268,6 +303,7 @@ After all documents are created and approved, display:
 - WAIT for user confirmation between steps
 - Allow user to stop at any point
 - Provide clear progress indicators
+- AFTER completion summary, ALWAYS offer feature-spec handoff options
 
 ### Throughput Optimization
 - Prefer Fast mode unless user asks for Strict mode
@@ -292,6 +328,7 @@ Keep track of:
 - Which step user is on
 - Any modifications requested
 - Time spent on each document
+- Suggested feature queue and selected next spec
 
 ### User Experience
 - Show clear progress (Step X of 5)
@@ -299,6 +336,7 @@ Keep track of:
 - Allow skipping steps (with warnings)
 - Offer to save and continue later
 - Summarize what was created
+- Recommend `project-setup` as first implementation spec before feature specs
 
 ---
 
