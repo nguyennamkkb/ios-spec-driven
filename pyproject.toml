@@ -1,7 +1,7 @@
 [project]
 name = "ios-spec-driven-installer"
 version = "1.0.1"
-description = "iOS Spec-Driven Development toolkit installer for Claude Code"
+description = "iOS Spec-Driven Development toolkit installer"
 authors = [
     {name = "Nguyen Nam", email = "nguyennamkkb@gmail.com"}
 ]
