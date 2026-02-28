@@ -136,7 +136,7 @@ If prerequisites fail, stop and ask user to complete prior stage.
 - Allowed status: `pending | in_progress | blocked | done`.
 - Use checkpoint IDs as phase gates.
 - Only include coding tasks (write/modify/test code).
-- Use iOS-first implementation order: Shared -> List -> Detail -> Form -> Integration.
+- Task order follows user's chosen approach from `design.md` (logic-first, UI-first, or hybrid).
 - Each feature task set must include ViewModel, View, and Verify tasks.
 - PBT tasks are optional by default but must still be in registry and matrix.
 

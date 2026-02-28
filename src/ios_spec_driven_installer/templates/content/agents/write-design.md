@@ -99,13 +99,34 @@ If prerequisites fail, stop and ask user to complete requirements approval first
 
 ---
 
+## Implementation Intent Capture
+
+Before creating design, determine user's implementation approach:
+
+**Ask or infer from context:**
+- "Do you prefer to start with logic layer (Models/Services) or UI layer (Views) first?"
+- "Are there existing codebase patterns I should follow?"
+
+**Common approaches:**
+1. **Logic-first**: Start with domain models, services, then wire to UI
+2. **UI-first**: Start with screens and flows, then implement supporting logic
+3. **Hybrid**: Interleave based on feature complexity
+
+**Pattern decisions (only if user requests or complexity demands):**
+- Singleton: for true global state only
+- Delegate: for 1-1 callbacks
+- Observer: for reactive state
+- DI: via constructor injection when testability is priority
+
+Do NOT impose Clean Architecture, Repository pattern, or UseCases unless user explicitly asks.
+
 ## Design Rules
 - No production code snippets.
 - Every key decision references one or more ACs.
 - Testing strategy must mention concrete test files/targets.
 - Properties must be implementable in tests.
 - Each feature section must include states, actions, and file mapping.
-- Design must be implementable in ordered phases: Shared -> Feature units -> Integration.
+- Implementation order follows user's chosen approach (not hardcoded template).
 
 ## iOS Implementation Depth Rules
 - Prefer SwiftUI + MVVM unless requirement says otherwise.

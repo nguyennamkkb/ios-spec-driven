@@ -694,6 +694,30 @@ Parallel execution is allowed only when dependency matrix explicitly permits it.
 
 ---
 
+## Philosophy: Quality Framework, Not Pattern Enforcement
+
+This toolkit provides a **quality and traceability framework** for spec-driven iOS development. It does NOT enforce specific architectural patterns or implementation orders.
+
+**What the toolkit controls:**
+- Document structure and traceability (requirements → design → tasks → code)
+- Quality gates (build verification, traceability validation)
+- Task status tracking and synchronization
+- Phase-end checkpoints
+
+**What the toolkit does NOT enforce:**
+- Specific architectural patterns (Clean Architecture, VIPER, etc.)
+- Mandatory implementation order (logic-first vs UI-first)
+- Specific design patterns (Singleton, Delegate, Observer, DI) unless user requests
+- Code style or framework choices beyond basic MVVM/SwiftUI conventions
+
+**User intent always takes precedence:**
+- Follow user's explicit direction for implementation approach
+- Respect existing codebase patterns when present
+- Use suggested patterns only when complexity demands or user asks
+- Junior developers should find the approach simple and understandable
+
+---
+
 **Version**: 1.0  
 **Last Updated**: 2026-02-06  
 **Status**: Production Ready

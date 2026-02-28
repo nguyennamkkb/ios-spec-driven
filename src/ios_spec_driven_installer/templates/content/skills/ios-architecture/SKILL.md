@@ -1,11 +1,11 @@
 ---
 name: ios-architecture
 description: 
-  SwiftUI project structure. Use when creating new projects, new features, new screens, file placement, file naming, folder organization, code refactoring, ViewModel separation, standard directory structure, MVVM, Clean Architecture.
+  SwiftUI project structure guidance. Use when creating new projects, new features, new screens, file placement, file naming, folder organization, code refactoring, ViewModel separation, standard directory structure, MVVM. Follows user intent rather than enforcing specific architectural patterns.
 allowed-tools: Read, Grep, Glob, Bash
 ---
 
-# SwiftUI MVVM Structure
+# SwiftUI MVVM Structure (User-Driven)
 
 ## Table of Contents
 - [1. Directory Structure](#1-directory-structure) ... L15-L40
@@ -119,6 +119,20 @@ View → ViewModel → Service → Model
 - Service depends on Model
 - Model has no dependencies
 
+### Implementation Approach (User-Driven)
+
+**Follow user's explicit intent:**
+- If user requests "logic first": start with Models/Services, then ViewModels, then Views
+- If user requests "UI first": start with Views/ViewModels wiring, then harden logic
+- If user has no preference: follow existing codebase patterns or discuss trade-offs
+
+**Pattern usage is optional, not enforced:**
+- Use Singleton only for genuine global state (e.g., SessionManager, AppState)
+- Use Delegate for 1-1 callbacks (e.g., form submission, coordinator events)
+- Use Observer (@Published/Combine) for reactive state changes
+- Use Dependency Injection (protocol + constructor) for testability when needed
+- Avoid over-engineering; prefer simplicity that juniors can understand
+
 ---
 
 ## 4. Feature Example
@@ -183,15 +197,14 @@ Features/
 ## Autopilot Integration Contract
 
 When used with spec agents:
-- `design.md` sections define feature modules and file plan.
+- `design.md` sections define feature modules and file plan based on user intent.
 - `tasks.md` Task Registry must reference real paths under this structure.
-- checkpoint order should follow architecture dependencies:
-  1. Models/Services
-  2. ViewModels
-  3. Views
-  4. Integration
+- Task order follows user's explicit direction (not a hardcoded template):
+  - If user wants logic-first: Models/Services → ViewModels → Views → Integration
+  - If user wants UI-first: Views → ViewModels → Logic hardening → Integration
+  - If user has preference: follow their stated order
 
 Required alignment:
 - Every task file path must map to `Features/[FeatureName]/...` or shared folders.
-- Avoid cross-feature coupling before integration checkpoint.
-- Keep dependency flow: View -> ViewModel -> Service -> Model.
+- Respect existing codebase patterns when present.
+- Do not impose Clean Architecture or complex patterns unless user explicitly requests.

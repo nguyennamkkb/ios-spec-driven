@@ -57,10 +57,12 @@ Xcode MCP readiness preflight (required before task execution):
 
 ## Task Transaction Protocol (Required)
 
+**Execute exactly in the order defined in `tasks.md`** - do not reorder tasks based on architectural preferences.
+
 For each task:
-1. Validate dependencies complete.
+1. Validate dependencies complete (per Dependency Matrix).
 2. Set task status to `in_progress`.
-3. Implement only this task.
+3. Implement only this task as specified.
 4. Run scoped checks (build-first, lint optional).
 5. On pass: set status `done`.
 6. On fail: set status `blocked`, write cause, stop autopilot.
