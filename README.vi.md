@@ -16,12 +16,12 @@
     Đi từ ý tưởng đến triển khai với bộ tài liệu rõ ràng: requirements -> design -> tasks -> code.
     <br />
     <br />
-    <a href="https://github.com/nguyennamkkb/ios-spec-driven-claude"><strong>Xem tài liệu »</strong></a>
+    <a href="https://github.com/nguyennamkkb/ios-spec-driven"><strong>Xem tài liệu »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/nguyennamkkb/ios-spec-driven-claude/issues">Báo lỗi</a>
+    <a href="https://github.com/nguyennamkkb/ios-spec-driven/issues">Báo lỗi</a>
     ·
-    <a href="https://github.com/nguyennamkkb/ios-spec-driven-claude/issues">Đề xuất tính năng</a>
+    <a href="https://github.com/nguyennamkkb/ios-spec-driven/issues">Đề xuất tính năng</a>
   </p>
 </div>
 
@@ -248,7 +248,7 @@ Trình tự cho từng feature:
 - [ ] Mở rộng tài liệu onboarding đa ngôn ngữ
 - [ ] Mở rộng validation cho full project-document workflows
 
-Xem [open issues](https://github.com/nguyennamkkb/ios-spec-driven-claude/issues) để theo dõi thảo luận.
+Xem [open issues](https://github.com/nguyennamkkb/ios-spec-driven/issues) để theo dõi thảo luận.
 
 <p align="right">(<a href="#readme-top">lên đầu trang</a>)</p>
 
@@ -256,16 +256,16 @@ Xem [open issues](https://github.com/nguyennamkkb/ios-spec-driven-claude/issues)
 
 Nguyen Nam - nguyennamkkb@gmail.com
 
-Project Link: [https://github.com/nguyennamkkb/ios-spec-driven-claude](https://github.com/nguyennamkkb/ios-spec-driven-claude)
+Project Link: [https://github.com/nguyennamkkb/ios-spec-driven](https://github.com/nguyennamkkb/ios-spec-driven)
 
 <p align="right">(<a href="#readme-top">lên đầu trang</a>)</p>
 
 <!-- MARKDOWN LINKS -->
-[contributors-shield]: https://img.shields.io/github/contributors/nguyennamkkb/ios-spec-driven-claude.svg?style=for-the-badge
-[contributors-url]: https://github.com/nguyennamkkb/ios-spec-driven-claude/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/nguyennamkkb/ios-spec-driven-claude.svg?style=for-the-badge
-[forks-url]: https://github.com/nguyennamkkb/ios-spec-driven-claude/network/members
-[stars-shield]: https://img.shields.io/github/stars/nguyennamkkb/ios-spec-driven-claude.svg?style=for-the-badge
-[stars-url]: https://github.com/nguyennamkkb/ios-spec-driven-claude/stargazers
-[issues-shield]: https://img.shields.io/github/issues/nguyennamkkb/ios-spec-driven-claude.svg?style=for-the-badge
-[issues-url]: https://github.com/nguyennamkkb/ios-spec-driven-claude/issues
+[contributors-shield]: https://img.shields.io/github/contributors/nguyennamkkb/ios-spec-driven.svg?style=for-the-badge
+[contributors-url]: https://github.com/nguyennamkkb/ios-spec-driven/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/nguyennamkkb/ios-spec-driven.svg?style=for-the-badge
+[forks-url]: https://github.com/nguyennamkkb/ios-spec-driven/network/members
+[stars-shield]: https://img.shields.io/github/stars/nguyennamkkb/ios-spec-driven.svg?style=for-the-badge
+[stars-url]: https://github.com/nguyennamkkb/ios-spec-driven/stargazers
+[issues-shield]: https://img.shields.io/github/issues/nguyennamkkb/ios-spec-driven.svg?style=for-the-badge
+[issues-url]: https://github.com/nguyennamkkb/ios-spec-driven/issues

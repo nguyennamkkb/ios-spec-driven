@@ -16,12 +16,12 @@
     Move from idea to implementation with clear artifacts: requirements -> design -> tasks -> code.
     <br />
     <br />
-    <a href="https://github.com/nguyennamkkb/ios-spec-driven-claude"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/nguyennamkkb/ios-spec-driven"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/nguyennamkkb/ios-spec-driven-claude/issues">Report Bug</a>
+    <a href="https://github.com/nguyennamkkb/ios-spec-driven/issues">Report Bug</a>
     ·
-    <a href="https://github.com/nguyennamkkb/ios-spec-driven-claude/issues">Request Feature</a>
+    <a href="https://github.com/nguyennamkkb/ios-spec-driven/issues">Request Feature</a>
   </p>
 </div>
 
@@ -248,7 +248,7 @@ Idea
 - [ ] Expand docs for multilingual team onboarding
 - [ ] Extend validation for full project-document workflows
 
-See [open issues](https://github.com/nguyennamkkb/ios-spec-driven-claude/issues) for ongoing discussions.
+See [open issues](https://github.com/nguyennamkkb/ios-spec-driven/issues) for ongoing discussions.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -256,16 +256,16 @@ See [open issues](https://github.com/nguyennamkkb/ios-spec-driven-claude/issues)
 
 Nguyen Nam - nguyennamkkb@gmail.com
 
-Project Link: [https://github.com/nguyennamkkb/ios-spec-driven-claude](https://github.com/nguyennamkkb/ios-spec-driven-claude)
+Project Link: [https://github.com/nguyennamkkb/ios-spec-driven](https://github.com/nguyennamkkb/ios-spec-driven)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS -->
-[contributors-shield]: https://img.shields.io/github/contributors/nguyennamkkb/ios-spec-driven-claude.svg?style=for-the-badge
-[contributors-url]: https://github.com/nguyennamkkb/ios-spec-driven-claude/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/nguyennamkkb/ios-spec-driven-claude.svg?style=for-the-badge
-[forks-url]: https://github.com/nguyennamkkb/ios-spec-driven-claude/network/members
-[stars-shield]: https://img.shields.io/github/stars/nguyennamkkb/ios-spec-driven-claude.svg?style=for-the-badge
-[stars-url]: https://github.com/nguyennamkkb/ios-spec-driven-claude/stargazers
-[issues-shield]: https://img.shields.io/github/issues/nguyennamkkb/ios-spec-driven-claude.svg?style=for-the-badge
-[issues-url]: https://github.com/nguyennamkkb/ios-spec-driven-claude/issues
+[contributors-shield]: https://img.shields.io/github/contributors/nguyennamkkb/ios-spec-driven.svg?style=for-the-badge
+[contributors-url]: https://github.com/nguyennamkkb/ios-spec-driven/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/nguyennamkkb/ios-spec-driven.svg?style=for-the-badge
+[forks-url]: https://github.com/nguyennamkkb/ios-spec-driven/network/members
+[stars-shield]: https://img.shields.io/github/stars/nguyennamkkb/ios-spec-driven.svg?style=for-the-badge
+[stars-url]: https://github.com/nguyennamkkb/ios-spec-driven/stargazers
+[issues-shield]: https://img.shields.io/github/issues/nguyennamkkb/ios-spec-driven.svg?style=for-the-badge
+[issues-url]: https://github.com/nguyennamkkb/ios-spec-driven/issues

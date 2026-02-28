@@ -128,7 +128,7 @@ def install(target_dir, ide, no_backup, force):
         console.print("1. Open your project in Claude Code")
         console.print("2. Try: [bold]'Create spec for login feature'[/bold]")
         console.print("3. See README.md for more examples")
-        console.print(f"4. Documentation: [link]https://github.com/nguyennamkkb/ios-spec-driven-claude[/link]\n")
+        console.print(f"4. Documentation: [link]https://github.com/nguyennamkkb/ios-spec-driven[/link]\n")
         
     except Exception as e:
         console.print(f"\n[bold red]❌ Installation failed:[/bold red] {e}")
@@ -263,9 +263,9 @@ def info():
     console.print("• Parallel task execution (experimental)")
     
     console.print("\n[bold cyan]Links:[/bold cyan]")
-    console.print("• Repository: [link]https://github.com/nguyennamkkb/ios-spec-driven-claude[/link]")
-    console.print("• Documentation: [link]https://github.com/nguyennamkkb/ios-spec-driven-claude#readme[/link]")
-    console.print("• Issues: [link]https://github.com/nguyennamkkb/ios-spec-driven-claude/issues[/link]")
+    console.print("• Repository: [link]https://github.com/nguyennamkkb/ios-spec-driven[/link]")
+    console.print("• Documentation: [link]https://github.com/nguyennamkkb/ios-spec-driven#readme[/link]")
+    console.print("• Issues: [link]https://github.com/nguyennamkkb/ios-spec-driven/issues[/link]")
     
     console.print("\n[bold cyan]Quick Start:[/bold cyan]")
     console.print("1. Install: [bold]ios-spec-driven install[/bold]")

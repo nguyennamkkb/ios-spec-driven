@@ -28,10 +28,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/nguyennamkkb/ios-spec-driven-claude"
-Documentation = "https://github.com/nguyennamkkb/ios-spec-driven-claude#readme"
-Repository = "https://github.com/nguyennamkkb/ios-spec-driven-claude"
-Issues = "https://github.com/nguyennamkkb/ios-spec-driven-claude/issues"
+Homepage = "https://github.com/nguyennamkkb/ios-spec-driven"
+Documentation = "https://github.com/nguyennamkkb/ios-spec-driven#readme"
+Repository = "https://github.com/nguyennamkkb/ios-spec-driven"
+Issues = "https://github.com/nguyennamkkb/ios-spec-driven/issues"
 
 [project.scripts]
 ios-spec-driven = "ios_spec_driven_installer.cli:main"
