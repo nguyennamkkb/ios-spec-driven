@@ -172,13 +172,13 @@ Update design: add caching layer for dashboard data
 ### Cài cho Claude Code
 
 ```bash
-uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude ios-spec-driven install --ide claude
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven ios-spec-driven install --ide claude
 ```
 
 ### Cài cho OpenCode
 
 ```bash
-uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven-claude ios-spec-driven install --ide opencode
+uvx --from git+https://github.com/nguyennamkkb/ios-spec-driven ios-spec-driven install --ide opencode
 ```
 
 ### Cấu hình Figma Token (Framelink MCP)

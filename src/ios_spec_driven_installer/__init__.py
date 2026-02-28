@@ -2,7 +2,7 @@
 iOS Spec-Driven Development Toolkit Installer
 
 A CLI tool to install the iOS Spec-Driven Development toolkit
-into your Claude Code projects.
+into your projects.
 """
 
 __version__ = "1.0.1"

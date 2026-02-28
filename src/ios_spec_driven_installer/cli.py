@@ -24,7 +24,7 @@ except importlib.metadata.PackageNotFoundError:
 def main():
     """iOS Spec-Driven Development Toolkit Installer
     
-    Install the complete toolkit for spec-driven iOS development with Claude Code.
+    Install the complete toolkit for spec-driven iOS development.
     
     Examples:
         ios-spec-driven install
