@@ -55,7 +55,17 @@ Flow:
    - color roles (surface/text/action/error/success)
    - component variants and states
 3. Map extracted tokens to local style files under `{{IDE_CONFIG_DIR}}shared/Styles/`.
+   - `AppColors.swift` for color roles
+   - `AppFonts.swift` for typography scale/weights
+   - `AppSpacing.swift` for spacing rhythm
+   - If any file is missing, create it in `shared/Styles` before coding
 4. Record reusable components and missing variants.
+
+Style persistence rules:
+- Do not keep design tokens only in task notes or temporary code.
+- Do not hardcode extracted values in feature views when shared token files are the correct destination.
+- Update `{{IDE_CONFIG_DIR}}shared/COMPONENT_FORMAT.md` when new token naming/patterns are introduced.
+- Treat this mapping and persistence flow as the Design Style System (DSS) contract for implementation.
 
 ---
 
@@ -97,6 +107,7 @@ Before coding, produce a short report:
 ## Figma Analysis Summary
 - Target screens: [list]
 - Tokens mapped: [list]
+- Style files updated: [list under {{IDE_CONFIG_DIR}}shared/Styles/]
 - Reusable components: [list]
 - Missing states: [list]
 - Accessibility risks: [list]

@@ -125,10 +125,9 @@ def install(target_dir, ide, no_backup, force):
         
         # Next steps
         console.print("\n[cyan]Next steps:[/cyan]")
-        console.print("1. Open your project in Claude Code")
-        console.print("2. Try: [bold]'Create spec for login feature'[/bold]")
-        console.print("3. See README.md for more examples")
-        console.print(f"4. Documentation: [link]https://github.com/nguyennamkkb/ios-spec-driven[/link]\n")
+        console.print("1. Open your project")
+        console.print("2. See README.md for more examples")
+        console.print(f"3. Documentation: [link]https://github.com/nguyennamkkb/ios-spec-driven[/link]\n")
         
     except Exception as e:
         console.print(f"\n[bold red]❌ Installation failed:[/bold red] {e}")

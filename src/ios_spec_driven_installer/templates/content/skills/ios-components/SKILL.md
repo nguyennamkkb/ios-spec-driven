@@ -213,6 +213,23 @@ grep -r "loading" {{IDE_CONFIG_DIR}}shared/Components/
 - Make it reusable (add parameters)
 - Add Preview
 - Document usage
+- If a required style value does not exist yet, add/update token in `{{IDE_CONFIG_DIR}}shared/Styles/` first, then reference token in component code
+
+## 2b. Design Style System (DSS) Source of Truth (Required)
+
+All UI style decisions must be persisted in the DSS locations below:
+
+- Format and conventions: `{{IDE_CONFIG_DIR}}shared/COMPONENT_FORMAT.md`
+- Color tokens: `{{IDE_CONFIG_DIR}}shared/Styles/AppColors.swift`
+- Typography tokens: `{{IDE_CONFIG_DIR}}shared/Styles/AppFonts.swift`
+- Spacing tokens: `{{IDE_CONFIG_DIR}}shared/Styles/AppSpacing.swift`
+
+Rules:
+- Do not hardcode color, font size/weight, or spacing in feature/component files when a shared token should exist.
+- When creating or modifying UI, check shared style files first and reuse existing tokens.
+- If no suitable token exists, add it to the correct style file and then use that token in UI code.
+- If `shared/Styles` is missing, create it before adding new UI components.
+- Keep `COMPONENT_FORMAT.md` aligned with current token naming and usage patterns.
 
 ---
 
@@ -350,10 +367,13 @@ enum Spacing {
 - [ ] **Evaluate reuse options** (use as-is, customize, compose)
 - [ ] Record reuse evidence (components checked and why not reused)
 - [ ] Identify design tokens needed
+- [ ] Check `{{IDE_CONFIG_DIR}}shared/Styles/` for existing tokens before adding new values
 - [ ] Only create new if nothing can be reused
 
 ### When creating component:
 - [ ] Use design tokens from `{{IDE_CONFIG_DIR}}shared/Styles/`
+- [ ] Avoid hardcoded color/font/spacing values in component code
+- [ ] If new style value is required, add token in the correct file under `{{IDE_CONFIG_DIR}}shared/Styles/`
 - [ ] Create file in correct folder by type
 - [ ] Follow format from COMPONENT_FORMAT.md
 - [ ] **Make component reusable** (add parameters for flexibility)
@@ -376,7 +396,11 @@ For `tasks.md` integration:
 - Record reuse decision in task notes:
   - `Reuse: <component>`
   - `New: <component> | Reason: <why>`
+- Record DSS decision in task notes:
+  - `DSS: reused tokens <list>`
+  - or `DSS: added tokens <list> in shared/Styles`
 - Do not mark component task `done` until:
   - preview compiles
   - required states render
   - component can be reused via parameters where practical
+  - style references come from DSS tokens in `{{IDE_CONFIG_DIR}}shared/Styles/` (no accidental hardcoded replacements)

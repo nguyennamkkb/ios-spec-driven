@@ -77,6 +77,7 @@ Task notes update format:
 - `Result: done|blocked`
 - `Files: <comma-separated>`
 - `Build: pass|fail`
+- `DSS: reused tokens <list>` or `DSS: added tokens <list> in shared/Styles` (required for UI tasks)
 - `Reason: <only if blocked>`
 
 Allowed statuses: `pending | in_progress | blocked | done`.
@@ -127,6 +128,24 @@ UI task flow:
 
 ---
 
+## Design Style System Gate (Required)
+
+For UI tasks, enforce Design Style System (DSS) before marking `done`:
+- Runtime tokens source of truth is `{{IDE_CONFIG_DIR}}shared/Styles/`:
+  - `AppColors.swift`
+  - `AppFonts.swift`
+  - `AppSpacing.swift`
+- `{{IDE_CONFIG_DIR}}shared/COMPONENT_FORMAT.md` is a style usage guide, not runtime token storage.
+- Do not keep style values hardcoded in feature views/components when DSS tokenization is appropriate.
+- If style is hardcoded instead of DSS token, add/update token in `shared/Styles` and replace usage before completion.
+
+DSS verification on UI task completion:
+1. Confirm task notes include DSS evidence line.
+2. Confirm changed UI files reference DSS tokens for color/font/spacing.
+3. If violations remain, mark task `blocked` with reason and stop autopilot.
+
+---
+
 ## Parallel Policy
 - Sequential is default and recommended.
 - Parallel execution allowed only if dependency matrix confirms no ordering or file conflicts.
@@ -172,4 +191,5 @@ If requirements or design are changed mid-run:
 - Do not mark feature complete without verifying all declared UI states.
 - For ViewModel tasks, include deterministic state transition tests.
 - For integration tasks, verify navigation data handoff and refresh behavior.
+- For UI tasks, do not mark task `done` when style is hardcoded and not persisted in DSS tokens under `shared/Styles`.
 - Tests are optional during checkpoint gating and can be run manually after build-stable milestones.

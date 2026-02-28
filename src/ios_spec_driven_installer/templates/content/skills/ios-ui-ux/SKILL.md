@@ -178,6 +178,22 @@ allowed-tools: Read, Grep, Glob
 - Consistent shadow styles
 - Higher elevation = more important
 
+## 5b. Design Style System (DSS) Persistence (Required)
+
+When creating or modifying UI, always reference and update the DSS source of truth:
+
+- `{{IDE_CONFIG_DIR}}shared/COMPONENT_FORMAT.md`
+- `{{IDE_CONFIG_DIR}}shared/Styles/AppColors.swift`
+- `{{IDE_CONFIG_DIR}}shared/Styles/AppFonts.swift`
+- `{{IDE_CONFIG_DIR}}shared/Styles/AppSpacing.swift`
+
+Required behavior:
+- Reuse existing tokens first; do not introduce ad-hoc style values in screen/component code.
+- If a needed token does not exist, add it in `shared/Styles` before implementation.
+- Keep naming semantic (`primary`, `textSecondary`, `bodyRegular`) instead of raw-value naming.
+- Reflect new style conventions in `COMPONENT_FORMAT.md` so future tasks follow the same pattern.
+- Treat these files as the only DSS style management layer for ongoing maintenance.
+
 ---
 
 ## 6. Accessibility
@@ -264,6 +280,8 @@ Text("Hello")
 ### When Implementing
 
 - [ ] Use design tokens (colors, fonts, spacing)
+- [ ] Reference tokens from `{{IDE_CONFIG_DIR}}shared/Styles/` (avoid hardcoded style constants)
+- [ ] If new visual rule is introduced, update the matching style file in `{{IDE_CONFIG_DIR}}shared/Styles/`
 - [ ] Add accessibility labels
 - [ ] Support Dynamic Type
 - [ ] Test with VoiceOver
@@ -288,6 +306,7 @@ Before a UI task can be marked `done` in autopilot:
 - [ ] Empty state implemented and testable
 - [ ] Error state implemented with recovery action
 - [ ] Success/default state implemented
+- [ ] Styles reference `{{IDE_CONFIG_DIR}}shared/Styles/` tokens (no accidental hardcoded color/font/spacing)
 - [ ] Accessibility labels/hints added for key interactions
 - [ ] Dynamic Type and touch-target checks completed
 

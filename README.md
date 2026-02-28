@@ -161,6 +161,12 @@ Update design: add caching layer for dashboard data
 - `PARALLEL_EXECUTION_GUIDE.md`
 - `SPEC_WORKFLOW_GUIDE.md`
 
+### Design Style System (DSS)
+
+- DSS in this toolkit means shared UI style tokens and usage conventions, not overall system architecture design.
+- Runtime style tokens are managed in `shared/Styles/` (for example: `AppColors.swift`, `AppFonts.swift`, `AppSpacing.swift`).
+- `COMPONENT_FORMAT.md` defines style usage conventions and code patterns for consistent UI implementation.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Getting Started

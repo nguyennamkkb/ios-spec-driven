@@ -130,6 +130,11 @@ Allowed status values:
 Task types:
 - `normal | pbt | integration`
 
+For UI-facing tasks (screen/view/component styling), task notes must include DSS evidence:
+- `DSS: reused tokens <list>`
+or
+- `DSS: added tokens <list> in shared/Styles`
+
 ---
 
 ## 7) Autopilot Execution Policy
@@ -178,9 +183,34 @@ For UI tasks with design input:
 - use Framelink MCP context from `mcp-figma`
 - map tokens/components before coding
 
+Design Style System (DSS) gate (required for UI tasks):
+- treat `{{IDE_CONFIG_DIR}}shared/Styles/` as the runtime token source of truth
+- `{{IDE_CONFIG_DIR}}shared/COMPONENT_FORMAT.md` defines usage conventions, not runtime tokens
+- no hardcoded color/font/spacing values when a DSS token should exist
+- if style is hardcoded instead of DSS token, add/update token in `shared/Styles` and replace usage before marking task done
+
 ---
 
-## 10) Traceability and Validation
+## 10) Design Style System (DSS) Contract
+
+Definition:
+- DSS = shared style runtime tokens + style usage conventions for UI implementation
+
+Source of truth:
+- Runtime tokens only in `{{IDE_CONFIG_DIR}}shared/Styles/`:
+  - `AppColors.swift`
+  - `AppFonts.swift`
+  - `AppSpacing.swift`
+- Usage conventions in `{{IDE_CONFIG_DIR}}shared/COMPONENT_FORMAT.md`
+
+Required behavior:
+- always check and reuse DSS tokens before introducing new style values
+- if a needed token does not exist, add it to the correct file in `shared/Styles` first
+- avoid ad-hoc styling in feature files when DSS tokenization is appropriate
+
+---
+
+## 11) Traceability and Validation
 
 Run:
 
@@ -194,9 +224,11 @@ Validation must ensure:
 - every task has AC + design references
 - traceability matrix rows are present
 
+For UI tasks, validation/review must also ensure DSS evidence exists in task notes and style references are token-based.
+
 ---
 
-## 11) Execution Modes
+## 12) Execution Modes
 
 - `autopilot` (default): automatic within phase, strict gates.
 - `manual`: execute one task and stop.
