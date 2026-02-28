@@ -66,6 +66,11 @@ For each task:
 6. On fail: set status `blocked`, write cause, stop autopilot.
 7. Update traceability rows for task.
 
+Task completion synchronization (required on done):
+- Task Registry: update status to `done`.
+- Checklist markdown: change `- [ ] **TASK_ID**` to `- [x] **TASK_ID**`.
+- Traceability Matrix: update row status to `done`.
+
 Task notes update format:
 - `Result: done|blocked`
 - `Files: <comma-separated>`

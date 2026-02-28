@@ -2,12 +2,17 @@
 """
 Hook script to keep task execution context aligned with changed files.
 
-Behavior:
+Behavior (Auto-detect mode):
 - Detect changed Swift file path from tool input.
 - Locate related spec folder.
 - Parse tasks.md Task Registry and find matching tasks by file path.
 - If exactly one matching task is pending, auto-mark it in_progress.
 - Print concise execution hints.
+
+Behavior (Explicit action mode):
+- Agent can explicitly mark task as done/blocked via "action" field.
+- Updates all three locations: Task Registry, Checklist, Traceability Matrix.
+- Required for proper task completion tracking.
 """
 
 import json
@@ -78,9 +83,75 @@ def update_registry_status(tasks_md: str, task_id: str, new_status: str) -> str:
     return row_pattern.sub(rf"\1 {new_status} \3", tasks_md, count=1)
 
 
+def update_checklist_status(tasks_md: str, task_id: str, mark_done: bool = True) -> str:
+    # Update checklist markdown: - [ ] **TASK_ID** -> - [x] **TASK_ID**
+    if mark_done:
+        # Change from [ ] to [x]
+        pattern = re.compile(
+            rf"^(-\s+\[)\s*(\]\s+\*\*{re.escape(task_id)}\*\*)",
+            re.MULTILINE,
+        )
+        return pattern.sub(rf"\1x\2", tasks_md, count=1)
+    else:
+        # Change from [x] back to [ ] (if needed for rollback)
+        pattern = re.compile(
+            rf"^(-\s+\[)x(\]\s+\*\*{re.escape(task_id)}\*\*)",
+            re.MULTILINE,
+        )
+        return pattern.sub(rf"\1 \2", tasks_md, count=1)
+
+
+def update_traceability_status(tasks_md: str, task_id: str, new_status: str) -> str:
+    # Update Traceability Matrix row status.
+    # Format: | Task ID | AC | Design | Property | Status |
+    pattern = re.compile(
+        rf"^(\|\s*{re.escape(task_id)}\s*\|[^|]+\|[^|]+\|[^|]+\|)([^|]+)(\|.*)$",
+        re.MULTILINE,
+    )
+    return pattern.sub(rf"\1 {new_status} \3", tasks_md, count=1)
+
+
+def sync_task_completion(tasks_md: str, task_id: str) -> str:
+    # Sync all three locations when marking task as done
+    content = update_registry_status(tasks_md, task_id, "done")
+    content = update_checklist_status(content, task_id, mark_done=True)
+    content = update_traceability_status(content, task_id, "done")
+    return content
+
+
 def main() -> None:
     try:
         payload = json.load(sys.stdin)
+        action = payload.get("action", "auto")  # "auto", "mark_done", "mark_blocked"
+        task_id = payload.get("task_id", "")
+
+        # Handle explicit mark done/blocked from agent
+        if action in ("mark_done", "mark_blocked") and task_id:
+            spec_name = payload.get("spec_name", "")
+            if not spec_name:
+                return
+
+            specs_dir = Path("{{IDE_CONFIG_DIR}}specs")
+            tasks_file = specs_dir / spec_name / "tasks.md"
+            if not tasks_file.exists():
+                return
+
+            content = tasks_file.read_text()
+            new_status = "done" if action == "mark_done" else "blocked"
+
+            # Update all three locations
+            content = update_registry_status(content, task_id, new_status)
+            if action == "mark_done":
+                content = update_checklist_status(content, task_id, mark_done=True)
+            content = update_traceability_status(content, task_id, new_status)
+
+            tasks_file.write_text(content)
+            print(
+                f"✅ Task {task_id} marked as {new_status} (registry + checklist + traceability)"
+            )
+            return
+
+        # Auto-detect mode (when files change)
         changed_path = payload.get("tool_input", {}).get("file_path", "")
         if not changed_path or not changed_path.endswith(".swift"):
             return

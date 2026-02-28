@@ -666,7 +666,14 @@ Note:
 - Run full debug/build gate at end of each phase (not every internal checkpoint).
 - Default gate is build-only on simulator (`build_sim`); do not run/boot simulator unless user explicitly requests it.
 
-### Post-Tasks Approval Rule
+### Task Completion Sync Rule
+
+When marking a task as `done` or `blocked`, synchronize all three locations:
+1. **Task Registry** (table): Update status column.
+2. **Checklist markdown**: Change `- [ ] **TASK_ID**` to `- [x] **TASK_ID**` when done; keep `[ ]` when blocked.
+3. **Traceability Matrix**: Update status column to match.
+
+This ensures visual progress tracking in the markdown file matches the machine-readable registry.
 
 After `write-tasks` generates `tasks.md`:
 - Default behavior is stop-and-confirm.
