@@ -48,6 +48,7 @@ Xcode MCP readiness preflight (required before task execution):
 - Stop only at:
   - phase gate
   - blocked task
+  - unresolved declaration collision
   - explicit user stop
 
 ### Optional: Manual
@@ -62,11 +63,21 @@ Xcode MCP readiness preflight (required before task execution):
 For each task:
 1. Validate dependencies complete (per Dependency Matrix).
 2. Set task status to `in_progress`.
-3. Implement only this task as specified.
-4. Run scoped checks (build-first, lint optional).
-5. On pass: set status `done`.
-6. On fail: set status `blocked`, write cause, stop autopilot.
-7. Update traceability rows for task.
+3. For any new `class`/`struct`/`enum`, run declaration collision check first.
+4. Implement only this task as specified.
+5. Run scoped checks (build-first, lint optional).
+6. On pass: set status `done`.
+7. On fail: set status `blocked`, write cause, stop autopilot.
+8. Update traceability rows for task.
+
+Declaration collision check (required before creating types):
+- Search project sources for existing declaration names before adding new `class`/`struct`/`enum`.
+- Detect collisions by exact type name for all forms (`class Name`, `struct Name`, `enum Name`).
+- If matching declaration exists:
+  - prefer reuse/update/extension of existing type
+  - otherwise rename new type using project naming conventions
+  - if conflict cannot be safely resolved, mark task `blocked` and stop autopilot
+- Never introduce duplicate declarations that can cause redeclaration/build errors.
 
 Task completion synchronization (required on done):
 - Task Registry: update status to `done`.
@@ -78,6 +89,8 @@ Task notes update format:
 - `Files: <comma-separated>`
 - `Build: pass|fail`
 - `DSS: reused tokens <list>` or `DSS: added tokens <list> in shared/Styles` (required for UI tasks)
+- `DeclarationCheck: pass|conflict` (required when creating/updating types)
+- `DeclarationConflict: <TypeName> | Resolution: reused|renamed|blocked` (only if conflict)
 - `Reason: <only if blocked>`
 
 Allowed statuses: `pending | in_progress | blocked | done`.
@@ -157,6 +170,7 @@ DSS verification on UI task completion:
 - Build failure: up to 3 direct fix attempts; then mark task `blocked`.
 - Requirements/design change request: stop execution, return to `refine-spec-orchestrator` or `write-design`.
 - Missing references in traceability: block task until refs corrected.
+- Declaration collision for `class`/`struct`/`enum`: resolve by reuse/rename; if unresolved, block task and stop.
 
 Retry tiers:
 - Attempt 1-2: direct code fix, rerun scoped checks.
@@ -192,4 +206,6 @@ If requirements or design are changed mid-run:
 - For ViewModel tasks, include deterministic state transition tests.
 - For integration tasks, verify navigation data handoff and refresh behavior.
 - For UI tasks, do not mark task `done` when style is hardcoded and not persisted in DSS tokens under `shared/Styles`.
+- Do not mark any task `done` if new `class`/`struct`/`enum` declarations were added without declaration collision check.
+- Do not introduce duplicate type declarations in the same build target.
 - Tests are optional during checkpoint gating and can be run manually after build-stable milestones.
